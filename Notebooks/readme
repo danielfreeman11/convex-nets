@@ -1,0 +1,4 @@
+This is a collection of exploratory notebooks with implementations of the algorithm using Tensorflow.
+
+PathInterp(Clean).ipynb contain code for dynamic string stampling on polynomial regression tasks
+PathInterpMNIST.ipynb contains code for dynamic string sampling on (unsurprisingly) MNIST.
