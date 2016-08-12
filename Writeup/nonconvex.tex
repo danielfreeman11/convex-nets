@@ -151,13 +151,64 @@
  
  Finally, to use this as a tool to diagnose convexity, we define the \emph{maximum interpolated error at depth $d$ and tolerance $\alpha$}:
  
- \begin{equation}
- \tilde{\Gamma}( \theta_1, \theta_2, d, \alpha ) := \rm{max}\ \gamma(\theta_i, \theta_j, t),\: i,\ j\ \rm{neighbors\ in}\ S(\theta_1, \theta_2, \alpha, d)
- \end{equation}
+ \begin{align}
+ \tilde{\Gamma}( \theta_1, \theta_2, d, \alpha ) &:= \rm{max}\ \gamma(\theta_i, \theta_j, t)\\ \notag
+ &i,\ j\ \rm{neighbors\ in}\ S(\theta_1, \theta_2, \alpha, d)
+ \end{align}
  
  where by ``neighbors in $S(\theta_1, \theta_2, \alpha, d)$'', we only mean that the models are immediately adjacent on the interpolating string.  This quantity upper bounds the true maximum interpolated error, i.e. \eqref{eq:minmaxerror}.
  
  In summary: the algorithm recursively produces and trains new models lying on a continuous path in the space of model parameters, i.e. a string.  Training via gradient descent biases the path towards valleys on the loss surface, thus encouraging the loss along this path to be low.  In practice, the parameter $\alpha$ is chosen to be less than 1 to aid convergence.  We provide numerical and theoretical evidence for this choice in section SECTIONGOHERE.
+ 
+
+
+ %%%%%%%%%%%%%%%%%%%%%%
+\section{Analytic Toy Model}
+\label{sec:ToyModel}
+
+ To build intuition for the nonlinear case, here we treat an ``almost linear'' regression task.  The strategy will be first, to understand how dynamic string sampling applies in an analytically tractable model, and second, to leverage this intuition for the more complicated numerical systems to follow.  We will proceed by studying the level sets of the \rm{QUARTICLOSS} toy model defined as followed:
+ 
+ For weight matrices $w_1, w_2$, input column vectors $x_i$ of dimension $d_1$, and output scalars $y_i$, suppose we aim to minimize the loss function
+ 
+  \begin{equation}
+ L(w_1,w_2)=(w_1 w_2 x - y)^2 \label{eq:losseq}
+  \end{equation}
+ 
+ For simplicity, suppose $w_1$ is a row vector with dimension $d_2$.  This fixes the dimension of $w_2$ to $d_1$ by $d_2$.
+ 
+ Suppose we are given the globally optimal $w_1^*$ and $w_2^*$ which minimize $L$.  These weights are not unique, because we can reparameterize the global optima in the following way:
+ 
+  \begin{align}
+ w_1^* &\rightarrow \rm{any\ nonzero\ vector} = w_1 \\
+ w_2^* &\rightarrow \frac{w_1^T}{||w_1||} a^* + \alpha (w_1^T)_\perp a^*
+  \end{align}
+  
+  where $a^*$ is the row vector $a^*=w_1^* w_2^*$ which globally optimizes \eqref{eq:losseq}, and $\alpha$ is an arbitrary scalar.  This freedom represents an internal symmetry of the weights.
+  
+  Given two models $w_1^A w_2^A = a^*$ and $w_1^B w_2^B = a^*$, let $w_1^A \cdot w_1^B=||w_1^A||||w_1^B||\rm{cos}\theta$.  Either can be continuously connected to the other via the following two steps.  Without loss of generality, we will connect the $A$ components to the $B$ components.  First, the component of $w_2^A$ perpendicular to $w_1$ is scaled linearly from its original value $\alpha$ to $\alpha^*$:
+  
+ \begin{equation}
+ w_2^A = \frac{w_1^T}{||w_1||} a^* + (w_1^T)_\perp a^* \rightarrow \frac{w_1^T}{||w_1||} a^* + \alpha^* (w_1^T)_\perp =: w_2^{**}
+  \end{equation}
+  
+ Where $\alpha^*=\frac{1-||w_1^B||\rm{cos}\theta}{||w_1^B|| \rm{sin}\theta}$.  Defined in this way, $w_2^{**}$ now satisfies both $w_1^A w_2^{**} = a^*$ as well as $w_1^B w_2^{**} = a^*$.  Then, simple linear interpolation connects $w_1^A$ to $w_1^B$:
+ 
+  \begin{equation}
+ w_1^a \rightarrow w_1^a (1-t) + w_1^b t
+  \end{equation}
+  
+  Thus, linearly scaling first $\alpha$ to $\alpha^*$ and then scaling $t$ from $0$ to $1$ connects $w_1^A$ to $w_1^B$.  Crucially, the entire procedure preserves the global minimum of the loss function.  
+  
+  Now that we have shown a continuous path exists for this internal symmetry, it remains to be shown that DSS will faithfully produce a continuous path.  For DSS, the relevant interpolation equations are:
+  
+  \begin{align}
+  w_1(t) &= w_1^A (1-t) + w_1^B t
+  w_2(t) &= w_2^A (1-t) + w_2^B t
+  \end{align}
+  
+  Examining $w_1(t) w_2(t)$, the first and last terms in the product yield $(1-t)^2 a^* + t^2 a^*$.  The remaining cross terms can be rewritten as $\gamma t(t-1) a^*$ for a constant $\gamma$.  Because we are promised that $A$ and $B$ are global minima in the space of weights, the loss is either constant along the path, or reaches a reaches a global maxima somewhere, which we call $t^*$.  In the former case, we are done, because DSS will have provided a continuous path in the space of weights with nonincreasing loss.
+ 
+  In the latter case, 
  
  
  
@@ -166,6 +217,7 @@
 \label{sec:NumExp}
 
 For our numerical experiments, we aimed to extract qualitative features of both small, toy networks, as well as of larger workhorse networks suitable for use on real world tasks (e.g. MNIST).  At its core, the maximum interpolated error (i.e., \eqref{eq:minmaxerror}) is a measure of problem nonconvexity---or, more precisely, of the nonconvexity of the loss surface of a given architecture on a particular learning problem.
+
 
 \subsection{Polynomial Regression}
 \label{sec:PolyFuncs}
@@ -197,4 +249,4 @@ For our numerical experiments, we aimed to extract qualitative features of both 
 
 \end{document}
 %
-% ****** End of file apssamp.tex ******
+% {**}{**}{**} End of file apssamp.tex {**}{**}{**}
