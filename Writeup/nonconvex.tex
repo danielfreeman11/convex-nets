@@ -124,8 +124,8 @@
  
  where $\Theta^* (\theta_1, \theta_2)$ is \emph{any} continuous path in the space of weights connecting $\theta_1$ and $\theta_2$.  Thus, $\Gamma(\theta_1, \theta_2)$ represents the minimum possible maximum loss achieved by those paths in the space of weights connecting $\theta_1$ and $\theta_2$.  More intuitively, if $\Gamma (\theta_1, \theta_2) \leq \rm{max}\: (L(X,\theta_1), L(X,\theta_2))$, then the models are ``connected''---there exists a continuous path in the space of models with total loss never exceeding the maximum loss achieved by $\theta_1$ or $\theta_2$. 
  
- \subsection{The Algorithm}
- \label{sec:Alg}
+ \subsection{The Greedy Algorithm}
+ \label{sec:GreedyAlg}
  
  1. Train two models $\theta_i$ and $\theta_j$ to a threshold loss value, $L_0$.
  
@@ -161,6 +161,32 @@
  In summary: the algorithm recursively produces and trains new models lying on a continuous path in the space of model parameters, i.e. a string.  Training via gradient descent biases the path towards valleys on the loss surface, thus encouraging the loss along this path to be low.  In practice, the parameter $\alpha$ is chosen to be less than 1 to aid convergence.  We provide numerical and theoretical evidence for this choice in section SECTIONGOHERE.
  
 
+  \subsection{Constrained Dynamic String Sampling}
+  \label{sec:ConstrainedAlg}
+  
+  While the algorithm presented in Sec. \ref{sec:GreedyAlg} is fast for sufficiently smooth families of loss surfaces with few saddle points, here we present a slightly modified version which, while slower, provides more control over the convergence of the string.  Instead of training intermediate models via full SGD to a desired accuracy, intermediate models will be subject to a constraint that ensures they are ``close'' to the neighboring models on the string.  Specifically, intermediate models will be constrained to the unique hyperplane in weightspace equidistant from its two neighbors.  This is similar to a sort of ``$L_1$ regularization'' where the loss function for a given model on the string, $\theta_i$, has an additional term $\tilde{L}(\theta) = L(\theta)+\zeta(\|\theta_{i-1} - \theta_i\|+\|\theta_{i+1} + \theta_i\|)$.  The strength of the $\zeta$ regularization term controls the ``springy-ness'' of the weightstring. note: make this more precise, the hyperplane constraint is stronger than the $L_1$ constraint...$L_1$ only keeps the model in a ball close to the midpoint between the models.
+  
+  Because adapting DSS to use this constraint is straightforward, here we will describe an alternative ``breadth-first'' approach wherein models are trained in parallel until convergence.  This alternative approach has the advantage that it will indicate a disconnection between two models ``sooner'' insofar as it will be clear two models cannot be connected once the loss on either of the two initial models, $\theta_1$ or $\theta_2$, is less than $\Gamma(\theta_1, \theta_2)$.  The precise geometry of the loss surface will dictate which approach to use in practice.
+  
+  Given two random models $\sigma_i$ and $\sigma_j$ where $|\sigma_i - \sigma_j| < \kappa$, we aim to follow the evolution of the family of models connecting $\sigma_i$ to $\sigma_j$.  Intuitively, almost every continuous path in the space of random models connecting $\sigma_i$ to $\sigma_j$ has, on average, the same (high) loss.  For simplicity, we choose to initialize the string to the linear segment interpolating between these two models.  If this entire segment is evolved via gradient descent, the segment will either evolve into a string which is entirely contained in a basin of the loss surface, or some number of points will become fixed at a higher loss.  These fixed points are difficult to detect directly, but will be indirectly detected by the persistence of a large interpolated loss between two adjacent models on the string.
+  
+  The algorithm proceeds as follows:
+  
+  (0.) Initialize model string to have two models, $\sigma_i$ and $\sigma_j$.
+  
+  1. Begin training all models to the desired loss, keeping the instantaneous loss of all models being trained approximately constant..
+  
+  2. If the pairwise interpolated loss $\gamma(\sigma_n,\sigma_{n+1})$ exceeds a tolerance $\alpha_1$, insert a new model at the maximum of the interpolated loss between these two models.  For simplicity, this tolerance is chosen to be $(1 + \alpha_1^*)$ times the instantaneous loss of all other models on the string.  
+  
+  3. Repeat steps (1) and (2) until all models (and interpolated errors) are below a threshold loss $L_0$, or until a chosen failure condition (see \ref{sec:Fail}).
+  
+  \subsection{Failure Conditions}
+  \label{sec:Fail}
+  
+  While the algorithms presented will faithfully certify two models are connected if the algorithm converges, it is worth reemphasizing that they do not guarantee that two models are disconnected if the algorithm fails to converge.  In general, the problem of determining if two models are connected can be made arbitrarily difficult by choice of a particularly pathological geometry for the loss function, so we are constrained to heuristic arguments for determining when to stop running the algorithm.
+  
+  Thankfully, in practice, loss function geometries for problems of interest are not intractably difficult to explore.
+ 
 
  %%%%%%%%%%%%%%%%%%%%%%
 \section{Analytic Toy Model}
@@ -202,13 +228,13 @@
   Now that we have shown a continuous path exists for this internal symmetry, it remains to be shown that DSS will faithfully produce a continuous path.  For DSS, the relevant interpolation equations are:
   
   \begin{align}
-  w_1(t) &= w_1^A (1-t) + w_1^B t
+  w_1(t) &= w_1^A (1-t) + w_1^B t \\
   w_2(t) &= w_2^A (1-t) + w_2^B t
   \end{align}
   
   Examining $w_1(t) w_2(t)$, the first and last terms in the product yield $(1-t)^2 a^* + t^2 a^*$.  The remaining cross terms can be rewritten as $\gamma t(t-1) a^*$ for a constant $\gamma$.  Because we are promised that $A$ and $B$ are global minima in the space of weights, the loss is either constant along the path, or reaches a reaches a global maxima somewhere, which we call $t^*$.  In the former case, we are done, because DSS will have provided a continuous path in the space of weights with nonincreasing loss.
  
-  In the latter case, 
+  In the latter case, we note that $\nabla L \bigg|_{t^*}...$
  
  
  
