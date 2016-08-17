@@ -238,7 +238,7 @@
  
   In the latter case, consider the hyperplane splitting $A$ and $B$.  Because the loss function is continuous, and because we have demonstrated the existence of a continuous path in weight space connecting $A$ to $B$, this path must puncture the hyperplane somewhere.  We assume, but do not prove here, that constrained gradient descent on the hyperplane will find this new global minima.  We comment on this assumption more below.  Call this point $\pi_1$, and the associated weights $w^{\pi_1}_1$ and $w^{\pi_1}_2$.
   
-  Recursively splitting the weight string and performing gradient descent on the resulting constraining hyperplanes provides a sequence of points (reordered sequentially from $A$ to $B$) ${\pi_1, \pi_2, ..., \pi_n}$ where $n = \Sigma_{i=0}^{d} 2^i$ for depth $d$ recursive splits.  By the continuity of the loss function, the maximum interpolated error along the path $A, \pi_1, ..., \pi_n, B$ can be bounded above to $L_0 + \epsilon$ for any $\epsilon > 0$ so long as $d$ is made sufficiently large, where $L_0$ is the globally minimum loss achieved by $a^*$.
+  Recursively splitting the weight string and performing gradient descent on the resulting constraining hyperplanes provides a sequence of points (reordered sequentially from $A$ to $B$) ${\pi_1, \pi_2, ..., \pi_n}$ where $n = \Sigma_{i=0}^{d} 2^i$ for depth $d$ recursive splits.  By the smoothness of the loss function, the maximum interpolated error along the path $A, \pi_1, ..., \pi_n, B$ can be bounded above to $L_0 + \epsilon$ for any $\epsilon > 0$ so long as $d$ is made sufficiently large, where $L_0$ is the globally minimum loss achieved by $a^*$.
   
   This bound can be made more precise...
   
