@@ -11,7 +11,7 @@ import copy
 
 alpha,hidden_dim,hidden_dim2 = (.001,4,4)
 
-thresh = .04
+thresh = .01
 
 cost_thresh = 1.0
 
@@ -35,6 +35,18 @@ models = []
 #synapse2 = 2*np.random.random((hidden_dim2,1)) - 1
 
 #Function definitions
+
+
+def flatten(x):
+    result = []
+    for el in x:
+        if hasattr(el, "__iter__") and not isinstance(el, basestring):
+	    result.extend(flatten(el))
+	else:
+	    result.append(el)
+    return result
+
+
 
 def func(x,a,b,c):
     return x*x*a + x*b + c
@@ -85,8 +97,9 @@ def InterpBeadError(w1,b1, w2,b2, write = False, name = "00"):
         #x0 = tf.placeholder("float", [None, n_input])
         #y0 = tf.placeholder("float", [None, n_classes])
         weights, biases = model_interpolate(w1,b1,w2,b2, t)
-        interp_model = multilayer_perceptron(w=weights, b=biases)
-        
+        #interp_model = multilayer_perceptron(w=weights, b=biases)
+        interp_model = convnet(w=weights, b=biases)
+
         with interp_model.g.as_default():
             
             #interp_model.UpdateWeights(weights, biases)
@@ -102,8 +115,8 @@ def InterpBeadError(w1,b1, w2,b2, write = False, name = "00"):
                 sess.run(init)
                 correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
                 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
-                print "Accuracy:", 1 - accuracy.eval({x: xdat, y: ydat}),"\t",tt,weights[0][1][0],weights[0][1][1]
-                thiserror = 1 - accuracy.eval({x: xdat, y: ydat})
+                print "Accuracy:", 1 - accuracy.eval({x: xdat, y: ydat, interp_model.keep_prob: 1.0})#,"\t",tt,weights[0][1][0],weights[0][1][1]
+                thiserror = 1 - accuracy.eval({x: xdat, y: ydat, interp_model.keep_prob: 1.0})
 
 
         errors.append(thiserror)
@@ -117,6 +130,110 @@ def InterpBeadError(w1,b1, w2,b2, write = False, name = "00"):
 	
 
 #Class definitions
+
+class convnet():
+
+    def __init__(self, w=0, b=0, ind='00'):
+
+
+        self.index = ind
+
+	learning_rate = .001
+	training_epochs = 15
+	batch_size = 100
+	display_step = 1
+
+        # Network Parameters
+        n_hidden_1 = 256 # 1st layer number of features
+        n_hidden_2 = 256 # 2nd layer number of features
+        n_input = 784 # Guess quadratic function
+        n_classes = 10 # 
+        self.g = tf.Graph()
+        
+        
+        self.params = []
+        
+        with self.g.as_default():
+
+	    self.keep_prob = tf.placeholder(tf.float32)
+        
+            #Note that by default, weights and biases will be initialized to random normal dists
+            if w==0:
+                
+                self.weights = {
+                    'c1': tf.Variable(tf.truncated_normal([5,5,1,32],stddev=.1)),
+                    'c2': tf.Variable(tf.truncated_normal([5,5,32,64],stddev=.1)),
+                    'fc1': tf.Variable(tf.truncated_normal([7*7*64, 1024],stddev=.1)),
+		    'out': tf.Variable(tf.truncated_normal([1024, 10],stddev=.1))
+                }
+                self.weightslist = [self.weights['c1'],self.weights['c2'],self.weights['fc1'],self.weights['out']]
+                self.biases = {
+                    'b1': tf.Variable(tf.constant(.1, shape=[32])),
+                    'b2': tf.Variable(tf.constant(.1, shape=[64])),
+		    'b3': tf.Variable(tf.constant(.1, shape=[1024])),
+                    'out': tf.Variable(tf.constant(.1, shape=[10]))
+                }
+                self.biaseslist = [self.biases['b1'],self.biases['b2'],self.biases['b3'],self.biases['out']]
+                
+            else:
+                
+                self.weights = {
+                    'c1': tf.Variable(w[0]),
+                    'c2': tf.Variable(w[1]),
+		    'fc1': tf.Variable(w[2]),
+                    'out': tf.Variable(w[3])
+                }
+                self.weightslist = [self.weights['c1'],self.weights['c2'],self.weights['fc1'],self.weights['out']]
+                self.biases = {
+                    'b1': tf.Variable(b[0]),
+                    'b2': tf.Variable(b[1]),
+		    'b3': tf.Variable(b[2]),
+                    'out': tf.Variable(b[3])
+                }
+                self.biaseslist = [self.biases['b1'],self.biases['b2'],self.biases['b3'],self.biases['out']]
+            self.saver = tf.train.Saver()
+    
+    def predict(self, x):
+        
+        with self.g.as_default():
+
+            x_image = tf.reshape(x, [-1,28,28,1])
+            
+	    layer_1 = tf.nn.relu(tf.nn.conv2d(x_image, self.weights['c1'], strides=[1,1,1,1], padding='SAME') + self.biases['b1'])
+            pool_1 = tf.nn.max_pool(layer_1, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME')
+
+            #layer_1 = tf.add(tf.matmul(x, self.weights['h1']), self.biases['b1'])
+            #layer_1 = tf.nn.relu(layer_1)
+            # Hidden layer with RELU activation
+            layer_2 = tf.nn.relu(tf.nn.conv2d(pool_1, self.weights['c2'], strides=[1,1,1,1], padding='SAME') + self.biases['b2'])
+            pool_2 = tf.nn.max_pool(layer_2, ksize=[1,2,2,1], strides=[1,2,2,1], padding='SAME')
+
+	    #layer_2 = tf.add(tf.matmul(layer_1, self.weights['h2']), self.biases['b2'])
+            #layer_2 = tf.nn.relu(layer_2)
+            # Output layer with linear activation
+            
+	    pool_2_flat = tf.reshape(pool_2, [-1, 7*7*64])
+	    fc_layer = tf.nn.relu(tf.matmul(pool_2_flat, self.weights['fc1']) + self.biases['b3'])
+	    
+	    
+	    fc_layer_dropout = tf.nn.dropout(fc_layer, self.keep_prob)
+
+	    out_layer = tf.nn.softmax(tf.matmul(fc_layer_dropout, self.weights['out']) + self.biases['out'])
+
+
+            return out_layer
+        
+    def ReturnParamsAsList(self):
+        
+        with self.g.as_default():
+
+            with tf.Session() as sess:
+                # Restore variables from disk
+                self.saver.restore(sess, "/home/dfreeman/PythonFun/tmp/model"+str(self.index)+".ckpt")                
+                return sess.run(self.weightslist), sess.run(self.biaseslist)
+
+
+
 
 class multilayer_perceptron():
     
@@ -257,9 +374,9 @@ class WeightString:
                 #print "Tallying energy between bead " + str(i) + " and bead " + str(i+1)
                 subtotal = 0.
                 for j in xrange(len(b)):
-                    subtotal += np.linalg.norm(np.subtract(self.AllBeads[i][0][j],self.AllBeads[i+1][0][j]),ord=order)#/len(self.beads[0][j])
+                    subtotal += np.linalg.norm(np.subtract(flatten(self.AllBeads[i][0][j]),flatten(self.AllBeads[i+1][0][j])),ord=order)#/len(self.beads[0][j])
                 for j in xrange(len(b)):
-                    subtotal += np.linalg.norm(np.subtract(self.AllBeads[i][1][j],self.AllBeads[i+1][1][j]),ord=order)#/len(self.beads[0][j])
+                    subtotal += np.linalg.norm(np.subtract(flatten(self.AllBeads[i][1][j]),flatten(self.AllBeads[i+1][1][j])),ord=order)#/len(self.beads[0][j])
                 total+=subtotal
         
         return total#/len(self.beads)
@@ -273,18 +390,20 @@ class WeightString:
         #thresh = .05
 
         # Parameters
-        learning_rate = 0.01
+        learning_rate = 0.001
         training_epochs = 15
-        batch_size = 1000
+        batch_size = 100
         display_step = 1
         
         curWeights, curBiases = self.AllBeads[bead]
-        test_model = multilayer_perceptron(w=curWeights, b=curBiases)
+        #test_model = multilayer_perceptron(w=curWeights, b=curBiases)
+	test_model = convnet(w=curWeights, b=curBiases)
 
         with test_model.g.as_default():
 
             x = tf.placeholder("float", [None, n_input])
             y = tf.placeholder("float", [None, n_classes])
+	    #keep_prob = tf.placeholder(tf.float32)
             pred = test_model.predict(x)
             cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
             optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
@@ -308,7 +427,8 @@ class WeightString:
                                 batch_x, batch_y = mnist.train.next_batch(batch_size)
                                 # Run optimization op (backprop) and cost op (to get loss value)
                                 _, c = sess.run([optimizer, cost], feed_dict={x: batch_x,
-                                                                              y: batch_y})
+                                                                              y: batch_y,
+									      test_model.keep_prob: 0.5})
                                 # Compute average loss
                                 avg_cost += c / total_batch
                             # Display logs per epoch step
@@ -318,8 +438,8 @@ class WeightString:
                             correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
                             # Calculate accuracy
                             accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
-                            #print "Accuracy:", accuracy.eval({x: xtest, y: ytest})
-                            thiserror = 1 - accuracy.eval({x: xtest, y: ytest})
+                            print "Accuracy:", accuracy.eval({x: xtest, y: ytest, test_model.keep_prob: 1.0})
+                            thiserror = 1 - accuracy.eval({x: xtest, y: ytest, test_model.keep_prob: 1.0})
                             if thiserror < thresh:
                                 stopcond = False
                     #print "Optimization Finished!"
@@ -334,7 +454,7 @@ class WeightString:
                     #if (j%5000) == 0:
                     #    print "Error after "+str(j)+" iterations:" + str(accuracy.eval({x: xtest, y: ytest}))
 
-                    finalerror = 1 - accuracy.eval({x: xtest, y: ytest})
+                    finalerror = 1 - accuracy.eval({x: xtest, y: ytest, test_model.keep_prob: 1.0})
                     
                     if finalerror < thresh or stopcond==False:# or j > maxindex:
                         #print "Changing stopcond!"
@@ -350,9 +470,10 @@ class WeightString:
         
 		
 #Model generation
-copy_model = multilayer_perceptron(ind=0)
+#copy_model = multilayer_perceptron(ind=0)
+copy_model = convnet(ind=0)
 
-for ii in xrange(3):
+for ii in xrange(10):
 
     '''weights = {
         'h1': tf.Variable(tf.random_normal([n_input, n_hidden_1])),
@@ -366,8 +487,10 @@ for ii in xrange(3):
     }'''
 
     # Construct model with different initial weights
-    test_model = multilayer_perceptron(ind=ii)
-    
+    #test_model = multilayer_perceptron(ind=ii)
+    test_model = convnet(ind=ii)
+
+
     #Construct model with same initial weights
     #test_model = copy.copy(copy_model)
     #test_model.index = ii
@@ -421,7 +544,8 @@ for ii in xrange(3):
                             batch_x, batch_y = mnist.train.next_batch(batch_size)
                             # Run optimization op (backprop) and cost op (to get loss value)
                             _, c = sess.run([optimizer, cost], feed_dict={x: batch_x,
-                                                                          y: batch_y})
+                                                                          y: batch_y,
+									  test_model.keep_prob: 0.5})
                             # Compute average loss
                             avg_cost += c / total_batch
                         # Display logs per epoch step
@@ -433,7 +557,7 @@ for ii in xrange(3):
                         # Calculate accuracy
                         accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
                         #print "Accuracy:", accuracy.eval({x: xtest, y: ytest})
-                        thiserror = 1 - accuracy.eval({x: xtest, y: ytest})
+                        thiserror = 1 - accuracy.eval({x: xtest, y: ytest, test_model.keep_prob: 1.0})
                         if thiserror < thresh:
                             stopcond = False
                             
@@ -444,17 +568,17 @@ for ii in xrange(3):
                 correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
                 # Calculate accuracy
                 accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
-                print "Accuracy:", accuracy.eval({x: xtest, y: ytest})
+                print "Accuracy:", accuracy.eval({x: xtest, y: ytest, test_model.keep_prob: 1.0})
 
                 if (j%5000) == 0:
-                    print "Error after "+str(j)+" iterations:" + str(accuracy.eval({x: xtest, y: ytest}))
+                    print "Error after "+str(j)+" iterations:" + str(accuracy.eval({x: xtest, y: ytest, test_model.keep_prob: 1.0}))
 
-                if 1 - accuracy.eval({x: xtest, y: ytest}) < thresh or stopcond == False:
+                if 1 - accuracy.eval({x: xtest, y: ytest, test_model.keep_prob: 1.0}) < thresh or stopcond == False:
                     #print "Changing stopcond!"
                     stopcond = False
                     print "Final params:"
                     test_model.params = sess.run(test_model.weightslist), sess.run(test_model.biaseslist)
-                    save_path = test_model.saver.save(sess,"/home/dfreeman/PythonFun/tmp/model" + str(ii) + ".ckpt")
+                    #save_path = test_model.saver.save(sess,"/home/dfreeman/PythonFun/tmp/model" + str(ii) + ".ckpt")
                 j+=1
     #remove the comment to get random initialization
 
@@ -512,7 +636,7 @@ for i1 in xrange(len(models)):
                 for i,c in enumerate(test.ConvergedList):
                     if c == False:
                         #print "slow3?"
-                        error = test.SGDBead(i, .8*training_threshold, 20)
+                        error = test.SGDBead(i, .9*training_threshold, 20)
                         #print "slow4?"
                             #if counter%5000==0:
                             #    print counter
