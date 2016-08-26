@@ -192,6 +192,9 @@
 \section{Analytic Toy Model}
 \label{sec:ToyModel}
 
+\subsection{The Linear Case}
+\label{sec:LinToy}
+
  To build intuition for the nonlinear case, here we treat an ``almost linear'' regression task.  The strategy will be first, to understand how dynamic string sampling applies in an analytically tractable model, and second, to leverage this intuition for the more complicated numerical systems to follow.  We will proceed by studying the level sets of the \rm{QUARTICLOSS} toy model defined as followed:
  
  For weight matrices $w_1, w_2$, input column vectors $x_i$ of dimension $d_1$, and output scalars $y_i$, suppose we aim to minimize the loss function
@@ -227,6 +230,19 @@
   
   Thus, linearly scaling first $\alpha$ to $\alpha^*$ and then scaling $t$ from $0$ to $1$ connects $w_1^A$ to $w_1^B$.  Crucially, the entire procedure preserves the global minimum of the loss function.  
   
+  (Alternate proof from Yasaman Bahri): Alternatively, one can first connect $w_1^a$ to $w_1^b$ via the linear transformation $w_1^b =  w_1^a O$.  This can be done continuously via the lie algebra element $g$ defined by $O := \rm{exp}[g]$.
+
+ \begin{align}
+ w_1^a w_2^a &\rightarrow w_1^a e^{t_1 \bold{g}} e^{-t_1 \bold{g}} w_2^a \\ \notag
+ &\rightarrow (w_1^a e^{t_1 \bold{g}}) ( e^{-t_1 \bold{g}} w_2^a)
+  \end{align}
+  
+  This continuously connects $w_1^a$ to $w_1^b$.  The loss remains fixed because the term $e^{t_1 \bold{g}} e^{-t_1 \bold{g}}$ always acts as the identity.  Then, after scaling $t_1$ from $0$ to $1$, one can linearly interpolate between $\rm{exp} (-g) w_2^a$ and $w_2^b$, again leaving the loss invariant:
+  
+  \begin{equation}
+ e^{-\bold{g}} w_2^a \rightarrow (1-t_2) e^{-\bold{g}} w_2^a + t_2 w_2^b
+  \end{equation}
+ 
   Now that we have shown a continuous path exists for this internal symmetry, it remains to be shown that DSS will faithfully produce a continuous path.  For DSS, the relevant interpolation equations are:
   
   \begin{align}
@@ -242,16 +258,34 @@
   
   This bound can be made more precise...
   
-  
-  
-  
+  ...Need to complete this argument still...
   we note that $\nabla L \bigg|_{t^*}...$
+  
+  
+  
+\subsection{The Nonlinear Case}
+\label{sec:NonlinToy}
+
+The most immediate, theoretically tractable nonlinear analogue of the model studied in \ref{sec:LinToy} is the same model with a Relu nonlinearity as studied by (cite people):
+
+  \begin{equation}
+ L(w_1,w_2)=(w_1 \rm{max} (w_2 x, 0) - y)^2 \label{eq:losseq}
+  \end{equation}
+  
+  ... ...
+  
  
  %%%%%%%%%%%%%%%%%%%%%%
 \section{Symmetries}
 \label{sec:Symm}
 
-When trying to understand the geometry of a loss function, it's imporant to distinguish between symmetries intrinsic to an architecture versus symmmetries within the loss function itself.  In practice, essentially all neural networks currently used possess the discrete symmetry defined by permutation of neurons.  RELUs without bias also have a well known continuous scaling symmetry[cite].  [cite https://arxiv.org/pdf/1511.01029.pdf].  
+When trying to understand the geometry of a loss function, it's imporant to distinguish between symmetries intrinsic to an architecture versus symmmetries within the loss function itself.  In practice, essentially all neural networks currently used possess the discrete symmetry defined by permutation of neurons.  RELUs without bias also have a well known continuous scaling symmetry[cite].  [cite https://arxiv.org/pdf/1511.01029.pdf].
+
+Intuitively, one might hope to promote the immense discrete symmetry groups possessed by a given architecture to a larger continuous subgroup of $SO(N)$.  This clearly does not hold in absolute generality, but one could imagine looking at the neighborhood of a permutation on the full group, $SO(N)$, and piecewise gluing together these neighborhoods (see Yasaman's argument again).  In general, this will depend on both the density of available permutations, as well as the maximum curvature of the loss with respect to variations in the weights about these fixed permutations (i.e., $\frac{\partial^2 L}{\partial w_i \partial w_j}$).  If this maximum, call it $\kappa$ does not scale too poorly with increasing model size (i.e., more neurons per layer and more layers), then the expectation is that \emph{any} model at a fixed loss $L_0$ can be continuously connected to any other model at fixed loss $L_0$ while keeping the loss fixed (or at least nonincreasing).  
+
+This expectation is intuitively consistent with the notion that a model with many more parameters than samples in training/test sets will have more ``wiggle room'', by sheer size of the dimensionality mismatch---a model in the ``continuum limit'' will have so many more dimensions that varying weights at a fixed loss should be easy.  This ``wiggle room'' appears because most directions simply have no effect on the value of the loss at all.
+
+Of course, a loss function can be adversarially generated which explicitly possesses disconnected components, but this sort of disconnection is pathological.  Thus, we aim to explore the following question: Are there any problems of practical interest where two ``equivalent'' model solutions cannot be continuously connected to one another?
 
 
  
