@@ -296,6 +296,12 @@ Of course, a loss function can be adversarially generated which explicitly posse
 
 For our numerical experiments, we aimed to extract qualitative features of both small, toy networks, as well as of larger workhorse networks suitable for use on real world tasks (e.g. MNIST).  At its core, the maximum interpolated error (i.e., \eqref{eq:minmaxerror}) is a measure of problem nonconvexity---or, more precisely, of the nonconvexity of the loss surface of a given architecture on a particular learning problem.
 
+Most remarkably, we always found that models trained to the same loss on the training set were part of the same connected component.  In other words, DSS was always able to efficiently generate a continuous path in the space of models with loss lower than or equal to the the loss of the models on the endpoints.  This was true even for models ``far apart'' in weight space.  This may be a quirk of the problems studied, but might point towards a more general consequence of the tremendous internal symmetries intrinsic to common neural network architectures.  We comment more on this in the discussion.
+
+Because connecting models was in some sense ``easy'', we collected statistics for the resulting strings in model space.  Particularly natural quantities of interest are the length of the model strings---normalized by the end-to-end displacement of the string---as well as the average angle subtended by discrete segments of the model string.  Intuitively, these measures provide information about the curvature of the level sets, and hence provide indirect information about the nonconvexity of the loss surface.
+
+For the convnet implementation of MNIST, we qualitatively examined how the receptive fields of the first feature layer transformed along the continuous paths provided by DSS.
+
 
 \subsection{Polynomial Regression}
 \label{sec:PolyFuncs}
