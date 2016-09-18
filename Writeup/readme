@@ -1,1 +1,7 @@
 Contains tex files for manuscript.
+
+Interesting papers:
+
+https://arxiv.org/abs/1608.08225 Tegmark paper on why deep learning works so well
+http://arxiv.org/pdf/1605.07110v2.pdf Kawaguchi paper on Deep Learning without poor local minima 
+http://arxiv.org/abs/1607.04917 Blaine Rister paper on piecewise convexity of NNs
