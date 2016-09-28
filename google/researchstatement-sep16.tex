@@ -1,4 +1,4 @@
-\documentclass[11pt]{article}
+\documentclass[10pt]{article}
 \usepackage{amsmath,graphicx}
 %\usepackage[cmex10]{amsmath}
 \usepackage{amssymb}
@@ -72,7 +72,7 @@
 %%\date{June 30th, 2015}
 %\author{Joan Bruna}
 
-\oddsidemargin  0.05in \evensidemargin 0.05in
+%\oddsidemargin  0.02in \evensidemargin 0.02in
 
 \makeatletter
 \newlength{\bibhang}
@@ -80,7 +80,7 @@
 \newlength{\bibsep}
  {\@listi \global\bibsep\itemsep \global\advance\bibsep by\parsep}
 \newenvironment{bibsection}%
-        {\vspace{0.2in}\begin{list}{}{%
+        {\vspace{0.1in}\begin{list}{}{%
        \setlength{\leftmargin}{\bibhang}%
        \setlength{\itemindent}{-\leftmargin}%
        \setlength{\itemsep}{\bibsep}%
@@ -95,26 +95,25 @@
 
 \newcounter{list}
 
-\renewcommand{\baselinestretch}{0.95}
+\renewcommand{\baselinestretch}{0.98}
 \begin{document}
 %\maketitle
 %\tableofcontents
 
 
-\section{Overview}
+\section*{Overview}
 \begin{itemize}
 \item \textbf{Title:} Understanding and exploiting the loss surface of Deep Neural Networks  
-\item \textbf{Principal Investigator: } Joan Bruna Estrach. Courant Institute, NYU, Computer Science Department, Center for Data Science and Mathematics Department.  
-Contact: bruna@cims.nyu.edu; cell: 917-767-0617. 
+\item \textbf{Principal Investigator: } Joan Bruna Estrach. Courant Institute, NYU, Computer Science Department, Mathematics Department and Center for Data Science. Contact: bruna@cims.nyu.edu; cell: 917-767-0617. 
 \item \textbf{Google Sponsors:} Jascha Sohl-Dickstein, Koray Kavukcuoglu.
 \item \textbf{Google Contacts:} Oriol Vinyals, Vincent Vanhoucke, Jonathan Tomson.
 \end{itemize}
 
-\section{Proposal Body}
+\section*{Proposal Body}
 
 %\subsection{Abstract}
 \textbf{Abstract:}
-Training of Deep Neural networks is a prime example of a high-dimensional non-convex 
+Training Deep Neural networks is a prime example of a high-dimensional non-convex 
 optimization problem. Despite its massive practical interest, there exist little theoretical 
 guarantees that can inform the choice of the training hyperparameters as well as model 
 arquitectural choices. In this proposal we will study conditions 
@@ -123,7 +122,8 @@ of poor local minima, by first focusing on statistical properties of natural ima
 and specific convolutional architectures.
  
 The conditioning of gradient descent is the next challenge we shall address. 
-We study this question by estimating the geometry of level sets. For that purpose, 
+We study this question by estimating the geometry of the level sets of any given
+loss. For that purpose, 
 we introduce an algorithm to estimate the regularity of such sets on large-scale networks. 
 Our initial results suggest that these sets become exponentially more curvy 
 as the energy level decays, in accordance to what is observed in practice. 
@@ -148,20 +148,20 @@ in the optimization and machine learning communities as a paradigmatic example o
 a hard, high-dimensional, non-convex problem. 
 Recent work has explored models from statistical physics \cite{dauphin2014identifying}, such as spin glasses \cite{choromanska2015loss}, 
 in order to understand the macroscopic properties of the system, but at the expense of strongly simplifying the nonlinear nature of the model.
-
 In this proposal, we do not make any such assumption and study conditions 
 on the data distribution and model architecture that prevent the existence 
 of bad local minima. Together with 
 recent results that rigorously establish that gradient descent does not 
-get stuck on saddle points, our first objective yields guarantees that gradient descent converges
+get stuck on saddle points \cite{lee2016gradient}, our first objective will yield guarantees that gradient descent converges
 to a global optimum in deep rectified networks. 
+
 The loss surface $F(\theta)$ of a given model can be expressed in terms of its level sets $\Omega_\lambda$, which contain all parameters yielding a loss smaller or equal than the energy level $\lambda$: $\Omega_\lambda = \{ \theta ~;~F(\theta) \leq \lambda\}$. 
-A first question we address is about the topology of these level sets, i.e. under which conditions they are connected. This implies that one can always find a descent direction at each energy level, and therefore that no local minima exist. One can verify that linear neural networks (cascaded linear operators without point-wise nonlinearities), despite defining a non-convex loss $F(\theta)$, have connected level sets and therefore can be optimized globally using gradient descent strategies. It is also easy to verify that the non-linear case is not true in general \cite{shamir}, and our first objective is thus to characterize the interplay between data distribution, overparametrization and model architecture that is needed to obtain connected level sets. 
+A first question we address concerns the topology of these level sets, i.e. under which conditions they are connected. Connected level sets imply that one can always find a descent direction at each energy level, and therefore that no poor local minima can exist. One can verify that linear neural networks (cascaded linear operators without point-wise nonlinearities), despite defining a non-convex loss $F(\theta)$, have connected level sets and therefore can be optimized globally using gradient descent strategies. It is also easy to verify that the non-linear case is not true in general \cite{shamir}, and our first objective is thus to characterize the interplay between data distribution, overparametrization and model architecture that is needed to obtain connected level sets. 
 
 %Geometry: exploring loss surface
-Beyond the question of whether the loss contains poor local minima, the immediate follow-up question that determines the convergence of algorithms in practice is the local conditioning of the loss surface. It is thus related not to the topology but to the shape or geometry of the level sets. As the energy level decays, one expects the level sets to reveal more complex irregular structures, which correspond to regions with small curvature.
+Beyond the question of whether the loss contains poor local minima, the immediate follow-up question that determines the convergence of algorithms in practice is the local conditioning of the loss surface. It is thus related not to the topology but to the shape or geometry of the level sets. As the energy level decays, one expects the level sets to reveal more complex irregular structures, which correspond to regions where $F(\theta)$ has small curvature.
 
-In order to construct meaningful theoretical models, we have developed an algorithm that estimates these topological and geometrical properties on large deep architectures and datasets. Inspired by \cite{goodfellow2014qualitatively}, given two parameter values $\theta_1$ and $\theta_2$ lying in the border of the same level set $\Omega_\lambda$, our algorithm constructs a geodesic $\gamma(t)$ relying $\theta_1$ to $\theta_2$ using a dynamic programming procedure. An example of the resulting characteristics is illustrated in Figure \ref{figurelength}. 
+In order to construct meaningful theoretical models, we have developed an algorithm that efficiently estimates these topological and geometrical properties on large deep architectures and datasets. Inspired by \cite{goodfellow2014qualitatively}, given two parameter values $\theta_1$ and $\theta_2$ lying in the border of the same level set $\Omega_\lambda$, our algorithm constructs a geodesic $\gamma(t)$ in $\Omega_\lambda$ relying $\theta_1$ to $\theta_2$ using a dynamic programming procedure. An example of the resulting characteristics is illustrated in Figure 1. 
 
 %Exploitation
 \begin{figure}
@@ -169,23 +169,25 @@ In order to construct meaningful theoretical models, we have developed an algori
 \centering
 \includegraphics[width=.4\textwidth]{../Writeup/Plots/normlengthcubics}
 \includegraphics[width=.4\textwidth]{../Writeup/Plots/normlengthMNIST}
-\caption{Normalized geodesic length as a function of the energy level for two different models.}
+\caption{Normalized geodesic length as a function of the energy level for two different models. Left: a ``low-dimensional" neural network 
+attempting to fit a cubic polynomial. Right: a convolutional neural network on MNIST. Whereas the cubic fitting displays a heavily non-convex structure 
+at mid-energy values, the MNIST example qualitatively behaves as a convex loss, in which geodesics approach straight lines.}
 \end{figure}
 
 %Geometry: exploiting structure to optimize gradients.
 Besides improving our understanding of stochastic optimization in the class of neural networks, our second main objective is to leverage that understanding 
 by developing optimization strategies adapted to the class of loss surfaces at hand, i.e. learning how to learn \cite{andrychowicz2016learning}. 
 In particular, we shall construct targets for optimization based on the geodesic paths described above: given two parameter values 
-$\theta_a$, $\theta_b$ with $F(\theta_b) \leq F(\theta_a)$ (for example obtained during the course of a vanilla optimization method at iterations $t$ and $t+T$ respectively), a natural target to update $\theta_a$ is to follow the geodesic $\gamma(t)$ relying $\theta_a$ to $\theta_b$. 
+$\theta_a$, $\theta_b$ with $F(\theta_b) \leq F(\theta_a)=\lambda$ (for example obtained during the course of a vanilla optimization method at iterations $t$ and $t+T$ respectively), a natural target to update $\theta_a$ is to follow the geodesic $\gamma(t)$ in $\Omega_\lambda$ relying $\theta_a$ to $\theta_b$. 
 The extent by which this geodesic is smooth will determine how easy it is to predict from past and present information available at $\theta_a$. We will explore predictive models based on recurrent neural networks, inspired from \cite{andrychowicz2016learning}.
 
-\section{Data Policy}
+\section*{Data Policy}
 
 This proposal requires mostly unlabeled data in the form of images, speech and audio signals,
 and text corpus. The initial plan is to use publicly available datasets.
 The research outcomes will be both conference and journal papers, and also publicly available code. 
 
-\section{Budget}
+\section*{Budget}
 
 \begin{itemize}
 \item Student salary: \$50000 per year.
