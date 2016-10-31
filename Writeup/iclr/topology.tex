@@ -197,7 +197,7 @@ Then
 The term $\| \Sigma_X \| $ is overly pessimistic: we can replace it by the energy of $X$ projected into the subspace spanned by $w_1$ and $w_2$ (which is bounded by $2 \| \Sigma_X \|$). 
 When $\alpha$ is small, a Taylor expansion of the trigonometric terms reveals that 
 \begin{eqnarray*}
-\frac{2}{3 \| \Sigma_X \|} \langle w_1, w_2 \rangle &=& \frac{2}{3 \| \Sigma_X \|} \cos \alpha = \frac{2}{3\| \Sigma_X \|}(1 - \frac{\alpha^2}{2} - O(\alpha^4)) \\ 
+\frac{2}{3 \| \Sigma_X \|} \langle w_1, w_2 \rangle &=& \frac{2}{3 \| \Sigma_X \|} \cos \alpha = \frac{2}{3\| \Sigma_X \|}(1 - \frac{\alpha^2}{2} + O(\alpha^4)) \\ 
 &\leq& ( 1 - \alpha^2/4)\| w_m \|_Z^2 - \| \Sigma_X \|( \alpha^2/4 + \alpha^2) + O(\alpha^4) \\
 &\leq & \langle w_1, w_2 \rangle_Z + O(\alpha^4) ~,
 \end{eqnarray*}
@@ -211,7 +211,7 @@ hidden layer of size $m$ with current parameters $W \in \R^{m \times n}$, we def
 ``robust compressibility" factor as 
 \begin{equation}
 \label{compress}
-\delta_W(n, \alpha; m) = \min_{ \|\gamma \|_0 \leq n, |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|^2 \}~,~(n \leq m)~.
+\delta_W(n, \alpha; m) = \min_{ \|\gamma \|_0 \leq n, \sum_i |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|^2 \}~,~(n \leq m)~.
 \end{equation} 
 This quantity thus measures how easily one can compress the current hidden layer representation, 
 by keeping only a subset of its units, but allowing these units to rotate by a small amount. It is a form 
@@ -225,9 +225,10 @@ size $M$ of the hidden layer. Given two parameter values $\theta^A = (W_1^A, W_2
 and $\theta^B= (W_1^B, W_2^B)$ with $\Forr(\theta^{\{A,B\} } ) \leq \lambda$, 
 we show that there exists a continuous path 
 $\gamma: [0,1] \to \mathcal{W}$ connecting $\theta^A$ and $\theta^B$ 
-such that its oracle risk is uniformly bounded by $\lambda + \epsilon$, where $\epsilon$ 
+such that its oracle risk is uniformly bounded by $\max(\lambda, \epsilon)$, where $\epsilon$ 
 decreases with model overparametrization. 
 \begin{theorem}
+\label{maintheo}
 There exists a continuous path $\gamma: [0,1] \to \mathcal{W}$ such that
 $\gamma(0) = \theta^A$, $\gamma(1) = \theta^B$ and
 \begin{equation}
@@ -239,14 +240,15 @@ $\gamma(0) = \theta^A$, $\gamma(1) = \theta^B$ and
 \end{theorem}
 
 \begin{corollary}
+\label{maincoro}
 If $M$ increases, the energy gap $\epsilon$ goes to zero.
 Here we use the fact that $\delta(\lambda m; \epsilon(m); m) \to 0$ as $m \to \infty$. (find the rate).
 \end{corollary}
 
-Remarks:
-
-Ridge regression term.
-Extension to empirical risk. It is straightforward just change the metric. 
-Extension to several layers.
-
+\textbf{Remarks:}
+\begin{itemize}
+\item Ridge regression term.
+\item Extension to empirical risk. It is straightforward just change the metric. 
+\item Extension to several layers.
+\end{itemize}
 

@@ -1,6 +1,61 @@
 \section{Proofs}
 
+\subsection{Proof of Proposition \ref{localdistprop}}
+Cut the integral into the three cones
+and use trivial bounds. 
 
-Proofs of theorem ??.
+
+\subsection{Proof of Theorem \ref{maintheo}}
+
+A path from $\theta^A$ to $\theta^B$ will be constructed 
+as follows:
+\begin{enumerate}
+\item from $\theta^A$ to $\theta_{lA}$, the 
+best linear predictor using the same first layer. 
+\item from $\theta_{lA}$ to $\theta_{sA}$, the best $M-n$ approximation using perturbed 
+atoms, 
+\item from $\theta_{sA}$ to $\theta^*$ the oracle $n$ term approximation,  
+\item from $\theta^*$ to $\theta_{sB}$,
+\item from $\theta_{sB}$ to $\theta_{lB}$,
+\item from $\theta_{lB}$ to $\theta^{B}$.
+\end{enumerate}
+The subpaths (1) and (6) only involve changing the parameters of the second layer, 
+which define a convex loss. Therefore a linear path is sufficient.
+Subpaths (3) and (4) can also be constructed using only parameters of the second layer, 
+by observing that one can fit into a single $n \times M$ parameter matrix both the 
+$M-n$ term approximation and the best $n$-term approximation. A linear path is therefore 
+also sufficient. 
+
+We finally need to show how to construct the subpaths (2) and (5).
+Let $\tilde{W}_A$ be the resulting perturbed first-layer parameter matrix 
+with $M-n$ sparse coefficients $\gamma_A$.
+Let us consider an auxiliary regression of the form 
+$$\overline{W} = [ W^A ; \tilde{W}_A]$$
+and regression parameters 
+$$\overline{\beta}_1 = [ \beta_1; 0]~,~\overline{\beta}_2 = [0; \gamma_A]~.$$
+Clearly 
+$$\E\{ | Y - \overline{\beta}_1 \overline{W} |^2 \} + \kappa \| \overline{\beta}_1 \|^2 = \E\{ | Y - \beta_1 W^A |^2 \} + \kappa \| {\beta}_1 \|^2 $$ 
+and similarly for $\overline{\beta}_2$. The augmented linear path $\eta(t) =(1- t) \overline{\beta}_1 + t \overline{\beta}_2$ thus satisfies 
+$$\forall~t~,\overline{L}(t) = \E\{ | Y - \eta(t) \overline{W} |^2 \} + \kappa \| \eta(t) \|^2 \leq \max(\overline{L}(0), \overline{L}(1))~. $$
+Let us now approximate this augmented linear path with a path in terms of first and second layer weights. 
+We consider
+$$\eta_1(t) = (1-t) W^A + t \tilde{W}_A~,\text{ and}~\eta_2(t) = (1- t) {\beta}_1 + t \gamma_A~.$$
+We verify that 
+\begin{eqnarray*}
+\Forr(\{ \eta_1(t), \eta_2(t) \}) &=& \E \{ | Y - \eta_2(t)^T Z(\eta_1(t) ) |^2 \} + \kappa \| \eta_2(t) \|^2 \\
+&\leq & \E \{ | Y - \eta_2(t)^T Z(\eta_1(t) ) |^2 \} + \kappa(  ( 1-t) \| {\beta}_1\|^2 + t \| \gamma_A \|^2 ) \\
+& = & \overline{L}(t) + \E \{ | Y - \eta_2(t)^T Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1^T Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \\ 
+\end{eqnarray*}
+and 
+$$\left | \E \{ | Y - \eta_2(t)^T Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1^T Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \right| \leq \E |Y| \| \eta \|^2 \alpha \leq \E |Y| \kappa^{-1} \alpha~,$$
+using Proposition \ref{localdistprop} and  $\| \beta \| \leq \kappa^{-1}$  $\square$.
+
+\subsection{Proof of Corollary \ref{maincoro}}
+
+
+Use pigeonhole principle to control how many directions are within an angle smaller than $\epsilon$. 
+
+
+
 
 
