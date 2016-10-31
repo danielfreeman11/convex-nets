@@ -17,6 +17,8 @@ For convenience, in our analysis we will also use the oracle risk minimization:
 \Forr(\theta) = \E_{(X,Y) \sim P} \| \Phi(X;\theta) - Y \|^2~,
 \end{equation}
 
+\subsection{Poor local minima characterization from topological conectedness}
+
 We define the level set of $F(\theta)$ as 
 \begin{equation}
 \Omega_F(\lambda) = \{ \theta \in \R^S~;~F(\theta) \leq \lambda \}~. 
@@ -41,7 +43,7 @@ In particular, as $t \to 0$, we have
 F(\gamma(t)) &=& F(\theta_1) + t \langle \nabla F(\theta_1) , \dot{\gamma}(0) \rangle + \frac{t^2}{2} \left(\dot{\gamma}(0)^T H F(\theta_1) \dot{\gamma}(0) + \langle \nabla F(\theta_1), \ddot{\gamma}(0) \rangle \right) + o(t^2) \\
 &=& F(\theta_1) +   \frac{t^2}{2}  \dot{\gamma}(0)^T H F(\theta_1) \dot{\gamma}(0)  + o(t^2) ~,
 \end{eqnarray*}
-which shows that $F(\gamma(t)) \leq F(\theta_1)$ for all $t$ is incompatible with $H(\theta_1) \succeq 0$. $\square$
+which shows that $F(\gamma(t)) \leq F(\theta_1)$ for all $t$ is incompatible with $H(\theta_1) \succeq 0$ and therefore $\Omega_F(\lambda)$ cannot be connected $\square$.
 
 
 \subsection{The Linear Case}
@@ -123,6 +125,8 @@ W_i & b_i \\
 where $b_i$ contains the biases for each layer.	
 For simplicity, we continue to use $W_i$ and $x$ in the following.
 
+\subsubsection{Nonlinear models are generally disconnected}
+
 One may wonder whether the same phenomena of global connectedness also holds 
 in the half-rectified case. A simple motivating counterexample shows that this is not the case in 
 general. Consider a simple setup with $X \in \R^2$ drawn from a mixture of two Gaussians $\mathcal{N}_{-1}$ 
@@ -136,7 +140,7 @@ One can verify that they can both achieve arbitrarily small risk by letting the 
 However, any path that connects $\theta^A$ to $\theta^B$ 
 must necessarily pass through a point in which $W_1$ has rank $1$, which leads to an estimator with risk at least $1/2$.  
 
-In fact, it is easy to see that this counter-example can be extended to any generic half-recitifed architecture, if one is 
+In fact, it is easy to see that this counter-example can be extended to any generic half-rectified architecture, if one is 
 allowed to adversarially design a data distribution. For any given $\Phi(X; \theta)$ with arbitrary architecture and current parameters 
 $\theta = (W_i)$, let $\mathcal{P}_\theta=\{ \mathcal{A}_1, \dots, \mathcal{A}_S\}$ be the underlying tesselation of the input space given by our current choice of parameters; that is, $\Phi(X; \theta)$ is piece-wise linear and $\mathcal{P}_\theta$ contains those pieces. Now let 
 $X$ be any arbitrary distribution with density $p(x) > 0$ for all $x \in \R^n$, for example a Gaussian, and let %$Y ~|~ \{X \in \mathcal{A}_s\} = s$. 
@@ -154,65 +158,95 @@ allowed to increase is upper bounded by a quantity that trades-off model overpar
 and smoothness in the data distribution.
 
 For that purpose, we start with a characterization of the oracle loss, and for simplicity let us assume 
-$Y \in \R$. 
-Let us first describe the case with a single hidden layer of size $m$, and let
+$Y \in \R$ and let us first consider the case with a single hidden layer. 
+
+\subsubsection{Preliminaries}
+ Before proving our main result, we need to introduce  preliminary notation and results. 
+We first describe the case with a single hidden layer of size $m$. 
+
+We define
 \begin{equation}
 \label{bla2}
-e(m) = \min_{W_1 \in \R^{m \times n}, W_2 \in \R^m} \E\{ | \Phi(X; \theta) - Y|^2 \}~.
+e(m) = \min_{W_1 \in \R^{m \times n}, W_2 \in \R^m} \E\{ | \Phi(X; \theta) - Y|^2 \} + \kappa \| W_2 \|^2~.
 \end{equation}
+to be the oracle risk using $m$ hidden units with Ridge regression. 
 It is a well known result by Hornik and Cybenko that a single hidden layer 
 is a universal approximator under very mild assumptions, i.e. $\lim_{m \to \infty} e(m) = 0$.
-This result merely states that our statistical setup is consistent. A more interesting 
-question is the rate at which $e(m)$ decays, which clearly depends 
-on the smoothness of the joint density $(X, Y) \sim P$. 
+This result merely states that our statistical setup is consistent, and it should not be 
+surprising to the reader familiar with classic approximation theory.
+ A more interesting question is the rate at which $e(m)$ decays, which depends 
+on the smoothness of the joint density $(X, Y) \sim P$ relative to the nonlinear activation 
+family we have chosen.
 
-Our main result considers now a non-asymptotic scenario given by some 
+For convenience, we redefine $W = W_1$ and $\beta = W_2$ and
+ $Z(W) = \max(0, W X)$. We also write $z(w) = \max(0, \langle w, X \rangle)$ where $(X, Y) \sim P$ and $w \in \R^N$ is any deterministic vector.
+Let $\Sigma_X = \E_{P} XX^T \in \R^{N \times N}$ be the covariance operator of the random input $X$. We assume $\| \Sigma_X \| < \infty$. 
+
+ A fundamental property that will be essential to our analysis is that, despite 
+the fact that $Z$ is nonlinear, the ``pseudo-metric" $\langle w_1, w_2 \rangle_Z := \E_P \{ z(w_1) z(w_2) \} $ 
+is locally equivalent to the linear metric $\langle w_1, w_2 \rangle_X = \E_P \{ w_1^T X X^T w_2 \} = \langle w_1, \Sigma_X w_2 \rangle$, and that the linearization error decreases with the angle between $w_1$ and $w_2$. Without loss of generality, we assume here that $\|w_1 \| = \| w_2 \| = 1$, and we write $\| w \|_Z^2 = \E \{ | z(w) |^2 \} $.
+\begin{proposition}
+\label{localdistprop}
+Let $\alpha = \cos^{-1}( \langle w_1, w_2 \rangle )$ be the angle between unitary vectors $w_1$ and $w_2$ and let $w_m =  \frac{w_1 + w_2}{\| w_1 + w_2 \|}$ be their unitary bisector. 
+Then
+\begin{equation}
+\label{localdisteq}
+ \frac{1 + \cos \alpha}{2}  \| w_m  \|_Z^2 - 2 \| \Sigma_X \| \left( \frac{1-\cos \alpha}{2} + \sin^2 \alpha \right) \leq \langle w_1, w_2 \rangle_Z \leq \frac{1+\cos \alpha}{2}  \| w_m  \|_Z^2 ~.
+\end{equation}
+\end{proposition} 
+The term $\| \Sigma_X \| $ is overly pessimistic: we can replace it by the energy of $X$ projected into the subspace spanned by $w_1$ and $w_2$ (which is bounded by $2 \| \Sigma_X \|$). 
+When $\alpha$ is small, a Taylor expansion of the trigonometric terms reveals that 
+\begin{eqnarray*}
+\frac{2}{3 \| \Sigma_X \|} \langle w_1, w_2 \rangle &=& \frac{2}{3 \| \Sigma_X \|} \cos \alpha = \frac{2}{3\| \Sigma_X \|}(1 - \frac{\alpha^2}{2} - O(\alpha^4)) \\ 
+&\leq& ( 1 - \alpha^2/4)\| w_m \|_Z^2 - \| \Sigma_X \|( \alpha^2/4 + \alpha^2) + O(\alpha^4) \\
+&\leq & \langle w_1, w_2 \rangle_Z + O(\alpha^4) ~,
+\end{eqnarray*}
+and similarly 
+$$\langle w_1, w_2 \rangle_Z \leq \langle w_1, w_2 \rangle \| w_m \|_Z^2~.$$
+The local behavior of parameters $w_1, w_2$ on our regression problem is thus equivalent to that of having a linear layer, provided $w_1$ and $w_2$ are sufficiently close to each other.
+This result can be seen as a spoiler that increasing the hidden layer dimensionality $M$ will increase the chances to encounter pairs of vectors $w_1, w_2$ with small angle; and therefore some hope of approximating the previous linear behavior thanks to the small linearization error. 
+
+In order to control the connectedness, we will also require another quantity. Given a 
+hidden layer of size $m$ with current parameters $W \in \R^{m \times n}$, we define a
+``robust compressibility" factor as 
+\begin{equation}
+\label{compress}
+\delta_W(n, \alpha; m) = \min_{ \|\gamma \|_0 \leq n, |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|^2 \}~,~(n \leq m)~.
+\end{equation} 
+This quantity thus measures how easily one can compress the current hidden layer representation, 
+by keeping only a subset of its units, but allowing these units to rotate by a small amount. It is a form 
+of $n$-width similar to Kolmogorov width \cite{donoho}. 
+
+
+\subsubsection{Main result}
+
+Our main result considers now a non-asymptotic scenario given by some fixed
 size $M$ of the hidden layer. Given two parameter values $\theta^A = (W_1^A, W_2^A) \in \mathcal{W}$ 
 and $\theta^B= (W_1^B, W_2^B)$ with $\Forr(\theta^{\{A,B\} } ) \leq \lambda$, 
 we show that there exists a continuous path 
 $\gamma: [0,1] \to \mathcal{W}$ connecting $\theta^A$ and $\theta^B$ 
-such that its risk is uniformly bounded by $\lambda + \epsilon$, where $\epsilon$ 
-decreases with model overparametrization and with the decay rate of $e(m)$.
+such that its oracle risk is uniformly bounded by $\lambda + \epsilon$, where $\epsilon$ 
+decreases with model overparametrization. 
 \begin{theorem}
-
+There exists a continuous path $\gamma: [0,1] \to \mathcal{W}$ such that
+$\gamma(0) = \theta^A$, $\gamma(1) = \theta^B$ and
+\begin{equation}
+\Forr( \gamma(t) )  \leq \max( \lambda, \epsilon)~,\text{ with}
+\end{equation}
+\begin{equation}
+\epsilon = \inf_{n, \alpha} \left(\max \left\{ e(n), \delta_{W_1^A}(M, 0; M ) , \delta_{W_1^A}(M-n, \alpha; M ) ,  \delta_{W_1^B}(M, 0; M ) , \delta_{W_1^B}(M-n, \alpha; M ) \right\} + \E(|Y|^2) \kappa^{-1} \alpha \right)~.
+\end{equation}
 \end{theorem}
 
+\begin{corollary}
+If $M$ increases, the energy gap $\epsilon$ goes to zero.
+Here we use the fact that $\delta(\lambda m; \epsilon(m); m) \to 0$ as $m \to \infty$. (find the rate).
+\end{corollary}
 
+Remarks:
 
-
-%\begin{theorem}
-%Let $W_1, W_2, \dots, W_K$ be weight matrices of sizes 
-%$n_k \times n_{k+1}$, $k < K$, and let $\Fem(\theta)$, $\Forr(\theta)$ 
-%denote the risk minimizations using $\Phi$ as in (\ref{relucase}).
-%Assume that $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$ [TODO I think this is not necessary].
-%Then $\Omega_{\Forr}(\lambda)$ is connected for all $\lambda$. 
-%\end{theorem}
-%{\it Proof:}
-%We will again prove the result by induction over the depth $K$. 
-%Suppose first that $K=2$. The oracle risk is 
-%$$\Forr( W_1, W_2) = \Exp{ \| W_2 \rho W_1 X - Y \|^2}~.$$
-%If we denote $X_{W_1} = \rho W_1 X$, let us verify that $\Forr(W_1, W_2)$ 
-%only depends upon the correlation operator of $X_{W_1}$ 
-%and its cross-correlation to $Y$. Indeed, we have
-%\begin{eqnarray*}
-%\Exp{ \| W_2 \rho W_1 X - Y \|^2} &=& \Exp{ \| W_2 X_{W_1} - Y \|^2} \\
-%&=& W_2 \Sigma_{W_1} W_2^T + \Sigma_Y - 2  Tr\left( W_2 \Sigma_{W_1,Y} \right)~,
-%\end{eqnarray*}
-%where $\Sigma_{W_1} = \Exp{ X_{W_1} X_{W_1}^T}$ and $\Sigma_{W_1,Y} = \Exp{ X_{W_1} Y^T}$.
-%Let us see that when $\rho(z)$ is the half-rectification the covariance structure 
-%of $X_{W_1}$ can be easily related to the original distribution. Indeed, we have
-%the following
-%\begin{lemma}
-%Let $Z = \rho W X$ with $\rho(z) = \max(0,z)$. Then
-%\begin{equation}
-%\Sigma_Z = \tilde{W}^T \Sigma_X \tilde{W} 
-%\end{equation}
-%\end{lemma}
-%
-%$\square$
-
-
-
-[ TODO  $\Fem$ case]. 
+Ridge regression term.
+Extension to empirical risk. It is straightforward just change the metric. 
+Extension to several layers.
 
 
