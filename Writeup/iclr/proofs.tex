@@ -41,14 +41,36 @@ Let us now approximate this augmented linear path with a path in terms of first 
 We consider
 $$\eta_1(t) = (1-t) W^A + t \tilde{W}_A~,\text{ and}~\eta_2(t) = (1- t) {\beta}_1 + t \gamma_A~.$$
 We verify that 
+\begin{eqnarray}
+\label{bub1}
+\Forr(\{ \eta_1(t), \eta_2(t) \}) &=& \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa \| \eta_2(t) \|^2  \nonumber \\ 
+&\leq & \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa(  ( 1-t) \| {\beta}_1\|^2 + t \| \gamma_A \|^2 ) \nonumber \\
+& = & \overline{L}(t) + \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} ~.
+\end{eqnarray}
+Finally, we verify that
+\begin{equation}
+\label{bub2}
+\left | \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \right| \leq 4 \max(1, \sqrt{\E|Y^2|}) \| \Sigma_X \| \alpha ( \kappa^{-1/2} + M \kappa^{-1}) + O(\alpha^2)~.
+\end{equation}
+From Proposition \ref{localdistprop}, and using the fact that 
+$$\forall~i\leq M,\, t \in [0,1]~,~\left| \angle( (1-t)w^A_i + t \tilde{w}^A_i ; w^A_i) \right| \leq \alpha~,~ \left| \angle( (1-t)w^A_i + t \tilde{w}^A_i ; \tilde{w}^A_i) \right| \leq \alpha $$
+we can write 
+$$(1-t) \beta_1[i] z(w^A_i) - t \gamma_A[i] z(\tilde{w}^A_i) \stackrel{d}{=} \eta_2(t)[i] z(\eta_1(t)[i]) + n_i ~,$$
+with $\E\{ |n_i |^2 \} \leq 4 |\eta_2(t)[i]|^2 \| \Sigma_X \| \alpha^2 + O(\alpha^4)~$ and $\E |n_i| \leq 2 |\eta_2(t)[i]| \alpha \sqrt{\| \Sigma_X\|}$ using concavity of the moments.
+Thus 
 \begin{eqnarray*}
-\Forr(\{ \eta_1(t), \eta_2(t) \}) &=& \E \{ | Y - \eta_2(t)^T Z(\eta_1(t) ) |^2 \} + \kappa \| \eta_2(t) \|^2 \\
-&\leq & \E \{ | Y - \eta_2(t)^T Z(\eta_1(t) ) |^2 \} + \kappa(  ( 1-t) \| {\beta}_1\|^2 + t \| \gamma_A \|^2 ) \\
-& = & \overline{L}(t) + \E \{ | Y - \eta_2(t)^T Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1^T Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \\ 
+&& \left | \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \right| \\
+ &\leq& 2\E\{  \sum_i (Y - \eta_2(t) Z(\eta_1(t) )) n[i]  \} + \E \{ | \sum_i n[i] |^2 \} \\
+ &\leq & 4\left( \sqrt{\E|Y^2|} \| \Sigma_X\| \alpha \| \eta_2 \| + \alpha^2 (\| \eta_2 \|_1)^2  \| \Sigma_X \| \right) \\
+ &\leq & 4 \max(1, \sqrt{\E|Y^2|}) \| \Sigma_X \| \alpha ( \| \eta_2 \| + M \| \eta_2 \|^2) + O(\alpha^2) \\
+ & \leq & 4 \max(1, \sqrt{\E|Y^2|}) \| \Sigma_X \| \alpha ( \kappa^{-1/2} + M \kappa^{-1}) + O(\alpha^2)~.
 \end{eqnarray*}
-and 
-$$\left | \E \{ | Y - \eta_2(t)^T Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1^T Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \right| \leq \E |Y| \| \eta \|^2 \alpha \leq \E |Y| \kappa^{-1} \alpha~,$$
-using Proposition \ref{localdistprop} and  $\| \beta \| \leq \kappa^{-1}$  $\square$.
+ 
+%8 \sqrt{\E|Y^2} \} \max( \| \beta \|^2, \| \gamma_A \|^2) \alpha^2 \| \Sigma_X \| 
+
+
+
+% and  $\| \beta \| \leq \kappa^{-1}$  $\square$.
 
 \subsection{Proof of Corollary \ref{maincoro}}
 

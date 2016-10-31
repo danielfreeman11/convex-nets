@@ -211,7 +211,7 @@ hidden layer of size $m$ with current parameters $W \in \R^{m \times n}$, we def
 ``robust compressibility" factor as 
 \begin{equation}
 \label{compress}
-\delta_W(n, \alpha; m) = \min_{ \|\gamma \|_0 \leq n, \sum_i |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|^2 \}~,~(n \leq m)~.
+\delta_W(n, \alpha; m) = \min_{ \|\gamma \|_0 \leq n, \sup_i |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|^2 \}~,~(n \leq m)~.
 \end{equation} 
 This quantity thus measures how easily one can compress the current hidden layer representation, 
 by keeping only a subset of its units, but allowing these units to rotate by a small amount. It is a form 
