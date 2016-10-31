@@ -106,7 +106,7 @@
 \item \textbf{Title:} Understanding and exploiting the loss surface of Deep Neural Networks  
 \item \textbf{Principal Investigator: } Joan Bruna Estrach. Courant Institute, NYU, Computer Science Department, Mathematics Department and Center for Data Science. Contact: bruna@cims.nyu.edu; cell: 917-767-0617. 
 \item \textbf{Google Sponsors:} Jascha Sohl-Dickstein, Koray Kavukcuoglu.
-\item \textbf{Google Contacts:} Oriol Vinyals, Vincent Vanhoucke, Jonathan Tomson.
+\item \textbf{Google Contacts:} Oriol Vinyals, Yoram Singer, Vincent Vanhoucke, Jonathan Tomson.
 \end{itemize}
 
 \section*{Proposal Body}
@@ -115,9 +115,9 @@
 \textbf{Abstract:}
 Training Deep Neural networks is a prime example of a high-dimensional non-convex 
 optimization problem. Despite its massive practical interest, there exist little theoretical 
-guarantees that can inform the choice of the training hyperparameters as well as model 
-arquitectural choices. In this proposal we will study conditions 
-on the data distribution and model architecture that prevent the existence 
+guarantees that can inform the choice of the training hyperparameters as well as the model 
+arquitecture in such non-convex scenarios. In this proposal we will study conditions 
+on the data distribution and model architecture that prevent or limit the existence 
 of poor local minima, by first focusing on statistical properties of natural images
 and specific convolutional architectures.
  
@@ -136,9 +136,9 @@ large models.
 \textbf{Problem Statement:}
 %clear specify a problem, a well-posed question. Do not try to cover all the ground with your question. 
 %current candidate specific problems:
-Optimization is a critical component in Deep Learning, governing its success in different areas of computer vision, speech processing and natural language processing. The prevalent optimization strategy is Stochastic Gradient Descent, invented by Robbins and Munro in the 50s. On the one hand, the generalization of SGD is better than one could expect 
-in generic, non-convex loss surfaces. On the other hand, one may wonder if this generic optimization strategy can be adapted to operate in the class of loss surfaces defined by deep neural networks. Some reasons to believe that such adaptation is possible come from the 
-variety of small modifications of SGD algorithms yielding significant speedups \cite{duchi2011adaptive, hinton2012lecture, kingma2014adam}.
+Optimization is a critical component in deep learning, governing its success in different areas of computer vision, speech processing and natural language processing. The prevalent optimization strategy is Stochastic Gradient Descent, invented by Robbins and Munro in the 50s. On the one hand, the performance of SGD is better than one could expect 
+in generic, arbitrary non-convex loss surfaces. On the other hand, one may wonder if this generic optimization strategy can be adapted to operate in the class of loss surfaces defined by deep neural networks. Some reasons to believe that such adaptation is possible come from the 
+variety of modifications of SGD algorithms yielding significant speedups \cite{duchi2011adaptive, hinton2012lecture, ioffe2015batch, kingma2014adam}.
 This raises a number of theoretical questions as to why neural network optimization does not suffer in practice from poor local minima. Likewise, it introduces opportunities to leverage training data into adapted optimization. 
 
 %Exploration
@@ -155,13 +155,13 @@ recent results that rigorously establish that gradient descent does not
 get stuck on saddle points \cite{lee2016gradient}, our first objective will yield guarantees that gradient descent converges
 to a global optimum in deep rectified networks. 
 
-The loss surface $F(\theta)$ of a given model can be expressed in terms of its level sets $\Omega_\lambda$, which contain all parameters yielding a loss smaller or equal than the energy level $\lambda$: $\Omega_\lambda = \{ \theta ~;~F(\theta) \leq \lambda\}$. 
+The loss surface $F(\theta)$ of a given model can be expressed in terms of its level sets $\Omega_\lambda$, which contain all parameters $\theta$ yielding a loss smaller or equal than the energy level $\lambda$: $\Omega_\lambda = \{ \theta ~;~F(\theta) \leq \lambda\}$. 
 A first question we address concerns the topology of these level sets, i.e. under which conditions they are connected. Connected level sets imply that one can always find a descent direction at each energy level, and therefore that no poor local minima can exist. One can verify that linear neural networks (cascaded linear operators without point-wise nonlinearities), despite defining a non-convex loss $F(\theta)$, have connected level sets and therefore can be optimized globally using gradient descent strategies \cite{danieljoan}. It is also easy to verify that the non-linear case is not true in general \cite{shamir}, and our first objective is thus to characterize the interplay between data distribution, overparametrization and model architecture that is needed to obtain connected level sets \cite{danieljoan}.
 
 %Geometry: exploring loss surface
 Beyond the question of whether the loss contains poor local minima, the immediate follow-up question that determines the convergence of algorithms in practice is the local conditioning of the loss surface. It is thus related not to the topology but to the shape or geometry of the level sets. As the energy level decays, one expects the level sets to reveal more complex irregular structures, which correspond to regions where $F(\theta)$ has small curvature.
 
-In order to construct meaningful theoretical models, we have developed an algorithm \cite{danieljoan} that efficiently estimates these topological and geometrical properties on large deep architectures and datasets. Inspired by \cite{goodfellow2014qualitatively}, given two parameter values $\theta_1$ and $\theta_2$ lying in the border of the same level set $\Omega_\lambda$, our algorithm constructs a geodesic $\gamma(t)$ in $\Omega_\lambda$ relying $\theta_1$ to $\theta_2$ using a dynamic programming procedure. An example of the resulting characteristics is illustrated in Figure 1. 
+In order to construct meaningful theoretical models, we have developed an algorithm \cite{danieljoan} that efficiently estimates these topological and geometrical properties on large deep architectures and datasets. Inspired by \cite{goodfellow2014qualitatively}, given two parameter values $\theta_1$ and $\theta_2$ lying in the border of the same level set $\Omega_\lambda$, our algorithm constructs a geodesic $\gamma(t)$ in $\Omega_\lambda$ relying $\theta_1$ to $\theta_2$ using a dynamic programming procedure. An example of the resulting characteristics is illustrated in Figure 1. This tool may help us to construct good mathematical models that explain the behavior of SGD on such large convolutional neural networks, especially the interplay between overparametrization and regularity of the sets $\Omega_\lambda$.
 
 %Exploitation
 \begin{figure}
@@ -179,13 +179,16 @@ Besides improving our understanding of stochastic optimization in the class of n
 by developing optimization strategies adapted to the class of loss surfaces at hand, i.e. learning how to learn \cite{andrychowicz2016learning}. 
 In particular, we shall construct targets for optimization based on the geodesic paths described above: given two parameter values 
 $\theta_a$, $\theta_b$ with $F(\theta_b) \leq F(\theta_a)=\lambda$ (for example obtained during the course of a vanilla optimization method at iterations $t$ and $t+T$ respectively), a natural target to update $\theta_a$ is to follow the geodesic $\gamma(t)$ in $\Omega_\lambda$ relying $\theta_a$ to $\theta_b$. 
-The extent by which this geodesic is smooth will determine how easy it is to predict from past and present information available at $\theta_a$. We will explore predictive models based on recurrent neural networks, inspired from \cite{andrychowicz2016learning}.
+The extent by which this geodesic is smooth will determine how easy it is to predict it from past and present information available at $\theta_a$. We will explore predictive models based on recurrent neural networks, inspired from \cite{andrychowicz2016learning}.
 
 \section*{Data Policy}
 
-This proposal requires mostly unlabeled data in the form of images, speech and audio signals,
-and text corpus. The initial plan is to use publicly available datasets.
-The research outcomes will be both conference and journal papers, and also publicly available code. 
+This proposal requires mostly labeled datasets in the form of images, text corpus, as well as synthetically generated examples.
+We plan to use publicly available datasets and to release our code implementation for reproducibility.
+
+The research outcome will be both conference and journal papers, and also publicly available code on \url{github.com}.
+Our current implementation is in TensorFlow, running on both CPU and GPU machines at UC Berkeley. Our algorithm is prone
+to parallelization, and thus we would be interested in hardware infrastructures that can leverage it.
 
 \section*{Budget}
 
@@ -195,7 +198,7 @@ The research outcomes will be both conference and journal papers, and also publi
 \end{itemize}
 
 {\small 
-\bibliographystyle{IEEEtran}
+\bibliographystyle{plain}
 \bibliography{refs}
 }
 

@@ -1,0 +1,174 @@
+\documentclass{article} % For LaTeX2e
+\usepackage{iclr2017_conference,times}
+\usepackage{hyperref}
+\usepackage{url}
+
+
+
+\usepackage{amsmath,graphicx}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+
+\makeatletter
+\def\BState{\State\hskip-\ALG@thistlm}
+\makeatother
+
+
+%\usepackage[cmex10]{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+% \usepackage[francais]{babel}
+\usepackage[applemac]{inputenc}
+\usepackage{color}
+
+%\usepackage{graphicx}% Include figure files
+%\usepackage{dcolumn}% Align table columns on decimal point
+%\usepackage{bm}% bold math
+%\usepackage{color}
+%\usepackage[caption=false]{subfig} 
+
+\usepackage{listings}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\newcommand {\lb} {{\langle}}
+\newcommand {\rb} {{\rangle}}
+\newcommand {\R} {{\mathbb{R}}}
+\newcommand {\X} {{\tilde X}}
+\newcommand {\w} {{\tilde w}}
+\newcommand {\hh} {{k}}
+\newcommand {\p} {{\tilde p}}
+\newcommand {\RN} {{{\mathbb{R}}^N}}
+\newcommand {\Z} {{\mathbb{Z}}}
+\newcommand {\E} {{\mathbb{E}}}
+\newcommand {\W} {{\cal{W}}}
+\newcommand {\Fem} {F_{e}}
+\newcommand {\Forr} {F_{o}}
+\newcommand{\Exp}[1]{\mathbb{E}\left(#1 \right)}
+
+\usepackage{amsthm}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+
+\newcommand{\figref}[1]{Fig. \ref{#1}}
+
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+
+\title{Topology and Geometry of Deep Rectified Network Optimization Landscapes }
+
+
+\author{C. Daniel Freeman  \\
+Department of Physics\\
+University of California at Berkeley\\
+Berkeley, CA 94720, USA \\
+\texttt{daniel.freeman@berkeley.edu} \\
+\And
+Joan Bruna \\
+Courant Institute of Mathematical Sciences \\
+New York University \\
+New York, NY 10011, USA \\
+\texttt{bruna@cims.nyu.edu} \\
+}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to \LaTeX{} to determine where to break
+% the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
+% puts 3 of 4 authors names on the first line, and the last on the second
+% line, try using \AND instead of \And before the third author name.
+
+\newcommand{\fix}{\marginpar{FIX}}
+\newcommand{\new}{\marginpar{NEW}}
+
+%\iclrfinalcopy % Uncomment for camera-ready version
+
+\begin{document}
+
+
+\maketitle
+
+\begin{abstract}
+The loss surface of deep neural networks has recently attracted interest 
+in the optimization and machine learning communities as a prime example of 
+high-dimensional non-convex problem. Some insights were recently gained using spin glass 
+models, but at the expense of strongly simplifying the nonlinear nature of the model.
+
+In this work, we do not make any such assumption and study conditions 
+on the data distribution and model architecture that prevent the existence 
+of bad local minima. Our theoretical work quantifies and formalizes two 
+important \emph{folklore} facts: (i) the landscape of deep linear networks is radically different 
+from that of deep half-rectified ones, thus implying that mean-field approximations
+are unable to capture essential nonlinear behavior, and (ii) that the energy landscape 
+in the non-linear case is fundamentally controlled by the interplay between the smoothness of the data distribution and model over-parametrization. 
+These results are in accordance with empirical practice and recent literature. 
+%Together with 
+%recent results that rigorously establish that no gradient descent can 
+%get stuck on saddle points, we conclude that gradient descent converges
+%to a global optimum in deep rectified networks. 
+
+The conditioning of gradient descent is the next challenge we address. 
+We study this question through the geometry of the level sets, and we introduce
+an algorithm to efficiently estimate the regularity of such sets on large-scale networks. 
+Our empirical results show that these level sets remain connected throughout 
+all the learning phase, suggesting a near convex behavior, but they become 
+exponentially more curvy as the energy level decays, in accordance to what is observed in practice with 
+very low curvature attractors.
+\end{abstract}
+
+
+\input{intro}
+\input{topology}
+\input{geometry}
+\input{experiments}
+\input{conclusions}
+
+%\tableofcontents
+
+  
+
+
+
+
+ 
+\bibliography{iclr2017_conference}
+\bibliographystyle{iclr2017_conference}
+
+
+\appendix
+
+\input{constrained}
+\input{proofs}
+
+
+
+\end{document}
