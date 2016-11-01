@@ -1,8 +1,47 @@
 \section{Proofs}
 
 \subsection{Proof of Proposition \ref{localdistprop}}
-Cut the integral into the three cones
-and use trivial bounds. 
+
+Let 
+$$A(w_1, w_2) = \{ x \in \R^n; \, \langle x, w_1 \rangle \geq 0\,,\, \langle x, w_2 \rangle \geq 0\}~.$$
+By definition, we have 
+\begin{eqnarray}
+\label{col1}
+\langle w_1, w_2 \rangle_Z &=& \E \{ \max(0, \langle X, w_1 \rangle ) \max(0, \langle X, w_2 \rangle ) \} \\
+&=& \int_{A(w_1, w_2)} \langle x, w_1 \rangle  \langle x, w_2 \rangle dP(x)~, \\
+&=& \int_{Q({A}(w_1, w_2))}  \langle Q(x), w_1 \rangle  \langle Q(x), w_2 \rangle (d\bar{P}(Q(x)))~,  
+\end{eqnarray}
+where $Q$ is the orthogonal projection onto the space spanned by $w_1$ and $w_2$ and
+ $d\bar{P}(x)=d\bar{P}(x_1, x_2)$ is the marginal density on that subspace. 
+ Since this projection does not interfere with the rest of the proof, we abuse notation by dropping the $Q$ and still referring to $dP(x)$ as the probability density.
+
+Now, let $r = \frac{1}{2}\| w_1 + w_2 \| = \frac{1 + \cos(\alpha)}{2}$ and $d = \frac{w_2 - w_1}{2}$.
+By construction we have 
+$$w_1 = r w_m - d~,~ w_2 = r w_m + d~,$$
+and thus 
+\begin{equation}
+\label{col2}
+\langle x, w_1 \rangle  \langle x, w_2 \rangle = r^2 | \langle x, w_m \rangle |^2 - | \langle x, d \rangle |^2~.
+\end{equation}
+By denoting $C(w_m) = \{ x \in \R^n;\, \langle x, w_m \rangle \geq 0 \}$, 
+observe that $A(w_1, w_2 ) \subseteq C(w_m)$. Let us denote by $B = C(w_m) \setminus A(w_1, w_2) $ the disjoint complement. It results that 
+\begin{eqnarray}
+\label{col5}
+\langle w_1, w_2 \rangle_Z &=& \int_{A(w_1, w_2)} \langle x, w_1 \rangle  \langle x, w_2 \rangle dP(x) \nonumber \\
+&=& \int_{C(w_m)} [r^2 | \langle x, w_m \rangle |^2 - | \langle x, d \rangle |^2 ] dP(x) - r^2 \int_B  | \langle x, w_m \rangle |^2 dP(x) + \int_B  | \langle x, d \rangle |^2  dP(x) \nonumber \\ 
+&=& r^2 \| w_m \|_Z^2 - \underbrace{ r^2 \int_B  | \langle x, w_m \rangle |^2 dP(x)}_{E_1} - \underbrace{\int_{A(w_1, w_2)} | \langle x, d \rangle |^2  dP(x) }_{E_2}~. 
+\end{eqnarray} 
+We conclude by bounding each error term $E_1$ and $E_2$ separately:
+\begin{equation}
+\label{col3}
+0 \leq E_1 \leq r^2 |\sin(\alpha)|^2 \int_B \| x \|^2 dP(x) \leq r^2 |\sin(\alpha)|^2 2 \| \Sigma_X\|~,
+\end{equation}
+since every point in $B$ by definition has angle greater than $\pi/2 - \alpha$ from $w_m$. Also,
+\begin{equation}
+\label{col4}
+0 \leq E_2 \leq \|d \|^2 \int_{A(w_1, w_2)} \| x \|^2 dP(x) \leq \frac{1 - \cos(\alpha)}{2} 2 \| \Sigma_X \|
+\end{equation}
+by direct application of Cauchy-Schwartz. The proof is completed by plugging the bounds from (\ref{col3}) and (\ref{col4}) into (\ref{col5})  $\square$.
 
 
 \subsection{Proof of Theorem \ref{maintheo}}
@@ -12,7 +51,7 @@ as follows:
 \begin{enumerate}
 \item from $\theta^A$ to $\theta_{lA}$, the 
 best linear predictor using the same first layer. 
-\item from $\theta_{lA}$ to $\theta_{sA}$, the best $M-n$ approximation using perturbed 
+\item from $\theta_{lA}$ to $\theta_{sA}$, the best $(M-n)$-term approximation using perturbed 
 atoms, 
 \item from $\theta_{sA}$ to $\theta^*$ the oracle $n$ term approximation,  
 \item from $\theta^*$ to $\theta_{sB}$,
@@ -23,14 +62,14 @@ The subpaths (1) and (6) only involve changing the parameters of the second laye
 which define a convex loss. Therefore a linear path is sufficient.
 Subpaths (3) and (4) can also be constructed using only parameters of the second layer, 
 by observing that one can fit into a single $n \times M$ parameter matrix both the 
-$M-n$ term approximation and the best $n$-term approximation. A linear path is therefore 
+$(M-n)$-term approximation and the best $n$-term approximation. A linear path is therefore 
 also sufficient. 
 
 We finally need to show how to construct the subpaths (2) and (5).
 Let $\tilde{W}_A$ be the resulting perturbed first-layer parameter matrix 
 with $M-n$ sparse coefficients $\gamma_A$.
 Let us consider an auxiliary regression of the form 
-$$\overline{W} = [ W^A ; \tilde{W}_A]$$
+$$\overline{W} = [ W^A ; \tilde{W}_A] ~\in \R^{n \times 2M}~.$$
 and regression parameters 
 $$\overline{\beta}_1 = [ \beta_1; 0]~,~\overline{\beta}_2 = [0; \gamma_A]~.$$
 Clearly 
@@ -40,31 +79,36 @@ $$\forall~t~,\overline{L}(t) = \E\{ | Y - \eta(t) \overline{W} |^2 \} + \kappa \
 Let us now approximate this augmented linear path with a path in terms of first and second layer weights. 
 We consider
 $$\eta_1(t) = (1-t) W^A + t \tilde{W}_A~,\text{ and}~\eta_2(t) = (1- t) {\beta}_1 + t \gamma_A~.$$
-We verify that 
+We have that 
 \begin{eqnarray}
 \label{bub1}
-\Forr(\{ \eta_1(t), \eta_2(t) \}) &=& \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa \| \eta_2(t) \|^2  \nonumber \\ 
+\Forr(\{ \eta_1(t), \eta_2(t) \}) &=& \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa \| \eta_2(t) \|^2  \\ 
 &\leq & \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa(  ( 1-t) \| {\beta}_1\|^2 + t \| \gamma_A \|^2 ) \nonumber \\
-& = & \overline{L}(t) + \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} ~.
+& = & \overline{L}(t) + \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} ~.  \nonumber
 \end{eqnarray}
 Finally, we verify that
-\begin{equation}
+{\small 
+\begin{eqnarray}
 \label{bub2}
-\left | \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \right| \leq 4 \max(1, \sqrt{\E|Y^2|}) \| \Sigma_X \| \alpha ( \kappa^{-1/2} + M \kappa^{-1}) + O(\alpha^2)~.
-\end{equation}
-From Proposition \ref{localdistprop}, and using the fact that 
+& \left | \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \right|  \leq\\
+& \leq 4  \alpha \max(\E |Y|^2, \sqrt{\E|Y^2|}) \| \Sigma_X \| ( \kappa^{-1/2} + M \alpha \sqrt{\E|Y^2|} \kappa^{-1}) + O(\alpha^2)~. \nonumber
+\end{eqnarray}}
+Indeed, from Proposition \ref{localdistprop}, and using the fact that 
 $$\forall~i\leq M,\, t \in [0,1]~,~\left| \angle( (1-t)w^A_i + t \tilde{w}^A_i ; w^A_i) \right| \leq \alpha~,~ \left| \angle( (1-t)w^A_i + t \tilde{w}^A_i ; \tilde{w}^A_i) \right| \leq \alpha $$
 we can write 
-$$(1-t) \beta_1[i] z(w^A_i) - t \gamma_A[i] z(\tilde{w}^A_i) \stackrel{d}{=} \eta_2(t)[i] z(\eta_1(t)[i]) + n_i ~,$$
-with $\E\{ |n_i |^2 \} \leq 4 |\eta_2(t)[i]|^2 \| \Sigma_X \| \alpha^2 + O(\alpha^4)~$ and $\E |n_i| \leq 2 |\eta_2(t)[i]| \alpha \sqrt{\| \Sigma_X\|}$ using concavity of the moments.
+$$(1-t) \beta_{1,i} z(w^A_i) - t \gamma_{A,i} z(\tilde{w}^A_i) \stackrel{d}{=} \eta_2(t)_i z(\eta_1(t)_i) + n_i ~,$$
+with $\E\{ |n_i |^2 \} \leq 4 |\eta_2(t)_i|^2 \| \Sigma_X \| \alpha^2 + O(\alpha^4)~$ and $\E |n_i| \leq 2 |\eta_2(t)_i| \alpha \sqrt{\| \Sigma_X\|}$ using concavity of the moments.
 Thus 
 \begin{eqnarray*}
 && \left | \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \right| \\
- &\leq& 2\E\{  \sum_i (Y - \eta_2(t) Z(\eta_1(t) )) n[i]  \} + \E \{ | \sum_i n[i] |^2 \} \\
- &\leq & 4\left( \sqrt{\E|Y^2|} \| \Sigma_X\| \alpha \| \eta_2 \| + \alpha^2 (\| \eta_2 \|_1)^2  \| \Sigma_X \| \right) \\
- &\leq & 4 \max(1, \sqrt{\E|Y^2|}) \| \Sigma_X \| \alpha ( \| \eta_2 \| + M \| \eta_2 \|^2) + O(\alpha^2) \\
- & \leq & 4 \max(1, \sqrt{\E|Y^2|}) \| \Sigma_X \| \alpha ( \kappa^{-1/2} + M \kappa^{-1}) + O(\alpha^2)~.
+ &\leq& 2\E \left\{  \sum_i (Y - \eta_2(t) Z(\eta_1(t) )) n_i  \right\} + \E \left\{ | \sum_i n_i |^2 \right\} \\
+ &\leq & 4\left(\alpha \sqrt{\E|Y^2|} \| \Sigma_X\|  \| \eta_2 \| + \alpha^2 (\| \eta_2 \|_1)^2  \| \Sigma_X \| \right) \\
+ &\leq & 4 \alpha \max(1, \sqrt{\E|Y^2|}) \| \Sigma_X \| ( \| \eta_2 \| + M \alpha \| \eta_2 \|^2) + O(\alpha^2) \\
+ & \leq & 4 \alpha \max(\sqrt{\E|Y^2|}, {\E|Y^2|}) \| \Sigma_X \|  ( \kappa^{-1/2} + M \alpha \sqrt{\E|Y^2|} \kappa^{-1}) + O(\alpha^2)~,
 \end{eqnarray*}
+ which proves (\ref{bub2}). 
+ 
+We have just constructed a path from $\theta^A$ to $\theta^B$, in which all subpaths except (2) and (5) have energy maximized at the extrema due to convexity. For these two subpaths, (\ref{bub2}) shows that it is sufficient to add the corresponding upper bound on the linear subpath. This concludes the proof. $\square$
  
 %8 \sqrt{\E|Y^2} \} \max( \| \beta \|^2, \| \gamma_A \|^2) \alpha^2 \| \Sigma_X \| 
 
