@@ -2,7 +2,7 @@
 
 \subsection{Proof of Proposition \ref{connectedminima}}
 
-{\it Proof:} Suppose that $\theta_1$ is a local minima and $\theta_2$ is a global minima, 
+Suppose that $\theta_1$ is a local minima and $\theta_2$ is a global minima, 
 but $F(\theta_1) > F(\theta_2)$. If $\lambda = F(\theta_1)$, then clearly 
 $\theta_1$ and $\theta_2$ both belong to $\Omega_F(\lambda)$. Suppose 
 now that $\Omega_F(\lambda)$ 
@@ -20,9 +20,9 @@ which shows that $F(\gamma(t)) \leq F(\theta_1)$ for all $t$ is incompatible wit
 
 We proceed by induction over the number of layers $K$. 
 For $K=1$, the loss $F(\theta)$ is convex. Let  $\theta^A$, $\theta^B$ be two arbitrary points 
-in a level set $\Omega_\lambda$. Thus $F(\theta^A) \leq \lambda$ and $F(\theta^B) \leq \lambda$. We have
-$$F( (1-t) \theta^A + t \theta^B) \leq (1-t) F(\theta^A) + t F(\theta^B) \leq \lambda~,$$
-and thus a linear path is sufficient in that case to connect $\theta^A$ and $\theta^B$.
+in a level set $\Omega_\lambda$. Thus $F(\theta^A) \leq \lambda$ and $F(\theta^B) \leq \lambda$. By definition
+of convexity, a linear path is sufficient in that case to connect $\theta^A$ and $\theta^B$:
+$$F( (1-t) \theta^A + t \theta^B) \leq (1-t) F(\theta^A) + t F(\theta^B) \leq \lambda~.$$
 
 Suppose the result is true for $K-1$. Let $\theta^A = (W_1^A, \dots, W^A_K)$ and 
  $\theta^B = (W_1^B, \dots, W^B_K)$ with $F(\theta^A) \leq \lambda$, $F(\theta^B) \leq \lambda$.
@@ -117,7 +117,7 @@ as follows:
 \begin{enumerate}
 \item from $\theta^A$ to $\theta_{lA}$, the 
 best linear predictor using the same first layer. 
-\item from $\theta_{lA}$ to $\theta_{sA}$, the best $(M-n)$-term approximation using perturbed 
+\item from $\theta_{lA}$ to $\theta_{sA}$, the best $(m-n)$-term approximation using perturbed 
 atoms, 
 \item from $\theta_{sA}$ to $\theta^*$ the oracle $n$ term approximation,  
 \item from $\theta^*$ to $\theta_{sB}$,
@@ -127,29 +127,30 @@ atoms,
 The subpaths (1) and (6) only involve changing the parameters of the second layer, 
 which define a convex loss. Therefore a linear path is sufficient.
 Subpaths (3) and (4) can also be constructed using only parameters of the second layer, 
-by observing that one can fit into a single $n \times M$ parameter matrix both the 
-$(M-n)$-term approximation and the best $n$-term approximation. A linear path is therefore 
+by observing that one can fit into a single $n \times m$ parameter matrix both the 
+$(m-n)$-term approximation and the best $n$-term approximation. A linear path is therefore 
 also sufficient. 
 
 We finally need to show how to construct the subpaths (2) and (5).
 Let $\tilde{W}_A$ be the resulting perturbed first-layer parameter matrix 
-with $M-n$ sparse coefficients $\gamma_A$.
+with $m-n$ sparse coefficients $\gamma_A$.
 Let us consider an auxiliary regression of the form 
-$$\overline{W} = [ W^A ; \tilde{W}_A] ~\in \R^{n \times 2M}~.$$
+$$\overline{W} = [ W^A ; \tilde{W}_A] ~\in \R^{n \times 2m}~.$$
 and regression parameters 
 $$\overline{\beta}_1 = [ \beta_1; 0]~,~\overline{\beta}_2 = [0; \gamma_A]~.$$
 Clearly 
-$$\E\{ | Y - \overline{\beta}_1 \overline{W} |^2 \} + \kappa \| \overline{\beta}_1 \|^2 = \E\{ | Y - \beta_1 W^A |^2 \} + \kappa \| {\beta}_1 \|^2 $$ 
-and $\| \overline{\beta}_1 \|_1 = \| \beta_1 \|_1$, and similarly for $\overline{\beta}_2$. The augmented linear path $\eta(t) =(1- t) \overline{\beta}_1 + t \overline{\beta}_2$ thus satisfies 
-$$\forall~t~,\overline{L}(t) = \E\{ | Y - \eta(t) \overline{W} |^2 \} + \kappa \| \eta(t) \|^2 \leq \max(\overline{L}(0), \overline{L}(1))~. $$
+$$\E\{ | Y - \overline{\beta}_1 \overline{W} |^2 \} + \kappa \| \overline{\beta}_1 \|_1 = \E\{ | Y - \beta_1 W^A |^2 \} + \kappa \| {\beta}_1 \|_1 $$ 
+%and $\| \overline{\beta}_1 \|_1 = \| \beta_1 \|_1$,
+ and similarly for $\overline{\beta}_2$. By convexity, the augmented linear path $\eta(t) =(1- t) \overline{\beta}_1 + t \overline{\beta}_2$ thus satisfies 
+$$\forall~t~,\overline{L}(t) = \E\{ | Y - \eta(t) \overline{W} |^2 \} + \kappa \| \eta(t) \|_1 \leq \max(\overline{L}(0), \overline{L}(1))~. $$
 Let us now approximate this augmented linear path with a path in terms of first and second layer weights. 
 We consider
 $$\eta_1(t) = (1-t) W^A + t \tilde{W}_A~,\text{ and}~\eta_2(t) = (1- t) {\beta}_1 + t \gamma_A~.$$
 We have that 
 \begin{eqnarray}
 \label{bub1}
-\Forr(\{ \eta_1(t), \eta_2(t) \}) &=& \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa \| \eta_2(t) \|^2  \\ 
-&\leq & \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa(  ( 1-t) \| {\beta}_1\|^2 + t \| \gamma_A \|^2 ) \nonumber \\
+\Forr(\{ \eta_1(t), \eta_2(t) \}) &=& \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa \| \eta_2(t) \|_1  \\ 
+&\leq & \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa(  ( 1-t) \| {\beta}_1\|_1 + t \| \gamma_A \|_1 ) \nonumber \\
 & = & \overline{L}(t) + \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} ~.  \nonumber
 \end{eqnarray}
 Finally, we verify that
@@ -157,7 +158,7 @@ Finally, we verify that
 \begin{eqnarray}
 \label{bub2}
 & \left | \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \right|  \leq\\
-& \leq 4  \alpha \max(\E |Y|^2, \sqrt{\E|Y^2|}) \| \Sigma_X \| ( \kappa^{-1/2} + \alpha \sqrt{\E|Y^2|} \kappa^{-1}) + O(\alpha^2)~. \nonumber
+& \leq 4  \alpha \max(\E |Y|^2, \sqrt{\E|Y^2|}) \| \Sigma_X \| ( \kappa^{-1/2} + \alpha \sqrt{\E|Y^2|} \kappa^{-1}) + o(\alpha^2)~. \nonumber
 \end{eqnarray}}
 Indeed, from Proposition \ref{localdistprop}, and using the fact that 
 $$\forall~i\leq M,\, t \in [0,1]~,~\left| \angle( (1-t)w^A_i + t \tilde{w}^A_i ; w^A_i) \right| \leq \alpha~,~ \left| \angle( (1-t)w^A_i + t \tilde{w}^A_i ; \tilde{w}^A_i) \right| \leq \alpha $$
@@ -169,8 +170,8 @@ Thus
 && \left | \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \right| \\
  &\leq& 2\E \left\{  \sum_i (Y - \eta_2(t) Z(\eta_1(t) )) n_i  \right\} + \E \left\{ | \sum_i n_i |^2 \right\} \\
  &\leq & 4\left(\alpha \sqrt{\E|Y^2|} \| \Sigma_X\|  \| \eta_2 \| + \alpha^2 (\| \eta_2 \|_1)^2  \| \Sigma_X \| \right) \\
- &\leq & 4 \alpha \max(1, \sqrt{\E|Y^2|}) \| \Sigma_X \| ( \| \eta_2 \|_1 + \alpha \| \eta_2 \|_1^2) + O(\alpha^2) \\
- & \leq & 4 \alpha \max(\sqrt{\E|Y^2|}, {\E|Y^2|}) \| \Sigma_X \|  ( \kappa^{-1} + \alpha \sqrt{\E|Y^2|} \kappa^{-2}) + O(\alpha^2)~,
+ &\leq & 4 \alpha \max(1, \sqrt{\E|Y^2|}) \| \Sigma_X \| ( \| \eta_2 \|_1 + \alpha \| \eta_2 \|_1^2) + o(\alpha^2) \\
+ & \leq & 4 \alpha \max(\sqrt{\E|Y^2|}, {\E|Y^2|}) \| \Sigma_X \|  ( \kappa^{-1} + \alpha \sqrt{\E|Y^2|} \kappa^{-2}) + o(\alpha^2)~,
 \end{eqnarray*}
  which proves (\ref{bub2}). 
  

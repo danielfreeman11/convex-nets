@@ -157,7 +157,7 @@ For convenience, we redefine $W = W_1$ and $\beta = W_2$ and
 Let $\Sigma_X = \E_{P} XX^T \in \R^{N \times N}$ be the covariance operator of the random input $X$. We assume $\| \Sigma_X \| < \infty$. 
 
  A fundamental property that will be essential to our analysis is that, despite 
-the fact that $Z$ is nonlinear, the ``pseudo-metric" $\langle w_1, w_2 \rangle_Z := \E_P \{ z(w_1) z(w_2) \} $ 
+the fact that $Z$ is nonlinear, the quantity $[ w_1, w_2 ]_Z := \E_P \{ z(w_1) z(w_2) \} $ 
 is locally equivalent to the linear metric $\langle w_1, w_2 \rangle_X = \E_P \{ w_1^T X X^T w_2 \} = \langle w_1, \Sigma_X w_2 \rangle$, and that the linearization error decreases with the angle between $w_1$ and $w_2$. Without loss of generality, we assume here that $\|w_1 \| = \| w_2 \| = 1$, and we write $\| w \|_Z^2 = \E \{ | z(w) |^2 \} $.
 \begin{proposition}
 \label{localdistprop}
@@ -165,7 +165,7 @@ Let $\alpha = \cos^{-1}( \langle w_1, w_2 \rangle )$ be the angle between unitar
 Then
 \begin{equation}
 \label{localdisteq}
- \frac{1 + \cos \alpha}{2}  \| w_m  \|_Z^2 - 2 \| \Sigma_X \| \left( \frac{1-\cos \alpha}{2} + \sin^2 \alpha \right) \leq \langle w_1, w_2 \rangle_Z \leq \frac{1+\cos \alpha}{2}  \| w_m  \|_Z^2 ~.
+ \frac{1 + \cos \alpha}{2}  \| w_m  \|_Z^2 - 2 \| \Sigma_X \| \left( \frac{1-\cos \alpha}{2} + \sin^2 \alpha \right) \leq [ w_1, w_2 ]_Z \leq \frac{1+\cos \alpha}{2}  \| w_m  \|_Z^2 ~.
 \end{equation}
 \end{proposition} 
 The term $\| \Sigma_X \| $ is overly pessimistic: we can replace it by the energy of $X$ projected into the subspace spanned by $w_1$ and $w_2$ (which is bounded by $2 \| \Sigma_X \|$). 
@@ -173,10 +173,10 @@ When $\alpha$ is small, a Taylor expansion of the trigonometric terms reveals th
 \begin{eqnarray*}
 \frac{2}{3 \| \Sigma_X \|} \langle w_1, w_2 \rangle &=& \frac{2}{3 \| \Sigma_X \|} \cos \alpha = \frac{2}{3\| \Sigma_X \|}(1 - \frac{\alpha^2}{2} + O(\alpha^4)) \\ 
 &\leq& ( 1 - \alpha^2/4)\| w_m \|_Z^2 - \| \Sigma_X \|( \alpha^2/4 + \alpha^2) + O(\alpha^4) \\
-&\leq & \langle w_1, w_2 \rangle_Z + O(\alpha^4) ~,
+&\leq & [ w_1, w_2 ]_Z + O(\alpha^4) ~,
 \end{eqnarray*}
 and similarly 
-$$\langle w_1, w_2 \rangle_Z \leq \langle w_1, w_2 \rangle \| w_m \|_Z^2~.$$
+$$[ w_1, w_2 ]_Z \leq \langle w_1, w_2 \rangle \| w_m \|_Z^2~.$$
 The local behavior of parameters $w_1, w_2$ on our regression problem is thus equivalent to that of having a linear layer, provided $w_1$ and $w_2$ are sufficiently close to each other.
 This result can be seen as a \emph{spoiler} of what is coming: increasing the hidden layer dimensionality $M$ will increase the chances to encounter pairs of vectors $w_1, w_2$ with small angle; and with it some hope of approximating the previous linear behavior thanks to the small linearization error. 
 
