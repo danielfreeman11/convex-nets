@@ -1,5 +1,21 @@
 \section{Proofs}
 
+\subsection{Proof of Proposition \ref{connectedminima}}
+
+{\it Proof:} Suppose that $\theta_1$ is a local minima and $\theta_2$ is a global minima, 
+but $F(\theta_1) > F(\theta_2)$. If $\lambda = F(\theta_1)$, then clearly 
+$\theta_1$ and $\theta_2$ both belong to $\Omega_F(\lambda)$. Suppose 
+now that $\Omega_F(\lambda)$ 
+is connected. Then we could find a smooth (i.e. continuous and differentiable) path $\gamma(t)$ 
+with $\gamma(0) = \theta_1$, $\gamma(1)= \theta_2$ and $F(\gamma(t)) \leq \lambda = F(\theta_1)$.
+In particular, as $t \to 0$, we have
+\begin{eqnarray*}
+F(\gamma(t)) &=& F(\theta_1) + t \langle \nabla F(\theta_1) , \dot{\gamma}(0) \rangle + \frac{t^2}{2} \left(\dot{\gamma}(0)^T H F(\theta_1) \dot{\gamma}(0) + \langle \nabla F(\theta_1), \ddot{\gamma}(0) \rangle \right) + o(t^2) \\
+&=& F(\theta_1) +   \frac{t^2}{2}  \dot{\gamma}(0)^T H F(\theta_1) \dot{\gamma}(0)  + o(t^2) ~,
+\end{eqnarray*}
+which shows that $F(\gamma(t)) \leq F(\theta_1)$ for all $t$ is incompatible with $H(\theta_1) \succeq 0$ and therefore $\Omega_F(\lambda)$ cannot be connected $\square$.
+
+
 \subsection{Proof of Proposition \ref{proplinear}}
 
 We proceed by induction over the number of layers $K$. 

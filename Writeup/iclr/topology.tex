@@ -35,20 +35,9 @@ $\Fem$ has local minima which are not global minima. This question is answered b
 knowing whether $\Omega_F(\lambda)$ is connected at each energy level $\lambda$:
 
 \begin{proposition}
+\label{connectedminima}
 If $\Omega_F(\lambda)$ is connected for all $\lambda$ then every local minima of $F(\theta)$ is a global minima. 
 \end{proposition}
-{\it Proof:} Suppose that $\theta_1$ is a local minima and $\theta_2$ is a global minima, 
-but $F(\theta_1) > F(\theta_2)$. If $\lambda = F(\theta_1)$, then clearly 
-$\theta_1$ and $\theta_2$ both belong to $\Omega_F(\lambda)$. Suppose 
-now that $\Omega_F(\lambda)$ 
-is connected. Then we could find a smooth (i.e. continuous and differentiable) path $\gamma(t)$ 
-with $\gamma(0) = \theta_1$, $\gamma(1)= \theta_2$ and $F(\gamma(t)) \leq \lambda = F(\theta_1)$.
-In particular, as $t \to 0$, we have
-\begin{eqnarray*}
-F(\gamma(t)) &=& F(\theta_1) + t \langle \nabla F(\theta_1) , \dot{\gamma}(0) \rangle + \frac{t^2}{2} \left(\dot{\gamma}(0)^T H F(\theta_1) \dot{\gamma}(0) + \langle \nabla F(\theta_1), \ddot{\gamma}(0) \rangle \right) + o(t^2) \\
-&=& F(\theta_1) +   \frac{t^2}{2}  \dot{\gamma}(0)^T H F(\theta_1) \dot{\gamma}(0)  + o(t^2) ~,
-\end{eqnarray*}
-which shows that $F(\gamma(t)) \leq F(\theta_1)$ for all $t$ is incompatible with $H(\theta_1) \succeq 0$ and therefore $\Omega_F(\lambda)$ cannot be connected $\square$.
 
 
 \subsection{The Linear Case}
@@ -196,7 +185,7 @@ hidden layer of size $m$ with current parameters $W \in \R^{m \times n}$, we def
 ``robust compressibility" factor as 
 \begin{equation}
 \label{compress}
-\delta_W(n, \alpha; m) = \min_{ \|\gamma \|_0 \leq n, \sup_i |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|^1  \}~,~(n \leq m)~.
+\delta_W(n, \alpha; m) = \min_{ \|\gamma \|_0 \leq n, \sup_i |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|_1  \}~,~(n \leq m)~.
 \end{equation} 
 This quantity thus measures how easily one can compress the current hidden layer representation, 
 by keeping only a subset of its units, but allowing these units to move by a small amount. It is a form 
