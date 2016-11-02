@@ -185,8 +185,12 @@ We have just constructed a path from $\theta^A$ to $\theta^B$, in which all subp
 
 \subsection{Proof of Corollary \ref{maincoro}}
 
-Let us consider a generic first layer weight matrix $W \in \R^{n \times m}$. 
-From \cite{vershynin} [Lemma 5.2] we verify that the covering number $\mathcal{N}(S^{n-1}, \epsilon)$ the Euclidean unit sphere $S^{n-1}$ 
+Let us consider a generic first layer weight matrix $W \in \R^{n \times m}$. Without loss of generality, we can assume that $\| w_k \|=1$ for all $k$, since increasing the norm of $\|w_k\|$ 
+within the unit ball has no penalty in the loss, and we can compensate this scaling in the second layer
+thanks to the homogeneity of the half-rectification. Since this results in an attenuation of these second layer weights, 
+they too are guaranteed not to increase the loss. 
+
+From \cite{vershynin} [Lemma 5.2] we verify that the covering number $\mathcal{N}(S^{n-1}, \epsilon)$ of the Euclidean unit sphere $S^{n-1}$ 
 satisfies 
 $$\mathcal{N}(S^{n-1}, \epsilon) \leq \left( 1 + \frac{2}{\epsilon} \right)^n~,$$
 which means that we can cover the unit sphere with an $\epsilon$-net of size $\mathcal{N}(S^{n-1}, \epsilon) $. 
@@ -220,10 +224,7 @@ $$(\beta_p)_j = \left\{
  since now $\beta_p$ is a feasible solution for the pruned first layer.
 
 Let us finally bound $E(\beta_p) - E(\beta)$. 
-Without loss of generality, we can assume that $\| w_k \|=1$ for all $k$, since increasing the norm of $\|w_k\|$ 
-within the unit ball has no penalty in the loss, and we can compensate this scaling in the second layer
-thanks to the homogeneity of the half-rectification. Since this results in an attenuation of these second layer weights, 
-they too are guaranteed not to increase the loss. 
+
 Since $\angle(w_k,w_{k-1}) \leq \epsilon_m $, 
 it results from Proposition \ref{localdistprop} that 
 $$z(w_k) \stackrel{d}{=}  z(w_{k-1}) + n~,$$

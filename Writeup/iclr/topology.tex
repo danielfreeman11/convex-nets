@@ -176,19 +176,19 @@ When $\alpha$ is small, a Taylor expansion of the trigonometric terms reveals th
 &\leq & [ w_1, w_2 ]_Z + O(\alpha^4) ~,
 \end{eqnarray*}
 and similarly 
-$$[ w_1, w_2 ]_Z \leq \langle w_1, w_2 \rangle \| w_m \|_Z^2~.$$
+$$[ w_1, w_2 ]_Z \leq \langle w_1, w_2 \rangle \| w_m \|_Z^2 \leq \| \Sigma_X\| \langle w_1, w_2 \rangle~.$$
 The local behavior of parameters $w_1, w_2$ on our regression problem is thus equivalent to that of having a linear layer, provided $w_1$ and $w_2$ are sufficiently close to each other.
-This result can be seen as a \emph{spoiler} of what is coming: increasing the hidden layer dimensionality $M$ will increase the chances to encounter pairs of vectors $w_1, w_2$ with small angle; and with it some hope of approximating the previous linear behavior thanks to the small linearization error. 
+This result can be seen as a \emph{spoiler} of what is coming: increasing the hidden layer dimensionality $m$ will increase the chances to encounter pairs of vectors $w_1, w_2$ with small angle; and with it some hope of approximating the previous linear behavior thanks to the small linearization error. 
 
 In order to control the connectedness, we need a last definition. Given a 
-hidden layer of size $m$ with current parameters $W \in \R^{m \times n}$, we define a
+hidden layer of size $m$ with current parameters $W \in \R^{n \times m}$, we define a
 ``robust compressibility" factor as 
 \begin{equation}
 \label{compress}
 \delta_W(n, \alpha; m) = \min_{ \|\gamma \|_0 \leq n, \sup_i |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|_1  \}~,~(n \leq m)~.
 \end{equation} 
 This quantity thus measures how easily one can compress the current hidden layer representation, 
-by keeping only a subset of its units, but allowing these units to move by a small amount. It is a form 
+by keeping only a subset of $n$ its units, but allowing these units to move by a small amount controlled by $\alpha$. It is a form 
 of $n$-width similar to Kolmogorov width \cite{donoho} and is also related to robust sparse coding from \cite{simoncelli_robust}.
 
 
@@ -216,13 +216,10 @@ $\gamma(0) = \theta^A$, $\gamma(1) = \theta^B$ and
 %$$f(\alpha) = ~,$$
 where $C_1$ is an absolute constant depending only on $\kappa$ and $P$.
 \end{theorem}
-\textbf{Remarks:}
-\begin{itemize}
-\item Our regularization term is currently a mix between $\ell_2$ norm constraints on the first layer and $\ell_1$ norm constraints on the second layer. We believe this is an artifact of our proof technique, and we conjecture that more general regularizations yield similar results.
-\item This result uses the data distribution through the oracle bound $e(m)$ and the covariance term. The 
+Some remarks are in order. First, our regularization term is currently a mix between $\ell_2$ norm constraints on the first layer and $\ell_1$ norm constraints on the second layer. We believe this is an artifact of our proof technique, and we conjecture that more general regularizations yield similar results. Next, this result uses the data distribution through the oracle bound $e(m)$ and the covariance term. The 
 extension to empirical risk is accomplished by replacing the probability measure $P$ by the empirical measure $\hat{P} = \frac{1}{L} \sum_l \delta\left( (x,y) - (x_l, y_l)\right) $. However, our asymptotic analysis has to be carefully reexamined to take into account and avoid the trivial regime when $M$ outgrows $L$.  
 %\item Finally, another essential question is the extension of this result to several layers
-\end{itemize}
+%\end{itemize}
 A consequence of Theorem \ref{maintheo} is that as $M$ increases, the model becomes asymptotically connected, as proven in the following corollary.
 \begin{corollary}
 \label{maincoro}
