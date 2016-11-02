@@ -1,5 +1,55 @@
 \section{Proofs}
 
+\subsection{Proof of Proposition \ref{proplinear}}
+
+We proceed by induction over the number of layers $K$. 
+For $K=1$, the loss $F(\theta)$ is convex. Let  $\theta^A$, $\theta^B$ be two arbitrary points 
+in a level set $\Omega_\lambda$. Thus $F(\theta^A) \leq \lambda$ and $F(\theta^B) \leq \lambda$. We have
+$$F( (1-t) \theta^A + t \theta^B) \leq (1-t) F(\theta^A) + t F(\theta^B) \leq \lambda~,$$
+and thus a linear path is sufficient in that case to connect $\theta^A$ and $\theta^B$.
+
+Suppose the result is true for $K-1$. Let $\theta^A = (W_1^A, \dots, W^A_K)$ and 
+ $\theta^B = (W_1^B, \dots, W^B_K)$ with $F(\theta^A) \leq \lambda$, $F(\theta^B) \leq \lambda$.
+For each $W_1, \dots, W_K$, we denote $\tilde{W}_j = W_j$ for $j < K-1$ and
+$\tilde{W}_{K-1} = W_K W_{K-1}$. By induction hypothesis, the 
+loss expressed in terms of $\tilde{\theta} = (\tilde{W}_1, \dots, \tilde{W}_{K-1})$ is connected 
+between $\tilde{\theta}_1$ and $\tilde{\theta_2}$. Let $\tilde{W}_{K-1}(t)$ the corresponding 
+linear path projected in the last layer. 
+We need to produce a path in the variables $W_{K-1}(t)$, $W_K(t)$ 
+such that:
+\begin{itemize}
+\item[i] $W_{K-1}(0) = W_{K-1}^A$, $W_{K-1}(1) = W_{K-1}^B$, 
+\item[ii] $W_{K}(0) = W_{K}^A$, $W_{K}(1) = W_{K}^B$,
+\item[iii] $W_{K}(t) W_{K-1}(t) = \tilde{W}_{K-1}(t) = (1-t) W_{K}^A W_{K-1}^A + t W_{K}^B W_{K-1}^B $ for $t \in (0,1)$. 
+\item[iv] $\| W_{K-1}(t) \|^2 + \| W_{K}(t) \|^2 \leq (1-t) ( \| W \|_{K-1}^2(0) + \| W \|_{K}^2(0)  ) + t (\| W \|_{K-1}^2(1) + \| W \|_{K}^2(1))$.
+\end{itemize} 
+We construct the path using the variational properties of atomic norms \cite{bachatomic}. 
+When we pick the ridge regression regularization, the corresponding atomic norm is the 
+nuclear norm:
+$$\| X \|_{*} = \min_{UV^T = X} \frac{1}{2}( \| U \|^2 + \| V \|^2)~.$$
+The path is constructed by exploiting the convexity of the variational norm $\| X\|_{*}$. 
+Let us define 
+$$\forall~t~,~W_{K-1}(t), W_{K}(t) = \arg\min_{UV^T= \tilde{W}_{K-1}(t)} (\| U\|^2 + \|V \|^2)~. $$ 
+This path satisfies (i-iii) by definition. We also verify that 
+\begin{eqnarray*}
+\| W_{K-1}(t) \|^2 + \| W_{K}(t) \|^2 &=& 2 \| \tilde{W}_{K-1}(t)\|_{*}   \\
+&\leq & 2 (1-t) \|  \tilde{W}_{K-1}(0)\|_{*} + 2 t  \|  \tilde{W}_{K-1}(1)\|_{*} \\ 
+&\leq & (1-t) ( \| W \|_{K-1}^2(0) + \| W \|_{K}^2(0)  ) + t (\| W \|_{K-1}^2(1) + \| W \|_{K}^2(1))~.
+\end{eqnarray*}
+which concludes the proof $\square$. 
+
+%We construct it as follows. Let 
+%$$W_{K}(t) = t W_{K}^B + (1-t) W_{K}^A + t (1-t) V~,$$
+%$$W_{K-1}(t) = W_{K}(t)^\dagger \tilde{W}_{K-1}(t)  ~,$$
+%where $W_{K}(t)^\dagger = ( W_{K}(t)^T W_{K}(t))^{-1} W_{K}(t)^T$ denotes the pseudoinverse 
+%and $V$ is a $n_{K-1} \times n_{K}$ matrix drawn from a iid distribution. 
+%Conditions (i) and (ii) are immediate from the definition, and condition (iii) results from the fact that 
+%$$W_{K}(t) W_{K}(t)^\dagger  = {\bf I}_{N_K}~,$$
+%since $W_K(t)$ has full rank for all $t \in (0,1)$. 
+%$\square$.
+
+
+
 \subsection{Proof of Proposition \ref{localdistprop}}
 
 Let 
@@ -74,7 +124,7 @@ and regression parameters
 $$\overline{\beta}_1 = [ \beta_1; 0]~,~\overline{\beta}_2 = [0; \gamma_A]~.$$
 Clearly 
 $$\E\{ | Y - \overline{\beta}_1 \overline{W} |^2 \} + \kappa \| \overline{\beta}_1 \|^2 = \E\{ | Y - \beta_1 W^A |^2 \} + \kappa \| {\beta}_1 \|^2 $$ 
-and similarly for $\overline{\beta}_2$. The augmented linear path $\eta(t) =(1- t) \overline{\beta}_1 + t \overline{\beta}_2$ thus satisfies 
+and $\| \overline{\beta}_1 \|_1 = \| \beta_1 \|_1$, and similarly for $\overline{\beta}_2$. The augmented linear path $\eta(t) =(1- t) \overline{\beta}_1 + t \overline{\beta}_2$ thus satisfies 
 $$\forall~t~,\overline{L}(t) = \E\{ | Y - \eta(t) \overline{W} |^2 \} + \kappa \| \eta(t) \|^2 \leq \max(\overline{L}(0), \overline{L}(1))~. $$
 Let us now approximate this augmented linear path with a path in terms of first and second layer weights. 
 We consider
@@ -91,20 +141,20 @@ Finally, we verify that
 \begin{eqnarray}
 \label{bub2}
 & \left | \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \right|  \leq\\
-& \leq 4  \alpha \max(\E |Y|^2, \sqrt{\E|Y^2|}) \| \Sigma_X \| ( \kappa^{-1/2} + M \alpha \sqrt{\E|Y^2|} \kappa^{-1}) + O(\alpha^2)~. \nonumber
+& \leq 4  \alpha \max(\E |Y|^2, \sqrt{\E|Y^2|}) \| \Sigma_X \| ( \kappa^{-1/2} + \alpha \sqrt{\E|Y^2|} \kappa^{-1}) + O(\alpha^2)~. \nonumber
 \end{eqnarray}}
 Indeed, from Proposition \ref{localdistprop}, and using the fact that 
 $$\forall~i\leq M,\, t \in [0,1]~,~\left| \angle( (1-t)w^A_i + t \tilde{w}^A_i ; w^A_i) \right| \leq \alpha~,~ \left| \angle( (1-t)w^A_i + t \tilde{w}^A_i ; \tilde{w}^A_i) \right| \leq \alpha $$
 we can write 
-$$(1-t) \beta_{1,i} z(w^A_i) - t \gamma_{A,i} z(\tilde{w}^A_i) \stackrel{d}{=} \eta_2(t)_i z(\eta_1(t)_i) + n_i ~,$$
+$$(1-t) \beta_{1,i} z(w^A_i) + t \gamma_{A,i} z(\tilde{w}^A_i) \stackrel{d}{=} \eta_2(t)_i z(\eta_1(t)_i) + n_i ~,$$
 with $\E\{ |n_i |^2 \} \leq 4 |\eta_2(t)_i|^2 \| \Sigma_X \| \alpha^2 + O(\alpha^4)~$ and $\E |n_i| \leq 2 |\eta_2(t)_i| \alpha \sqrt{\| \Sigma_X\|}$ using concavity of the moments.
 Thus 
 \begin{eqnarray*}
 && \left | \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} \right| \\
  &\leq& 2\E \left\{  \sum_i (Y - \eta_2(t) Z(\eta_1(t) )) n_i  \right\} + \E \left\{ | \sum_i n_i |^2 \right\} \\
  &\leq & 4\left(\alpha \sqrt{\E|Y^2|} \| \Sigma_X\|  \| \eta_2 \| + \alpha^2 (\| \eta_2 \|_1)^2  \| \Sigma_X \| \right) \\
- &\leq & 4 \alpha \max(1, \sqrt{\E|Y^2|}) \| \Sigma_X \| ( \| \eta_2 \| + M \alpha \| \eta_2 \|^2) + O(\alpha^2) \\
- & \leq & 4 \alpha \max(\sqrt{\E|Y^2|}, {\E|Y^2|}) \| \Sigma_X \|  ( \kappa^{-1/2} + M \alpha \sqrt{\E|Y^2|} \kappa^{-1}) + O(\alpha^2)~,
+ &\leq & 4 \alpha \max(1, \sqrt{\E|Y^2|}) \| \Sigma_X \| ( \| \eta_2 \|_1 + \alpha \| \eta_2 \|_1^2) + O(\alpha^2) \\
+ & \leq & 4 \alpha \max(\sqrt{\E|Y^2|}, {\E|Y^2|}) \| \Sigma_X \|  ( \kappa^{-1} + \alpha \sqrt{\E|Y^2|} \kappa^{-2}) + O(\alpha^2)~,
 \end{eqnarray*}
  which proves (\ref{bub2}). 
  
@@ -118,9 +168,70 @@ We have just constructed a path from $\theta^A$ to $\theta^B$, in which all subp
 
 \subsection{Proof of Corollary \ref{maincoro}}
 
+Let us consider a generic first layer weight matrix $W \in \R^{n \times m}$. 
+From \cite{vershynin} [Lemma 5.2] we verify that the covering number $\mathcal{N}(S^{n-1}, \epsilon)$ the Euclidean unit sphere $S^{n-1}$ 
+satisfies 
+$$\mathcal{N}(S^{n-1}, \epsilon) \leq \left( 1 + \frac{2}{\epsilon} \right)^n~,$$
+which means that we can cover the unit sphere with an $\epsilon$-net of size $\mathcal{N}(S^{n-1}, \epsilon) $. 
 
-Use pigeonhole principle to control how many directions are within an angle smaller than $\epsilon$. 
+Let $0< \eta < n^{-1} ( 1 + n^{-1})^{-1}$, and let us pick, for each $m$, $\epsilon_m = m^{\frac{\eta-1}{n} }$. 
+Let us consider its corresponding $\epsilon$-net of size 
+$$u_m = \mathcal{N}(S^{n-1}, \epsilon_m) \simeq \left( 1 + \frac{2}{\epsilon_m} \right)^n \simeq m^{1-\eta} ~.$$
+Since we have $m$ vectors in the unit sphere, it results from the pigeonhole principle that at least one 
+element of the net will be associated with at least $v_m = m u_m^{-1} \simeq m^{\eta}$ vectors; in other words, 
+we are guaranteed to find amongst our weight vector $W$ a collection $Q_m$ of $v_m \simeq m^\eta$ vectors that are all 
+at an angle at most $2\epsilon_m$ apart. 
+Let us now apply Theorem \ref{maintheo} by picking $n=v_m$ and $\alpha = \epsilon_m$. 
+We need to see that the terms involved in the bound all converge to $0$ as $m \to \infty$. 
 
+The contribution of the oracle error $e(v_m) - e(m)$ goes to zero as $m\to \infty$ by the 
+fact that $\lim_{m \to \infty} e(m)$ exists (it is a decreasing, positive sequence) and that $v_m \to \infty$.
+
+Let us now verify that $\delta(m - v_m, \epsilon_m, m)$ also converges to zero.
+We are going to prune the first layer by removing one by one the vectors in $Q_m$.
+Removing one of these vectors at a time incurs in an error of the order of $\epsilon_m$. 
+Indeed, let $w_k$ be one of such vectors and let $\beta'$ be the solution of 
+$$\min_{\beta'} E(\beta') = \min_{\beta'=(\beta_f;\beta_k) \in \R^{k}} \E \{ |Y - \beta_f^T Z(W_{-k}) - \beta_k z(w_k)|^2 \} + \kappa ( \| \beta_f \|_1 + |\beta_k| )~, $$
+where $W_{-k}$ is a shorthand for the matrix containing the rest of the vectors that have not been discarded yet.
+  Removing the vector $w_k$ from the first layer
+ increases the loss by a factor that is upper bounded by $E(\beta_p) - E(\beta)$, where 
+$$(\beta_p)_j = \left\{
+\begin{array}{rl}
+ \beta'_j  & \text{ for  } j < k -1 ~,\\
+ \beta'_{k-1} + \beta'_{k } & \text{ otherwise.}
+\end{array}\right.~, $$
+ since now $\beta_p$ is a feasible solution for the pruned first layer.
+
+Let us finally bound $E(\beta_p) - E(\beta)$. 
+Without loss of generality, we can assume that $\| w_k \|=1$ for all $k$, since increasing the norm of $\|w_k\|$ 
+within the unit ball has no penalty in the loss, and we can compensate this scaling in the second layer
+thanks to the homogeneity of the half-rectification. Since this results in an attenuation of these second layer weights, 
+they too are guaranteed not to increase the loss. 
+Since $\angle(w_k,w_{k-1}) \leq \epsilon_m $, 
+it results from Proposition \ref{localdistprop} that 
+$$z(w_k) \stackrel{d}{=}  z(w_{k-1}) + n~,$$
+with $\E\{|n|^2\} \leq C\alpha^2$ for some constant $C$ independent of $m$. 
+By redefining $p_1 = Y - \beta_p^T Z(W_{-k}) - \frac{1}{2} n$ and 
+$p_2 = \frac{1}{2}n$, we have 
+\begin{eqnarray*}
+\E \{ | Y - \beta_p^T Z(W_{-k}) |^2 \} - \E \{ | Y - {\beta'}^T Z(W_{-k}) - \beta_k z(w_k) |^2 \} & = & \E\{ | p_1 + p_2 |^2 \} - \E \{ |p_1 - p_2 |^2 \} \\
+&=& 4\E \{ |p_1 p_2| \} \\
+&\leq& \sqrt{ \E\left\{ \left|Y - \beta_p^T Z(W_{-k}) - \frac{1}{2} n \right|^2 \right\} } \sqrt{ \E \{ |n|^2 \} } \\
+&\leq & (C+\alpha) \alpha \simeq \epsilon_m~,
+\end{eqnarray*}
+where $C$ only depends on $\E\{|Y|^2\}$. We also verify that $\| \beta_p\|_1 \leq \| \beta'\|_1$.
+
+It results that removing $|Q_m|$ of such vectors incurs an increase of the loss at most 
+$|Q_m| \epsilon_m \simeq m^\eta m^{\frac{\eta-1}{n} } = m^{\eta + \frac{\eta-1}{n}}$. 
+Since we picked $\eta$ such that $\eta + \frac{\eta-1}{n} <0$, this term converges to zero. The proof is finished. $\square$
+
+%
+%It results that if we choose $\epsilon$
+%
+%Use pigeonhole principle to control how many directions are within an angle smaller than $\epsilon$. 
+%
+%
+%
 
 
 

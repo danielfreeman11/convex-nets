@@ -6,18 +6,23 @@ Let $\{ (x_i, y_i)\}_i$ be an iid sample of size $L$ drawn from $P$ defining the
 We consider the classic empirical risk minimization of the form
 \begin{equation}
 \label{emp_risk_min}
-\Fem(\theta) = \frac{1}{L} \sum_{l=1}^L \| \Phi(x_i;\theta) - y_i \|^2~,
+\Fem(\theta) = \frac{1}{L} \sum_{l=1}^L \| \Phi(x_i;\theta) - y_i \|^2 + \kappa \mathcal{R}(\theta)~,
 \end{equation}
 where $\Phi(x ; \theta)$ encapsulates the feature representation 
-that uses parameters $\theta \in \R^S$. In a deep neural network, this parameter
+that uses parameters $\theta \in \R^S$ and $\mathcal{R}(\theta)$ is a regularization term. 
+ In a deep neural network, $\theta$
 contains the weights and biases used in all layers.
 For convenience, in our analysis we will also use the oracle risk minimization:
 \begin{equation}
 \label{risk_min}
-\Forr(\theta) = \E_{(X,Y) \sim P} \| \Phi(X;\theta) - Y \|^2~,
+\Forr(\theta) = \E_{(X,Y) \sim P} \| \Phi(X;\theta) - Y \|^2 + \kappa \mathcal{R}(\theta)~.
 \end{equation}
+Our setup considers the case where $\mathcal{R}$ 
+consists on the $\ell_1$ norm on all layers: $\mathcal{R}(\theta) = \| \theta \|_1$, 
+which provides a sparse regularization prior, and the Ridge regression case  
+$\mathcal{R}(\theta) = \| \theta\|_2^2$ (also referred as weight decay). 
 
-\subsection{Poor local minima characterization from topological conectedness}
+\subsection{Poor local minima characterization from topological connectedness}
 
 We define the level set of $F(\theta)$ as 
 \begin{equation}
@@ -55,11 +60,11 @@ $F$ is a multilayer network defined by
 \label{linearcase}
 \Phi(x;\theta) = W_K \dots W_1 x~,~\theta = (W_1, \dots, W_K)~.
 \end{equation}
-This model defines a non-convex (and non-concave) loss $\Fem(\theta)$.
-It has been shown in \cite{ganguli} and \cite{linearcase} that in this case, 
+and the ridge regression $\mathcal{R}(\theta) =\| \theta \|^2$. This model defines a non-convex (and non-concave) loss $\Fem(\theta)$.
+When $\kappa = 0$, it has been shown in \cite{ganguli} and \cite{linearcase} that in this case, 
 every local minima is a global minima.  
-For completeness, we provide here an alternative proof of that result that uses
-a simpler argument.
+We provide here an alternative proof of that result that uses
+a somewhat simpler argument and allows for $\kappa > 0$. 
 
 %For that purpose, let $W_1, W_2, \dots, W_K$ be weight matrices of sizes 
 %$n_k \times n_{k+1}$, $k < K$. Assume first that $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$.
@@ -75,36 +80,13 @@ a simpler argument.
 \label{proplinear}
 Let $W_1, W_2, \dots, W_K$ be weight matrices of sizes 
 $n_k \times n_{k+1}$, $k < K$, and let $\Fem(\theta)$, $\Forr(\theta)$ 
-denote the risk minimizations using $\Phi$ as in (\ref{linearcase}).
-Assume that $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$ [TODO I think this is not necessary].
+denote the risk minimizations using $\Phi$ as in (\ref{linearcase}) and ridge regression.
+Assume that $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$.
 Then $\Omega_{\Fem}(\lambda)$ is connected for all $\lambda$, as well as $\Omega_{\Forr}$, 
 and therefore there are no poor local minima.  
 \end{proposition}
-{\it Proof:} We proceed by induction over the number of layers $K$. 
-For $K=1$, the loss $F(\theta)$ is convex. Let  $\theta^A$, $\theta^B$ be two arbitrary points 
-in a level set $\Omega_\lambda$. Thus $F(\theta^A) \leq \lambda$ and $F(\theta^B) \leq \lambda$. We have
-$$F( t \theta^A + (1-t) \theta^B) \leq t F(\theta^A) + (1-t) F(\theta^B) \leq \lambda~,$$
-and thus a linear path is sufficient in that case to connect $\theta^A$ and $\theta^B$.
-
-Suppose the result is true for $K-1$. Let $\theta^A = (W_1^A, \dots, W^A_K)$ and 
- $\theta^B = (W_1^B, \dots, W^B_K)$ with $F(\theta^A) \leq \lambda$, $F(\theta^B) \leq \lambda$.
-For each $W_1, \dots, W_K$, we denote $\tilde{W}_j = W_j$ for $j < K-1$ and
-$\tilde{W}_{K-1} = W_K W_{K-1}$. By induction hypothesis, the 
-loss expressed in terms of $\tilde{\theta} = (\tilde{W}_1, \dots, \tilde{W}_{K-1})$ is connected 
-between $\tilde{\theta}_1$ and $\tilde{\theta_2}$. Let $\tilde{W}_{K-1}(t)$ the corresponding 
-path projected in the last layer. We just need to produce a path in the variables $W_{K-1}(t)$, $W_K(t)$ 
-such that (i) $W_{K-1}(0) = W_{K-1}^A$, $W_{K-1}(1) = W_{K-1}^B$, 
-(ii) $W_{K}(0) = W_{K}^A$, $W_{K}(1) = W_{K}^B$, and 
-(iii) $W_{K}(t) W_{K-1}(t) = \tilde{W}_{K-1}(t)$ for $t \in (0,1)$. 
-We construct it as follows. Let 
-$$W_{K}(t) = t W_{K}^B + (1-t) W_{K}^A + t (1-t) V~,$$
-$$W_{K-1}(t) = W_{K}(t)^\dagger \tilde{W}_{K-1}(t)  ~,$$
-where $W_{K}(t)^\dagger = ( W_{K}(t)^T W_{K}(t))^{-1} W_{K}(t)^T$ denotes the pseudoinverse 
-and $V$ is a $n_{K-1} \times n_{K}$ matrix drawn from a iid distribution. 
-Conditions (i) and (ii) are immediate from the definition, and condition (iii) results from the fact that 
-$$W_{K}(t) W_{K}(t)^\dagger  = {\bf I}_{N_K}~,$$
-since $W_K(t)$ has full rank for all $t \in (0,1)$. 
-$\square$.
+This result can be extended to treat other regularization terms other than the ridge term 
+by using more general atomic norms \cite{bachatomic}. But we now move our interest to the nonlinear case, which is more relevant to our purposes. 
 
 \subsection{Half-Rectified Nonlinear Case}
 
@@ -160,7 +142,8 @@ allowed to increase is upper bounded by a quantity that trades-off model overpar
 and smoothness in the data distribution.
 
 For that purpose, we start with a characterization of the oracle loss, and for simplicity let us assume 
-$Y \in \R$ and let us first consider the case with a single hidden layer. 
+$Y \in \R$ and let us first consider the case with a single hidden layer and $\ell_1$ regularization:
+$\mathcal{R}(\theta) = \| \theta\|_1$.
 
 \subsubsection{Preliminaries}
  Before proving our main result, we need to introduce  preliminary notation and results. 
@@ -169,9 +152,9 @@ We first describe the case with a single hidden layer of size $m$.
 We define
 \begin{equation}
 \label{bla2}
-e(m) = \min_{W_1 \in \R^{m \times n}, W_2 \in \R^m} \E\{ | \Phi(X; \theta) - Y|^2 \} + \kappa \| W_2 \|^2~.
+e(m) = \min_{W_1 \in \R^{m \times n}, \|W_1(i) \|_2 \leq 1, W_2 \in \R^m} \E\{ | \Phi(X; \theta) - Y|^2 \} + \kappa  \| W_2 \|_1~.
 \end{equation}
-to be the oracle risk using $m$ hidden units and using Ridge regression. 
+to be the oracle risk using $m$ hidden units with norm $\leq 1$ and using sparse regression. 
 It is a well known result by Hornik and Cybenko that a single hidden layer 
 is a universal approximator under very mild assumptions, i.e. $\lim_{m \to \infty} e(m) = 0$.
 This result merely states that our statistical setup is consistent, and it should not be 
@@ -208,12 +191,12 @@ $$\langle w_1, w_2 \rangle_Z \leq \langle w_1, w_2 \rangle \| w_m \|_Z^2~.$$
 The local behavior of parameters $w_1, w_2$ on our regression problem is thus equivalent to that of having a linear layer, provided $w_1$ and $w_2$ are sufficiently close to each other.
 This result can be seen as a \emph{spoiler} of what is coming: increasing the hidden layer dimensionality $M$ will increase the chances to encounter pairs of vectors $w_1, w_2$ with small angle; and with it some hope of approximating the previous linear behavior thanks to the small linearization error. 
 
-In order to control the connectedness, we will a last definition. Given a 
+In order to control the connectedness, we need a last definition. Given a 
 hidden layer of size $m$ with current parameters $W \in \R^{m \times n}$, we define a
 ``robust compressibility" factor as 
 \begin{equation}
 \label{compress}
-\delta_W(n, \alpha; m) = \min_{ \|\gamma \|_0 \leq n, \sup_i |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|^2 \}~,~(n \leq m)~.
+\delta_W(n, \alpha; m) = \min_{ \|\gamma \|_0 \leq n, \sup_i |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|^1  \}~,~(n \leq m)~.
 \end{equation} 
 This quantity thus measures how easily one can compress the current hidden layer representation, 
 by keeping only a subset of its units, but allowing these units to move by a small amount. It is a form 
@@ -223,7 +206,7 @@ of $n$-width similar to Kolmogorov width \cite{donoho} and is also related to ro
 \subsubsection{Main result}
 
 Our main result considers now a non-asymptotic scenario given by some fixed
-size $M$ of the hidden layer. Given two parameter values $\theta^A = (W_1^A, W_2^A) \in \mathcal{W}$ 
+size $m$ of the hidden layer. Given two parameter values $\theta^A = (W_1^A, W_2^A) \in \mathcal{W}$ 
 and $\theta^B= (W_1^B, W_2^B)$ with $\Forr(\theta^{\{A,B\} } ) \leq \lambda$, 
 we show that there exists a continuous path 
 $\gamma: [0,1] \to \mathcal{W}$ connecting $\theta^A$ and $\theta^B$ 
@@ -237,23 +220,32 @@ $\gamma(0) = \theta^A$, $\gamma(1) = \theta^B$ and
 \Forr( \gamma(t) )  \leq \max( \lambda, \epsilon)~,\text{ with}
 \end{equation}
 \begin{equation}
-\epsilon = \inf_{n, \alpha} \left(\max \left\{ e(n), \delta_{W_1^A}(M, 0; M ) , \delta_{W_1^A}(M-n, \alpha; M ) ,  \delta_{W_1^B}(M, 0; M ) , \delta_{W_1^B}(M-n, \alpha; M ) \right\} + f(\alpha, M) \right)~,
+\epsilon = \inf_{n, \alpha} \left(\max \left\{ e(n), \delta_{W_1^A}(m, 0; m ) , \delta_{W_1^A}(m-n, \alpha; m ) ,  \delta_{W_1^B}(m, 0; m ) , \delta_{W_1^B}(m-n, \alpha; m ) \right\} + C_1 \alpha  + O(\alpha^2) \right)~,
 \end{equation}
-with 
-$$f(\alpha, M) = C_1 \alpha  + C_2 M \alpha^2 + O(\alpha^2)~,$$
-where $C_1$ and $C_2$ are absolute constants depending only on $\kappa$ and $P$.
+%with 
+%$$f(\alpha, M) = C_1 \alpha  + C_2 M \alpha^2 + O(\alpha^2)~,$$
+%$$f(\alpha) = ~,$$
+where $C_1$ is an absolute constant depending only on $\kappa$ and $P$.
 \end{theorem}
-
-\begin{corollary}
-\label{maincoro}
-If $M$ increases, the energy gap $\epsilon$ goes to zero.
-Here we use the fact that $\delta(\lambda m; \epsilon(m); m) \to 0$ as $m \to \infty$. (find the rate).
-\end{corollary}
-
 \textbf{Remarks:}
 \begin{itemize}
-\item Ridge regression term.
-\item Extension to empirical risk. It is straightforward just change the metric. 
-\item Extension to several layers.
+\item Our regularization term is currently a mix between $\ell_2$ norm constraints on the first layer and $\ell_1$ norm constraints on the second layer. We believe this is an artifact of our proof technique, and we conjecture that more general regularizations yield similar results.
+\item This result uses the data distribution through the oracle bound $e(m)$ and the covariance term. The 
+extension to empirical risk is accomplished by replacing the probability measure $P$ by the empirical measure $\hat{P} = \frac{1}{L} \sum_l \delta\left( (x,y) - (x_l, y_l)\right) $. However, our asymptotic analysis has to be carefully reexamined to take into account and avoid the trivial regime when $M$ outgrows $L$.  
+%\item Finally, another essential question is the extension of this result to several layers
 \end{itemize}
+A consequence of Theorem \ref{maintheo} is that as $M$ increases, the model becomes asymptotically connected, as proven in the following corollary.
+\begin{corollary}
+\label{maincoro}
+As $M$ increases, the energy gap $\epsilon$ goes to zero.
+%Here we use the fact that $\delta(\lambda m; \epsilon(m); m) \to 0$ as $m \to \infty$. (find the rate).
+\end{corollary}
+This is consistent with the overparametrization results from \cite{shamir} and the general common knowledge amongst deep learning practitioners. Our next sections explore this question, and refine it by considering not only topological properties but also some rough geometrical measure of the level sets.
+
+
+
+
+
+
+
 
