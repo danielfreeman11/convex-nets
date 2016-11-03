@@ -125,8 +125,8 @@ $X$ be any arbitrary distribution with density $p(x) > 0$ for all $x \in \R^n$, 
 %It is the indicator function corresponding to the tesselation $\mathcal{P}$. 
 $Y ~|~X ~\stackrel{d}{=} \Phi(X ; \theta)$~. Since $\Phi$ is invariant under a subgroup of permutations $\theta_\sigma$ of its hidden layers, it is easy to see that one can find two parameter values $\theta_A = \theta$ and $\theta_B = \theta_\sigma$ such that $\Forr(\theta_A) = \Forr(\theta_B) = 0$, but any continuous path $\gamma(t)$ from $\theta_A$ to $\theta_B$ will have a different tessellation and therefore won't satisfy $\Forr( \gamma(t) ) = 0$. 
 Moreover, one can build on this counter-example to show that not only the level sets are disconnected, but also that there exist poor local minima. Let $\theta'$ be a different set of parameters, and $Y' ~|~X \stackrel{d}{=} \Phi(X; \theta')$ be a different target distribution. Now consider the data distribution given by the mixture
-$$X ~|~p(x) ~~,~z \sim B(\pi)~,~Y ~|~X,z \stackrel{d}{=} z \Phi(X;\theta) + (1-z) \Phi(X; \theta')~.$$
-By adjusting the mixture component $\pi$ we can clearly change the risk at $\theta$ and $\theta'$ and make them different, but we can preserve the status of local minima of $\theta$ and $\theta'$. 
+$$X ~|~p(x) ~~,~z \sim \text{Bernoulli}(\pi)~,~Y ~|~X,z \stackrel{d}{=} z \Phi(X;\theta) + (1-z) \Phi(X; \theta')~.$$
+By adjusting the mixture component $\pi$ we can clearly change the risk at $\theta$ and $\theta'$ and make them different, but we preserve the status of local minima of $\theta$ and $\theta'$. 
  
 This illustrates an intrinsic difficulty in the optimization landscape if one is after \emph{universal} 
 guarantees that do not depend upon the data distribution. This difficulty is non-existent in the linear case 
@@ -212,7 +212,7 @@ such that its oracle risk is uniformly bounded by $\max(\lambda, \epsilon)$, whe
 decreases with model overparametrization. 
 \begin{theorem}
 \label{maintheo}
-There exists a continuous path $\gamma: [0,1] \to \mathcal{W}$ such that
+For any $\theta^A, \theta^B \in \mathcal{W}$ and $\lambda \in \R$ satisfying $\Forr(\theta^{\{A,B\}}) \leq \lambda$, there exists a continuous path $\gamma: [0,1] \to \mathcal{W}$ such that
 $\gamma(0) = \theta^A$, $\gamma(1) = \theta^B$ and
 \begin{equation}
 \Forr( \gamma(t) )  \leq \max( \lambda, \epsilon)~,\text{ with}
@@ -229,10 +229,10 @@ Some remarks are in order. First, our regularization term is currently a mix bet
 extension to empirical risk is accomplished by replacing the probability measure $P$ by the empirical measure $\hat{P} = \frac{1}{L} \sum_l \delta\left( (x,y) - (x_l, y_l)\right) $. However, our asymptotic analysis has to be carefully reexamined to take into account and avoid the trivial regime when $M$ outgrows $L$.  
 %\item Finally, another essential question is the extension of this result to several layers
 %\end{itemize}
-A consequence of Theorem \ref{maintheo} is that as $M$ increases, the model becomes asymptotically connected, as proven in the following corollary.
+A consequence of Theorem \ref{maintheo} is that as $m$ increases, the model becomes asymptotically connected, as proven in the following corollary.
 \begin{corollary}
 \label{maincoro}
-As $M$ increases, the energy gap $\epsilon$ goes to zero.
+As $m$ increases, the energy gap $\epsilon$ goes to zero and therefore the level sets become connected at all energy levels.
 %Here we use the fact that $\delta(\lambda m; \epsilon(m); m) \to 0$ as $m \to \infty$. (find the rate).
 \end{corollary}
 This is consistent with the overparametrization results from \cite{safran2015quality,shamir2} and the general common knowledge amongst deep learning practitioners. Our next sections explore this question, and refine it by considering not only topological properties but also some rough geometrical measure of the level sets.
