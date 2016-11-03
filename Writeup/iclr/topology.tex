@@ -18,9 +18,12 @@ For convenience, in our analysis we will also use the oracle risk minimization:
 \Forr(\theta) = \E_{(X,Y) \sim P} \| \Phi(X;\theta) - Y \|^2 + \kappa \mathcal{R}(\theta)~.
 \end{equation}
 Our setup considers the case where $\mathcal{R}$ 
-consists on the $\ell_1$ norm on all layers: $\mathcal{R}(\theta) = \| \theta \|_1$, 
-which provides a sparse regularization prior, and the Ridge regression case  
-$\mathcal{R}(\theta) = \| \theta\|_2^2$ (also referred as weight decay). 
+consists on either $\ell_1$ or $\ell_2$ norms, as we shall describe below.
+They correspond to well-known sparse and ridge regularization respectively.
+%
+% on all layers: $\mathcal{R}(\theta) = \| \theta \|_1$, 
+%which provides a sparse regularization prior, and the Ridge regression case  
+%$\mathcal{R}(\theta) = \| \theta\|_2^2$ (also referred as weight decay). 
 
 \subsection{Poor local minima characterization from topological connectedness}
 

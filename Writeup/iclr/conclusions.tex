@@ -8,7 +8,7 @@ We have addressed the problem of characterizing the loss surface of neural netwo
 on gradient descent algorithms from two angles that build on top of each other. 
 
 On the one hand, we have presented new theoretical results that quantify 
-the amount of uphill climbing that is required to progress to lower energy configurations in 
+the amount of uphill climbing that is required in order to progress to lower energy configurations in 
 single layer ReLU networks, and proved that this amount converges to zero with overparametrization under mild conditions. On the other hand, we have introduced a dynamic programming algorithm that efficiently approximates geodesics within each level set, providing a tool that not only verifies the connectedness of level sets, but also estimates the geometric regularity of these sets. Thanks to this information, we can quantify how `non-convex' an optimization problem is, and verify that the optimization of quintessential deep learning tasks -- Cifar-10 classification using CNNs, character-level text modeling using LSTMs -- behaves in a nearly convex fashion up until they reach high accuracy levels.
 
 That said, there is still a large number of limitations and open questions related to our framework. Amongst those, in the near future we shall concentrate on:
