@@ -39,6 +39,9 @@ knowing whether $\Omega_F(\lambda)$ is connected at each energy level $\lambda$:
 If $\Omega_F(\lambda)$ is connected for all $\lambda$ then every local minima of $F(\theta)$ is a global minima. 
 \end{proposition}
 
+This proposition shows that a sufficient condition to prevent the existence of poor local minima is having connected level sets, but this condition is not necessary: one can have isolated local minima lying 
+at the same energy level. This can be the case in systems that are defined up to 
+a discrete symmetry group, such as multilayer neural networks. However, as we shall see next, this case puts the system in a brittle position, since one needs to be able to account for all the local minima (and there can be exponentially many of them as the parameter dimensionality increases) and verify that their energy is indeed equal. 
 
 \subsection{The Linear Case}
 
@@ -50,7 +53,7 @@ $F$ is a multilayer network defined by
 \Phi(x;\theta) = W_K \dots W_1 x~,~\theta = (W_1, \dots, W_K)~.
 \end{equation}
 and the ridge regression $\mathcal{R}(\theta) =\| \theta \|^2$. This model defines a non-convex (and non-concave) loss $\Fem(\theta)$.
-When $\kappa = 0$, it has been shown in \cite{ganguli} and \cite{linearcase} that in this case, 
+When $\kappa = 0$, it has been shown in \cite{saxe2013exact} and \cite{kawaguchi2016deep} that in this case, 
 every local minima is a global minima.  
 We provide here an alternative proof of that result that uses
 a somewhat simpler argument and allows for $\kappa > 0$. 
@@ -75,7 +78,7 @@ Then $\Omega_{\Fem}(\lambda)$ is connected for all $\lambda$, as well as $\Omega
 and therefore there are no poor local minima.  
 \end{proposition}
 This result can be extended to treat other regularization terms other than the ridge term 
-by using more general atomic norms \cite{bachatomic}. But we now move our interest to the nonlinear case, which is more relevant to our purposes. 
+by using more general atomic norms \cite{bach2013convex}. But we now move our interest to the nonlinear case, which is more relevant to our purposes. 
 
 \subsection{Half-Rectified Nonlinear Case}
 
@@ -104,8 +107,7 @@ One may wonder whether the same phenomena of global connectedness also holds
 in the half-rectified case. A simple motivating counterexample shows that this is not the case in 
 general. Consider a simple setup with $X \in \R^2$ drawn from a mixture of two Gaussians $\mathcal{N}_{-1}$ 
 and $\mathcal{N}_{1}$, and let $Y = (X-\mu_Z) \cdot Z $ , where $Z$ is the (hidden) mixture component taking $\{1,-1\}$ values.  Let 
-$\hat{Y} = \Phi(X; \{ W_1, W_2\} )$ be a single-hidden layer ReLU network, with two hidden units, 
-illustrated in Figure ??. 
+$\hat{Y} = \Phi(X; \{ W_1, W_2\} )$ be a single-hidden layer ReLU network, with two hidden units. 
 %Since the model is homogeneous, one can think about $W_1$ as encoding two unitary vectors without loss of generality. 
 Let $\theta^A$ be a configuration that bisects the two mixture components, 
 and let $\theta^B$ the same configuration, but swapping the bisectrices. 
@@ -115,15 +117,18 @@ must necessarily pass through a point in which $W_1$ has rank $1$, which leads t
 
 In fact, it is easy to see that this counter-example can be extended to any generic half-rectified architecture, if one is 
 allowed to adversarially design a data distribution. For any given $\Phi(X; \theta)$ with arbitrary architecture and current parameters 
-$\theta = (W_i)$, let $\mathcal{P}_\theta=\{ \mathcal{A}_1, \dots, \mathcal{A}_S\}$ be the underlying tesselation of the input space given by our current choice of parameters; that is, $\Phi(X; \theta)$ is piece-wise linear and $\mathcal{P}_\theta$ contains those pieces. Now let 
+$\theta = (W_i)$, let $\mathcal{P}_\theta=\{ \mathcal{A}_1, \dots, \mathcal{A}_S\}$ be the underlying tessellation of the input space given by our current choice of parameters; that is, $\Phi(X; \theta)$ is piece-wise linear and $\mathcal{P}_\theta$ contains those pieces. Now let 
 $X$ be any arbitrary distribution with density $p(x) > 0$ for all $x \in \R^n$, for example a Gaussian, and let %$Y ~|~ \{X \in \mathcal{A}_s\} = s$. 
 %It is the indicator function corresponding to the tesselation $\mathcal{P}$. 
-$Y ~|~X ~\stackrel{d}{=} \Phi(X ; \theta)$~. Since $\Phi$ is invariant under permutations $\theta_\sigma$ of its hidden layers, it is easy to see that one can find two parameter values $\theta_A = \theta$ and $\theta_B = \theta_\sigma$ such that $\Forr(\theta_A) = \Forr(\theta_B) = 0$, but any continuous path $\gamma(t)$ from $\theta_A$ to $\theta_B$ will have a different tesselation and therefore won't satisfy $\Forr( \gamma(t) ) = 0$. 
+$Y ~|~X ~\stackrel{d}{=} \Phi(X ; \theta)$~. Since $\Phi$ is invariant under a subgroup of permutations $\theta_\sigma$ of its hidden layers, it is easy to see that one can find two parameter values $\theta_A = \theta$ and $\theta_B = \theta_\sigma$ such that $\Forr(\theta_A) = \Forr(\theta_B) = 0$, but any continuous path $\gamma(t)$ from $\theta_A$ to $\theta_B$ will have a different tessellation and therefore won't satisfy $\Forr( \gamma(t) ) = 0$. 
+Moreover, one can build on this counter-example to show that not only the level sets are disconnected, but also that there exist poor local minima. Let $\theta'$ be a different set of parameters, and $Y' ~|~X \stackrel{d}{=} \Phi(X; \theta')$ be a different target distribution. Now consider the data distribution given by the mixture
+$$X ~|~p(x) ~~,~z \sim B(\pi)~,~Y ~|~X,z \stackrel{d}{=} z \Phi(X;\theta) + (1-z) \Phi(X; \theta')~.$$
+By adjusting the mixture component $\pi$ we can clearly change the risk at $\theta$ and $\theta'$ and make them different, but we can preserve the status of local minima of $\theta$ and $\theta'$. 
  
 This illustrates an intrinsic difficulty in the optimization landscape if one is after \emph{universal} 
 guarantees that do not depend upon the data distribution. This difficulty is non-existent in the linear case 
-and not easy to exploit in mean-field approaches such as \cite{choromaska}, but 
-is easily detected as soon as one considers a non-linear model, and shows that in general 
+and not easy to exploit in mean-field approaches such as \cite{choromanska2015loss}, 
+and shows that in general 
 we should not expect to obtain connected level sets. However, 
 connectedness can be recovered if one is willing to accept a small increase 
 of energy and make some assumptions on the complexity of the regression task.
@@ -190,7 +195,7 @@ hidden layer of size $m$ with current parameters $W \in \R^{n \times m}$, we def
 \end{equation} 
 This quantity thus measures how easily one can compress the current hidden layer representation, 
 by keeping only a subset of $n$ its units, but allowing these units to move by a small amount controlled by $\alpha$. It is a form 
-of $n$-width similar to Kolmogorov width \cite{donoho} and is also related to robust sparse coding from \cite{simoncelli_robust}.
+of $n$-width similar to Kolmogorov width \cite{donoho2006compressed} and is also related to robust sparse coding from \cite{tang2013compressed, ekanadham2011recovery}.
 
 
 \subsubsection{Main result}
@@ -227,7 +232,7 @@ A consequence of Theorem \ref{maintheo} is that as $M$ increases, the model beco
 As $M$ increases, the energy gap $\epsilon$ goes to zero.
 %Here we use the fact that $\delta(\lambda m; \epsilon(m); m) \to 0$ as $m \to \infty$. (find the rate).
 \end{corollary}
-This is consistent with the overparametrization results from \cite{shamir} and the general common knowledge amongst deep learning practitioners. Our next sections explore this question, and refine it by considering not only topological properties but also some rough geometrical measure of the level sets.
+This is consistent with the overparametrization results from \cite{safran2015quality,shamir2} and the general common knowledge amongst deep learning practitioners. Our next sections explore this question, and refine it by considering not only topological properties but also some rough geometrical measure of the level sets.
 
 
 
