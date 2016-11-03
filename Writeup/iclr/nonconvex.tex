@@ -53,6 +53,14 @@
   breakatwhitespace=true,
   tabsize=3
 }
+\makeatletter
+\def\fixedlabel#1#2{%
+  \@bsphack%
+  \protected@write\@auxout{}%
+         {\string\newlabel{#1}{{#2}{\thepage}}}%
+  \@esphack}
+\makeatother
+
 
 \newcommand {\lb} {{\langle}}
 \newcommand {\rb} {{\rangle}}

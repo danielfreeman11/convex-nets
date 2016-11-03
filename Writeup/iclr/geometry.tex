@@ -11,7 +11,7 @@
  
  The intuition behind our main result is that, for smooth enough loss functions and for sufficient overparameterization, it should be ``easy'' to connect two equally powerful models---i.e., two models with $F_o{\theta^{A,B}} \leq \lambda$.  A sensible measure of this ease-of-connectedness is the normalized length of the geodesic connecting one model to the other: $|\gamma_{A,B}(t)| / |\theta_A - \theta_B|$.  This length represents approximately how far of an excursion one must make in the space of models relative to the euclidean distance between a pair of models.  Thus, convex models have a geodesic length of $1$, because the geodesic is simply linear interpolation between models, while more non-convex models have geodesic lengths strictly larger than $1$.
  
- Because calculating the exact geodesic is difficult, we approximate the geodesic paths via a dynamic programming approach we call Dynamic String Sampling.  We comment on alternative algorithms as well as speed and accuracy tradeoffs in AppendixGOHERE.
+ Because calculating the exact geodesic is difficult, we approximate the geodesic paths via a dynamic programming approach we call Dynamic String Sampling.  We comment on alternative algorithms in Appendix \ref{sec:ConstrainedAlg}.
  
  For a pair of models with network parameters $\theta_i$, $\theta_j$, each with $F_e(\theta)$ below a threshold $L_0$, we aim to efficienly generate paths in the space of weights where the empirical loss along the path remains below $L_0$.  These paths are continuous curves belonging to $\Omega_F(\lambda)$--that is, the level sets of the loss function of interest.
 
@@ -40,23 +40,15 @@
 \end{algorithmic}
 \end{algorithm}
  
-  The algorithm recursively builds a string of models in the space of weights which continuously connect $\theta_i$ to $\theta_j$.  Models are added and trained until the pairwise linearly interpolated loss, i.e. $\rm{max}_t F_e(t\theta_i\ +\ (1-t)\theta_j)$ for $t\in(0,1)$, is below the threshold, $L_0$, for every pair of neighboring models on the string.  We provide a cartoon of the algorithm in \figref{fig:AlgorithmFigure}.
- 
- \begin{figure}
-\begin{center}
-\scalebox{1}{\includegraphics[width=.4\textwidth]{../AlgorithmFigure}}
-\end{center}
-\caption{A cartoon of the algorithm.  $a):$ The initial two models with approximately the same loss, $L_0$. $b):$ The interpolated loss curve, in red, and its global maximum, occuring at $t=t^*$. $c):$ The interpolated model $\Theta(\theta_i, \theta_j, t^*)$ is added and labeled $\theta_{i,j}$.  $d):$ Stochastic gradient descent is performed on the interpolated model until its loss is below $\alpha L_0$. $e):$ New interpolated loss curves are calculated between the models, pairwise on a chain.  $f):$ As in step $c)$, a new model is inserted at the maxima of the interpolated loss curve between $\theta_i$ and $\theta_{i,j}$.  $g):$  As in step $d)$, gradient descent is performed until the model has low enough loss.}
-\label{fig:AlgorithmFigure}
-\end{figure}
+  The algorithm recursively builds a string of models in the space of weights which continuously connect $\theta_i$ to $\theta_j$.  Models are added and trained until the pairwise linearly interpolated loss, i.e. $\rm{max}_t F_e(t\theta_i\ +\ (1-t)\theta_j)$ for $t\in(0,1)$, is below the threshold, $L_0$, for every pair of neighboring models on the string.  We provide a cartoon of the algorithm in Appendix \ref{AlgCartoon}.
  
   
   \subsection{Failure Conditions and Practicalities}
   \label{sec:Fail}
   
-  While the algorithm presented will faithfully certify two models are connected if the algorithm converges, it is worth emphasizing that the algorithm does not guarantee that two models are disconnected if the algorithm fails to converge.  In general, the problem of determining if two models are connected can be made arbitrarily difficult by choice of a particularly pathological geometry for the loss function, so we are constrained to heuristic arguments for determining when to stop running the algorithm.  Thankfully, in practice, loss function geometries for problems of interest are not intractably difficult to explore.  We comment more on diagnosing disconnections more carefully in section SYMMETRYDISCONNECT.
+  While the algorithm presented will faithfully certify two models are connected if the algorithm converges, it is worth emphasizing that the algorithm does not guarantee that two models are disconnected if the algorithm fails to converge.  In general, the problem of determining if two models are connected can be made arbitrarily difficult by choice of a particularly pathological geometry for the loss function, so we are constrained to heuristic arguments for determining when to stop running the algorithm.  Thankfully, in practice, loss function geometries for problems of interest are not intractably difficult to explore.  We comment more on diagnosing disconnections more carefully in Appendix \ref{sec:disconnect}.
   
-  Further, if the $\rm{\mathbf{MaxError}}$ exceeds $L_0$ for every new recursive branch as the algorithm progresses, the worst case runtime scales as $O(\rm{exp}(\rm{\mathbf{Depth}}))$.  Empirically, we find that the number of new models added at each depth does grow, but eventually saturates, and falls for a wide variety of models and architectures, so that the typical runtime is closer to $O(\rm{poly}(\rm{\mathbf{Depth}}))$---at least up until a critical value of $L_0$.  We comment more on this in section NUMERICALDISCUSSION.
+  Further, if the $\rm{\mathbf{MaxError}}$ exceeds $L_0$ for every new recursive branch as the algorithm progresses, the worst case runtime scales as $O(\rm{exp}(\rm{\mathbf{Depth}}))$.  Empirically, we find that the number of new models added at each depth does grow, but eventually saturates, and falls for a wide variety of models and architectures, so that the typical runtime is closer to $O(\rm{poly}(\rm{\mathbf{Depth}}))$---at least up until a critical value of $L_0$.
   
-  To aid convergence, either of the choices in line $7$ of the algorithm works in practice---choosing $t^*$ at a local maximum can provide a modest increase in algorithm runtime, but can be unstable if the the calculated interpolated loss is particularly flat or noisy.  $t^*=.5$ is more stable, but slower.  Finally, we find that training $\Phi_3$ to $\alpha L_0$ for $\alpha < 1$ in line $8$ of the algorithm tends to aid convergence without noticeably impacting our numerics.  We provide more details in NUMERICALDISCUSSION.
+  To aid convergence, either of the choices in line $7$ of the algorithm works in practice---choosing $t^*$ at a local maximum can provide a modest increase in algorithm runtime, but can be unstable if the the calculated interpolated loss is particularly flat or noisy.  $t^*=.5$ is more stable, but slower.  Finally, we find that training $\Phi_3$ to $\alpha L_0$ for $\alpha < 1$ in line $8$ of the algorithm tends to aid convergence without noticeably impacting our numerics.  We provide further implementation details in \ref{sec:NumExp}.
  

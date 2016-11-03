@@ -1,3 +1,17 @@
+\section{Cartoon of Algorithm}
+\label{AlgCartoon}
+
+Refer to Fig. \ref{fig:cartoon}.
+
+\begin{figure}
+\begin{center}
+\scalebox{1}{\includegraphics[width=1.0\textwidth]{../AlgorithmFigure}}
+\end{center}
+\caption{A cartoon of the algorithm.  $a):$ The initial two models with approximately the same loss, $L_0$. $b):$ The interpolated loss curve, in red, and its global maximum, occuring at $t=t^*$. $c):$ The interpolated model $\Theta(\theta_i, \theta_j, t^*)$ is added and labeled $\theta_{i,j}$.  $d):$ Stochastic gradient descent is performed on the interpolated model until its loss is below $\alpha L_0$. $e):$ New interpolated loss curves are calculated between the models, pairwise on a chain.  $f):$ As in step $c)$, a new model is inserted at the maxima of the interpolated loss curve between $\theta_i$ and $\theta_{i,j}$.  $g):$  As in step $d)$, gradient descent is performed until the model has low enough loss.}
+\label{fig:cartoon}
+\end{figure}
+
+
 \section{Visualization of Connection}
 \label{visualization}
 
@@ -29,6 +43,8 @@
 \label{symdisc}
 
  As a sanity check for the algorithm, we also applied it to a problem for which we know that it is not possible to connect models of equivalent power by the arguments of section \ref{disconnect}.  The input data is 3 points in $\mathbb{R}^2$, and the task is to permute the datapoints, i.e. map $\{x_1,x_2,x_3\} \to \{x_2,x_3,x_1\}$.  This map requires at least 12 parameters in general for the three linear maps which take $x_i\to x_j$ for $i,j \in \{\{1,2\},\{2,3\},\{3,1\}\}$.  Our archticture was a 2-3-2 fully connected neural network with a single relu nonlinearity after the hidden layer---a model which clearly has 12 free parameters by construction.  The two models we tried to connect were a single model, $\theta$, and a copy of $\theta$ with the first two neurons in the hidden layer permuted, $\tilde{\theta_{\sigma}}$.  The algorithm fails to converge when initialized with these two models.  We provide a visualization of the string of models produced by the algorithm in Fig. \ref{discfigs}.
+ 
+ In general, a persistent high interpolated loss between two neighboring beads on the string of models could arise from either a slowly converging, connected pair of models or from a truly disconnected pair of models.  ``Proving'' a disconnection at the level of numerical experiments is intractable in general, but a collection of negative results---i.e., failures to converge---are highly suggestive of a true disconnection.
  
 \begin{figure}
 \label{discfigs}
