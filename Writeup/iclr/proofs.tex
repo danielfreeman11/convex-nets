@@ -26,33 +26,62 @@ $$F( (1-t) \theta^A + t \theta^B) \leq (1-t) F(\theta^A) + t F(\theta^B) \leq \l
 
 Suppose the result is true for $K-1$. Let $\theta^A = (W_1^A, \dots, W^A_K)$ and 
  $\theta^B = (W_1^B, \dots, W^B_K)$ with $F(\theta^A) \leq \lambda$, $F(\theta^B) \leq \lambda$.
-For each $W_1, \dots, W_K$, we denote $\tilde{W}_j = W_j$ for $j < K-1$ and
-$\tilde{W}_{K-1} = W_K W_{K-1}$. By induction hypothesis, the 
+ Since $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$, we can find $k^*$ such that
+ $n_{k^*} \geq \min(n_{k^*-1}, n_{k^*+1})$.
+For each $W_1, \dots, W_K$, we denote $\tilde{W}_j = W_j$ for $j \neq k^*, k^*- 1$ and
+$\tilde{W}_{k^*} = W_{k^*-1} W_{k^*}$. 
+%For each $W_1, \dots, W_K$, we denote $\tilde{W}_j = W_j$ for $j < K-1$ and
+%$\tilde{W}_{K-1} = W_K W_{K-1}$. 
+By induction hypothesis, the 
 loss expressed in terms of $\tilde{\theta} = (\tilde{W}_1, \dots, \tilde{W}_{K-1})$ is connected 
-between $\tilde{\theta}_1$ and $\tilde{\theta_2}$. Let $\tilde{W}_{K-1}(t)$ the corresponding 
-linear path projected in the last layer. 
-We need to produce a path in the variables $W_{K-1}(t)$, $W_K(t)$ 
+between $\tilde{\theta}_1$ and $\tilde{\theta_2}$. Let $\tilde{W}_{k^*}(t)$ the corresponding 
+ path projected in the  layer $k^*$. 
+We need to produce a path in the variables $W_{k^*-1}(t)$, $W_{k^*}(t)$ 
 such that:
 \begin{itemize}
-\item[i] $W_{K-1}(0) = W_{K-1}^A$, $W_{K-1}(1) = W_{K-1}^B$, 
-\item[ii] $W_{K}(0) = W_{K}^A$, $W_{K}(1) = W_{K}^B$,
-\item[iii] $W_{K}(t) W_{K-1}(t) = \tilde{W}_{K-1}(t) = (1-t) W_{K}^A W_{K-1}^A + t W_{K}^B W_{K-1}^B $ for $t \in (0,1)$. 
-\item[iv] $\| W_{K-1}(t) \|^2 + \| W_{K}(t) \|^2 \leq (1-t) ( \| W \|_{K-1}^2(0) + \| W \|_{K}^2(0)  ) + t (\| W \|_{K-1}^2(1) + \| W \|_{K}^2(1))$.
+\item[i] $W_{k^*-1}(0) = W_{k^*-1}^A$, $W_{k^*-1}(1) = W_{k^*-1}^B$, 
+\item[ii] $W_{k^*}(0) = W_{k^*}^A$, $W_{k^*}(1) = W_{k^*}^B$,
+\item[iii] $W_{k^*}(t) W_{k^*-1}(t) = \tilde{W}_{k^*-1}(t) $ for $t \in (0,1)$. 
+\item[iv] $\| W_{k^*-1}(t) \|^2 + \| W_{k^*}(t) \|^2 \leq (1-t) ( \| W \|_{k^*-1}^2(0) + \| W \|_{k^*}^2(0)  ) + t (\| W \|_{k^*-1}^2(1) + \| W \|_{k^*}^2(1))$.
 \end{itemize} 
-We construct the path using the variational properties of atomic norms \cite{bachatomic}. 
+We construct the path using the variational properties of atomic norms \cite{bach2013convex}. 
 When we pick the ridge regression regularization, the corresponding atomic norm is the 
 nuclear norm:
 $$\| X \|_{*} = \min_{UV^T = X} \frac{1}{2}( \| U \|^2 + \| V \|^2)~.$$
 The path is constructed by exploiting the convexity of the variational norm $\| X\|_{*}$. 
 Let us define 
-$$\forall~t~,~W_{K-1}(t), W_{K}(t) = \arg\min_{UV^T= \tilde{W}_{K-1}(t)} (\| U\|^2 + \|V \|^2)~. $$ 
+$$\forall~t~,~W_{k^*-1}(t), W_{k^*}(t) = \arg\min_{UV^T= \tilde{W}_{k^*-1}(t)} (\| U\|^2 + \|V \|^2)~. $$ 
 This path satisfies (i-iii) by definition. We also verify that 
 \begin{eqnarray*}
-\| W_{K-1}(t) \|^2 + \| W_{K}(t) \|^2 &=& 2 \| \tilde{W}_{K-1}(t)\|_{*}   \\
-&\leq & 2 (1-t) \|  \tilde{W}_{K-1}(0)\|_{*} + 2 t  \|  \tilde{W}_{K-1}(1)\|_{*} \\ 
-&\leq & (1-t) ( \| W \|_{K-1}^2(0) + \| W \|_{K}^2(0)  ) + t (\| W \|_{K-1}^2(1) + \| W \|_{K}^2(1))~.
+\| W_{k^*-1}(t) \|^2 + \| W_{k^*}(t) \|^2 &=& 2 \| \tilde{W}_{k^*-1}(t)\|_{*}   \\
+&\leq & 2 (1-t) \|  \tilde{W}_{k^*-1}(0)\|_{*} + 2 t  \|  \tilde{W}_{k^*-1}(1)\|_{*} \\ 
+&\leq & (1-t) ( \| W \|_{k^*-1}^2(0) + \| W \|_{k^*}^2(0)  ) + t (\| W \|_{k^*-1}^2(1) + \| W \|_{k^*}^2(1))~.
 \end{eqnarray*}
 which concludes the proof $\square$. 
+
+%
+%We need to produce a path in the variables $W_{K-1}(t)$, $W_K(t)$ 
+%such that:
+%\begin{itemize}
+%\item[i] $W_{K-1}(0) = W_{K-1}^A$, $W_{K-1}(1) = W_{K-1}^B$, 
+%\item[ii] $W_{K}(0) = W_{K}^A$, $W_{K}(1) = W_{K}^B$,
+%\item[iii] $W_{K}(t) W_{K-1}(t) = \tilde{W}_{K-1}(t) = (1-t) W_{K}^A W_{K-1}^A + t W_{K}^B W_{K-1}^B $ for $t \in (0,1)$. 
+%\item[iv] $\| W_{K-1}(t) \|^2 + \| W_{K}(t) \|^2 \leq (1-t) ( \| W \|_{K-1}^2(0) + \| W \|_{K}^2(0)  ) + t (\| W \|_{K-1}^2(1) + \| W \|_{K}^2(1))$.
+%\end{itemize} 
+%We construct the path using the variational properties of atomic norms \cite{bach2013convex}. 
+%When we pick the ridge regression regularization, the corresponding atomic norm is the 
+%nuclear norm:
+%$$\| X \|_{*} = \min_{UV^T = X} \frac{1}{2}( \| U \|^2 + \| V \|^2)~.$$
+%The path is constructed by exploiting the convexity of the variational norm $\| X\|_{*}$. 
+%Let us define 
+%$$\forall~t~,~W_{K-1}(t), W_{K}(t) = \arg\min_{UV^T= \tilde{W}_{K-1}(t)} (\| U\|^2 + \|V \|^2)~. $$ 
+%This path satisfies (i-iii) by definition. We also verify that 
+%\begin{eqnarray*}
+%\| W_{K-1}(t) \|^2 + \| W_{K}(t) \|^2 &=& 2 \| \tilde{W}_{K-1}(t)\|_{*}   \\
+%&\leq & 2 (1-t) \|  \tilde{W}_{K-1}(0)\|_{*} + 2 t  \|  \tilde{W}_{K-1}(1)\|_{*} \\ 
+%&\leq & (1-t) ( \| W \|_{K-1}^2(0) + \| W \|_{K}^2(0)  ) + t (\| W \|_{K-1}^2(1) + \| W \|_{K}^2(1))~.
+%\end{eqnarray*}
+%which concludes the proof $\square$. 
 
 %We construct it as follows. Let 
 %$$W_{K}(t) = t W_{K}^B + (1-t) W_{K}^A + t (1-t) V~,$$
@@ -190,7 +219,7 @@ within the unit ball has no penalty in the loss, and we can compensate this scal
 thanks to the homogeneity of the half-rectification. Since this results in an attenuation of these second layer weights, 
 they too are guaranteed not to increase the loss. 
 
-From \cite{vershynin} [Lemma 5.2] we verify that the covering number $\mathcal{N}(S^{n-1}, \epsilon)$ of the Euclidean unit sphere $S^{n-1}$ 
+From \cite{vershynin2010introduction} [Lemma 5.2] we verify that the covering number $\mathcal{N}(S^{n-1}, \epsilon)$ of the Euclidean unit sphere $S^{n-1}$ 
 satisfies 
 $$\mathcal{N}(S^{n-1}, \epsilon) \leq \left( 1 + \frac{2}{\epsilon} \right)^n~,$$
 which means that we can cover the unit sphere with an $\epsilon$-net of size $\mathcal{N}(S^{n-1}, \epsilon) $. 
