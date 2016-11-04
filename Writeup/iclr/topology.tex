@@ -59,7 +59,7 @@ and the ridge regression $\mathcal{R}(\theta) =\| \theta \|^2$. This model defin
 When $\kappa = 0$, it has been shown in \cite{saxe2013exact} and \cite{kawaguchi2016deep} that in this case, 
 every local minima is a global minima.  
 We provide here an alternative proof of that result that uses
-a somewhat simpler argument and allows for $\kappa > 0$. 
+a somewhat simpler argument and allows for $\kappa > 0$ in the case $K=2$.
 
 %For that purpose, let $W_1, W_2, \dots, W_K$ be weight matrices of sizes 
 %$n_k \times n_{k+1}$, $k < K$. Assume first that $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$.
@@ -75,13 +75,14 @@ a somewhat simpler argument and allows for $\kappa > 0$.
 \label{proplinear}
 Let $W_1, W_2, \dots, W_K$ be weight matrices of sizes 
 $n_k \times n_{k+1}$, $k < K$, and let $\Fem(\theta)$, $\Forr(\theta)$ 
-denote the risk minimizations using $\Phi$ as in (\ref{linearcase}) and ridge regression.
+denote the risk minimizations using $\Phi$ as in (\ref{linearcase}). %and ridge regression.
 Assume that $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$.
-Then $\Omega_{\Fem}(\lambda)$ is connected for all $\lambda$, as well as $\Omega_{\Forr}$, 
-and therefore there are no poor local minima.  
+Then $\Omega_{\Fem}(\lambda)$ (and $\Omega_{\Forr}$) is connected for all $\lambda$ and all $K$ when $\kappa=0$, and for $\kappa>0$ when $K=2$; 
+and therefore there are no poor local minima in these cases. 
 \end{proposition}
-This result can be extended to treat other regularization terms other than the ridge term 
-by using more general atomic norms \cite{bach2013convex}. But we now move our interest to the nonlinear case, which is more relevant to our purposes. 
+This result highlights a certain mismatch between the picture of having no poor local minima 
+and generalization. Incorporating regularization drastically changes the topology, and the 
+fact that we are able to show connectedness only in the two-layer case with ridge regression is profound; we conjecture that extending it to deeper models requires a different regularization, perhaps using more general atomic norms \cite{bach2013convex}. But we now move our interest to the nonlinear case, which is more relevant to our purposes. 
 
 \subsection{Half-Rectified Nonlinear Case}
 

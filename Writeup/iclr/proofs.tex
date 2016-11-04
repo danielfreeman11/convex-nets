@@ -18,6 +18,7 @@ which shows that $F(\gamma(t)) \leq F(\theta_1)$ for all $t$ is incompatible wit
 
 \subsection{Proof of Proposition \ref{proplinear}}
 
+Let us first consider the case with $\kappa =0$.
 We proceed by induction over the number of layers $K$. 
 For $K=1$, the loss $F(\theta)$ is convex. Let  $\theta^A$, $\theta^B$ be two arbitrary points 
 in a level set $\Omega_\lambda$. Thus $F(\theta^A) \leq \lambda$ and $F(\theta^B) \leq \lambda$. By definition
@@ -26,7 +27,7 @@ $$F( (1-t) \theta^A + t \theta^B) \leq (1-t) F(\theta^A) + t F(\theta^B) \leq \l
 
 Suppose the result is true for $K-1$. Let $\theta^A = (W_1^A, \dots, W^A_K)$ and 
  $\theta^B = (W_1^B, \dots, W^B_K)$ with $F(\theta^A) \leq \lambda$, $F(\theta^B) \leq \lambda$.
- Since $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$, we can find $k^*$ such that
+ Since $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$, we can find $k^*=\{1, K-1\}$ such that
  $n_{k^*} \geq \min(n_{k^*-1}, n_{k^*+1})$.
 For each $W_1, \dots, W_K$, we denote $\tilde{W}_j = W_j$ for $j \neq k^*, k^*- 1$ and
 $\tilde{W}_{k^*} = W_{k^*-1} W_{k^*}$. 
@@ -34,28 +35,54 @@ $\tilde{W}_{k^*} = W_{k^*-1} W_{k^*}$.
 %$\tilde{W}_{K-1} = W_K W_{K-1}$. 
 By induction hypothesis, the 
 loss expressed in terms of $\tilde{\theta} = (\tilde{W}_1, \dots, \tilde{W}_{K-1})$ is connected 
-between $\tilde{\theta}_1$ and $\tilde{\theta_2}$. Let $\tilde{W}_{k^*}(t)$ the corresponding 
- path projected in the  layer $k^*$. 
+between $\tilde{\theta}^A$ and $\tilde{\theta}^B$. Let $\tilde{W}_{k^*}(t)$ the corresponding 
+linear path projected in the  layer $k^*$. 
 We need to produce a path in the variables $W_{k^*-1}(t)$, $W_{k^*}(t)$ 
 such that:
 \begin{itemize}
 \item[i] $W_{k^*-1}(0) = W_{k^*-1}^A$, $W_{k^*-1}(1) = W_{k^*-1}^B$, 
 \item[ii] $W_{k^*}(0) = W_{k^*}^A$, $W_{k^*}(1) = W_{k^*}^B$,
 \item[iii] $W_{k^*}(t) W_{k^*-1}(t) = \tilde{W}_{k^*-1}(t) $ for $t \in (0,1)$. 
-\item[iv] $\| W_{k^*-1}(t) \|^2 + \| W_{k^*}(t) \|^2 \leq (1-t) ( \| W \|_{k^*-1}^2(0) + \| W \|_{k^*}^2(0)  ) + t (\| W \|_{k^*-1}^2(1) + \| W \|_{k^*}^2(1))$.
+%\item[iv] $\| W_{k^*-1}(t) \|^2 + \| W_{k^*}(t) \|^2 \leq (1-t) ( \| W \|_{k^*-1}^2(0) + \| W \|_{k^*}^2(0)  ) + t (\| W \|_{k^*-1}^2(1) + \| W \|_{k^*}^2(1))$.
 \end{itemize} 
+We construct it as follows. Let 
+$$W_{k^*}(t) = t W_{k^*}^B + (1-t) W_{k^*}^A + t (1-t) V~,$$
+$$W_{k^*-1}(t) = W_{k^*}(t)^\dagger \tilde{W}_{k^*-1}(t)  ~,$$
+where $W_{k^*}(t)^\dagger = ( W_{k^*}(t)^T W_{k^*}(t))^{-1} W_{k^*}(t)^T$ denotes the pseudoinverse 
+and $V$ is a $n_{k^*-1} \times n_{k^*}$ matrix drawn from a iid distribution. 
+Conditions (i) and (ii) are immediate from the definition, and condition (iii) results from the fact that 
+$$W_{k^*}(t) W_{k^*}(t)^\dagger  = {\bf I}_{N_k^*}~,$$
+since $W_k^*(t)$ has full rank for all $t \in (0,1)$. 
+
+Finally, let us prove that the result is also true when $K=2$ and $\kappa>0$.
 We construct the path using the variational properties of atomic norms \cite{bach2013convex}. 
 When we pick the ridge regression regularization, the corresponding atomic norm is the 
 nuclear norm:
 $$\| X \|_{*} = \min_{UV^T = X} \frac{1}{2}( \| U \|^2 + \| V \|^2)~.$$
 The path is constructed by exploiting the convexity of the variational norm $\| X\|_{*}$. 
+Let $\theta^A = (W_1^A, W_2^A)$ and $\theta^B=(W_1^B, W_2^B)$, and we 
+define $\tilde{W} = W_1 W_2$. Since $\tilde{W}^{\{A,B\}} = W_1^{\{A,B\}} W_2^{\{A,B\}} $, 
+it results that
+\begin{equation}
+\label{colcol}
+\| \tilde{W}^{\{A,B\}} \|_* \leq \frac{1}{2} ( \| W_1^{\{A,B\}}\|^2 + \| W_2^{\{A,B\}}\|^2)~.
+\end{equation}
+From (\ref{colcol}) it results that the loss $\Forr(W_1, W_2)$ can be minored by another loss 
+ expressed in terms of $\tilde{W}$ of the form 
+$$\E \{ | Y - \tilde{W} X |^2 \} + 2\kappa \| \tilde{W} \|_*~,$$ 
+which is convex with respect to $\tilde{W}$. Thus a linear path in $\tilde{W}$ from 
+$\tilde{W}^A$ to $\tilde{W}^B$ is guaranteed to be below $\Forr(\theta^{\{A,B\}})$. 
 Let us define 
-$$\forall~t~,~W_{k^*-1}(t), W_{k^*}(t) = \arg\min_{UV^T= \tilde{W}_{k^*-1}(t)} (\| U\|^2 + \|V \|^2)~. $$ 
-This path satisfies (i-iii) by definition. We also verify that 
+$$\forall~t~,~W_{1}(t), W_{2}(t) = \arg\min_{UV^T= \tilde{W}(t)} (\| U\|^2 + \|V \|^2)~. $$ 
+One can verify that we can first consider a path $(\beta^A_1(s), \beta^A_2(s))$ 
+from $(W_1^{A}, W_2^{A})$ to $(W_{1}(0), W_{2}(0)$ such that 
+$$\forall~s~\beta_1(s) \beta_2(s) = \tilde{W}^A \text{ and } \| \beta_1(s) \|^2 + \| \beta_2(s) \|^2 \text{ decreases} ~,$$
+and similarly for $(W_1^{B}, W_2^{B})$ to $(W_{1}(1), W_{2}(1)$.
+The path $(\beta_{\{1,2\}}^A(s), W_{\{1,2\}}(t), \beta_{\{1,2\}}^B(s))$ path satisfies (i-iii) by definition. We also verify that 
 \begin{eqnarray*}
-\| W_{k^*-1}(t) \|^2 + \| W_{k^*}(t) \|^2 &=& 2 \| \tilde{W}_{k^*-1}(t)\|_{*}   \\
-&\leq & 2 (1-t) \|  \tilde{W}_{k^*-1}(0)\|_{*} + 2 t  \|  \tilde{W}_{k^*-1}(1)\|_{*} \\ 
-&\leq & (1-t) ( \| W \|_{k^*-1}^2(0) + \| W \|_{k^*}^2(0)  ) + t (\| W \|_{k^*-1}^2(1) + \| W \|_{k^*}^2(1))~.
+\| W_{1}(t) \|^2 + \| W_{2}(t) \|^2 &=& 2 \| \tilde{W}(t)\|_{*}   \\
+&\leq & 2 (1-t) \|  \tilde{W}(0)\|_{*} + 2 t  \|  \tilde{W}(1)\|_{*} \\ 
+&\leq & (1-t) ( \| W \|_{1}^2(0) + \| W \|_{2}^2(0)  ) + t (\| W \|_{1}^2(1) + \| W \|_{2}^2(1))~.
 \end{eqnarray*}
 which concludes the proof $\square$. 
 

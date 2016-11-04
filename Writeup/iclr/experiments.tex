@@ -9,27 +9,50 @@
 
 For our numerical experiments, we calculated normalized geodesic lengths for a variety of regression and classification tasks.  In practice, this involved training a pair of randomly initialized models to the desired test loss value/accuracy/perplexity, and then attempting to connect that pair of models via the Dynamic String Sampling algorithm.  We also tabulated the average number of ``beads'', or the number intermediate models needed by the algorithm to connect two initial models.  For all of the below experiments, the reported losses and accuracies are on a restricted test set.  For more complete architecture and implementation details, see our \href{github.com/danielfreeman11/convex-nets}{GitHub page}.
 
+
+
+%\begin{figure}[h]
+%  \centering
+\begin{center}
+%  \begin{tabular}{c@{\quad}cc}
+%    & a & b \\
+  \includegraphics[width=.34\textwidth]{../Plots/normlengthquadratics}\fixedlabel{QUADRATICSfigsA}{1a} 
+   \includegraphics[width=.34\textwidth]{../Plots/numbeadsquadratics}\fixedlabel{QUADRATICSfigsB}{1b}  \\ 
+    \includegraphics[width=.34\textwidth]{../Plots/normlengthcubics}\fixedlabel{CUBICSfigsA}{2a} 
+    \includegraphics[width=.34\textwidth]{../Plots/numbeadscubics} \fixedlabel{CUBICSfigsB}{2b} \\
+    \includegraphics[width=.34\textwidth]{../Plots/normlengthMNIST}\fixedlabel{MNISTfigsA}{3a} 
+     \includegraphics[width=.34\textwidth]{../Plots/numbeadsMNIST}\fixedlabel{MNISTfigsB}{3b} \\
+   \includegraphics[width=.34\textwidth]{../Plots/normlengthCIFAR}\fixedlabel{CIFARfigsA}{4a} 
+     \includegraphics[width=.34\textwidth]{../Plots/numbeadsCIFAR}\fixedlabel{CIFARfigsB}{4b} \\
+   \includegraphics[width=.34\textwidth]{../Plots/normlengthPTB}\fixedlabel{PTBfigsA}{5a} 
+   \includegraphics[width=.34\textwidth]{../Plots/numbeadsPTB}\fixedlabel{PTBfigsB}{5b}
+  \captionof{figure}{(Column a) Average normalized geodesic length and (Column b) average number of beads versus loss. (1) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/QUADRATIC.py}{A quadratic regression task}. (2) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CUBIC.py}{A cubic regression task}. (3) A convnet for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/MNIST.py}{MNIST}. (4) A convnet inspired by \href{www.cs.toronto.edu/\%7Ekriz/cifar.html}{Krizhevsky} for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CIFAR10.py}{CIFAR10}. (5) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/PTBRNN.py}{A RNN} inspired by \href{arxiv.org/pdf/1409.2329.pdf}{Zaremba} for PTB next word prediction.}
+  \label{FigTable}
+%\end{figure}
+\end{center}
+
 The results are broadly organized by increasing model complexity and task difficulty, from easiest to hardest.  Throughout, and remarkably, we were able to easily connect models for every dataset and architecture investigated except the one explicitly constructed counterexample discussed in Appendix \ref{symdisc}.  Qualitatively, all of the models exhibit a transition from a highly convex regime at high loss to a non-convex regime at low loss, as demonstrated by the growth of the normalized length as well as the monotonic increase in the number of required ``beads'' to form a low-loss connection.
 
-\begin{table}[ht]
-  \centering
-  \begin{tabular}{c@{\quad}cc}
-    & a & b \\
-    1 & \includegraphics[width=.3\textwidth]{../Plots/normlengthquadratics}\fixedlabel{QUADRATICSfigsA}{1a} 
-      & \includegraphics[width=.3\textwidth]{../Plots/numbeadsquadratics}\fixedlabel{QUADRATICSfigsB}{1b}  \\ \\
-    2 & \includegraphics[width=.3\textwidth]{../Plots/normlengthcubics}\fixedlabel{CUBICSfigsA}{2a} 
-      & \includegraphics[width=.3\textwidth]{../Plots/numbeadscubics} \fixedlabel{CUBICSfigsB}{2b} \\ \\
-    3 & \includegraphics[width=.3\textwidth]{../Plots/normlengthMNIST}\fixedlabel{MNISTfigsA}{3a} 
-      & \includegraphics[width=.3\textwidth]{../Plots/numbeadsMNIST}\fixedlabel{MNISTfigsB}{3b} \\ \\
-    4 & \includegraphics[width=.3\textwidth]{../Plots/normlengthCIFAR}\fixedlabel{CIFARfigsA}{4a} 
-      & \includegraphics[width=.3\textwidth]{../Plots/numbeadsCIFAR}\fixedlabel{CIFARfigsB}{4b} \\ \\
-    5 & \includegraphics[width=.3\textwidth]{../Plots/normlengthPTB}\fixedlabel{PTBfigsA}{5a} 
-      & \includegraphics[width=.3\textwidth]{../Plots/numbeadsPTB}\fixedlabel{PTBfigsB}{5b}
-	 
-  \end{tabular}
-  \caption{(Column a) Average normalized geodesic length and (Column b) average number of beads versus loss. (1) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/QUADRATIC.py}{A quadratic regression task}. (2) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CUBIC.py}{A cubic regression task}. (3) A convnet for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/MNIST.py}{MNIST}. (4) A convnet inspired by \href{www.cs.toronto.edu/\%7Ekriz/cifar.html}{Krizhevsky} for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CIFAR10.py}{CIFAR10}. (5) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/PTBRNN.py}{A RNN} inspired by \href{arxiv.org/pdf/1409.2329.pdf}{Zaremba} for PTB next word prediction.}
-  \label{FigTable}
-\end{table}
+
+%\begin{table}[ht]
+%  \centering
+%  \begin{tabular}{c@{\quad}cc}
+%    & a & b \\
+%    1 & \includegraphics[width=.3\textwidth]{../Plots/normlengthquadratics}\fixedlabel{QUADRATICSfigsA}{1a} 
+%      & \includegraphics[width=.3\textwidth]{../Plots/numbeadsquadratics}\fixedlabel{QUADRATICSfigsB}{1b}  \\ \\
+%    2 & \includegraphics[width=.3\textwidth]{../Plots/normlengthcubics}\fixedlabel{CUBICSfigsA}{2a} 
+%      & \includegraphics[width=.3\textwidth]{../Plots/numbeadscubics} \fixedlabel{CUBICSfigsB}{2b} \\ \\
+%    3 & \includegraphics[width=.3\textwidth]{../Plots/normlengthMNIST}\fixedlabel{MNISTfigsA}{3a} 
+%      & \includegraphics[width=.3\textwidth]{../Plots/numbeadsMNIST}\fixedlabel{MNISTfigsB}{3b} \\ \\
+%    4 & \includegraphics[width=.3\textwidth]{../Plots/normlengthCIFAR}\fixedlabel{CIFARfigsA}{4a} 
+%      & \includegraphics[width=.3\textwidth]{../Plots/numbeadsCIFAR}\fixedlabel{CIFARfigsB}{4b} \\ \\
+%    5 & \includegraphics[width=.3\textwidth]{../Plots/normlengthPTB}\fixedlabel{PTBfigsA}{5a} 
+%      & \includegraphics[width=.3\textwidth]{../Plots/numbeadsPTB}\fixedlabel{PTBfigsB}{5b}
+%	 
+%  \end{tabular}
+%  \caption{(Column a) Average normalized geodesic length and (Column b) average number of beads versus loss. (1) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/QUADRATIC.py}{A quadratic regression task}. (2) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CUBIC.py}{A cubic regression task}. (3) A convnet for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/MNIST.py}{MNIST}. (4) A convnet inspired by \href{www.cs.toronto.edu/\%7Ekriz/cifar.html}{Krizhevsky} for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CIFAR10.py}{CIFAR10}. (5) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/PTBRNN.py}{A RNN} inspired by \href{arxiv.org/pdf/1409.2329.pdf}{Zaremba} for PTB next word prediction.}
+%  \label{FigTable}
+%\end{table}
 
 
 

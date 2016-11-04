@@ -18,6 +18,7 @@
 \begin{algorithm}
 \caption{Greedy Dynamic String Sampling}\label{euclid}
 \begin{algorithmic}[1]
+{\scriptsize 
 \State $\text{$L_0$} \gets \text{Threshold below which path will be found}$
 \State $\text{$\Phi_1$} \gets \text{randomly initialize } $$\theta_1$$ \text{, train } $$\Phi (x_i\;\theta_1)$$ \text{ to $L_0$}$
 \State $\text{$\Phi_2$} \gets \text{randomly initialize } $$\theta_2$$ \text{, train } $$\Phi (x_i\;\theta_2)$$ \text{ to $L_0$}$
@@ -36,9 +37,10 @@
 \If {$\text{$MaxError_2$} > \text{$L_0$ }} \text{ }\Return \text{ FindConnection}$$(\Phi_3,\Phi_2)$$ $
 \EndIf
 \State $\text{Depth} \gets \text{Depth$+1$}$ 
-\EndProcedure
+\EndProcedure }
 \end{algorithmic}
 \end{algorithm}
+ 
  
   The algorithm recursively builds a string of models in the space of weights which continuously connect $\theta_i$ to $\theta_j$.  Models are added and trained until the pairwise linearly interpolated loss, i.e. $\rm{max}_t F_e(t\theta_i\ +\ (1-t)\theta_j)$ for $t\in(0,1)$, is below the threshold, $L_0$, for every pair of neighboring models on the string.  We provide a cartoon of the algorithm in Appendix \ref{AlgCartoon}.
  
