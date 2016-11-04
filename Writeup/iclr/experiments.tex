@@ -27,7 +27,7 @@ The results are broadly organized by increasing model complexity and task diffic
       & \includegraphics[width=.3\textwidth]{../Plots/numbeadsPTB}\fixedlabel{PTBfigsB}{5b}
 	 
   \end{tabular}
-  \caption{(Column a) Average normalized geodesic length and (Column b) average number of beads versus loss. (1) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/QUADRATIC.ipynb}{A quadratic regression task}. (2) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CUBIC.ipynb}{A cubic regression task}. (3) A convnet for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/MNIST.ipynb}{MNIST}. (4) A convnet inspired by \href{www.cs.toronto.edu/\%7Ekriz/cifar.html}{Krizhevsky} for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CIFAR10.ipynb}{CIFAR10}. (5) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/PTBRNN.ipynb}{A RNN} inspired by \href{arxiv.org/pdf/1409.2329.pdf}{Zaremba} for PTB next word prediction.}
+  \caption{(Column a) Average normalized geodesic length and (Column b) average number of beads versus loss. (1) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/QUADRATIC.py}{A quadratic regression task}. (2) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CUBIC.py}{A cubic regression task}. (3) A convnet for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/MNIST.py}{MNIST}. (4) A convnet inspired by \href{www.cs.toronto.edu/\%7Ekriz/cifar.html}{Krizhevsky} for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CIFAR10.py}{CIFAR10}. (5) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/PTBRNN.py}{A RNN} inspired by \href{arxiv.org/pdf/1409.2329.pdf}{Zaremba} for PTB next word prediction.}
   \label{FigTable}
 \end{table}
 
@@ -54,7 +54,7 @@ The results are broadly organized by increasing model complexity and task diffic
 \subsection{Recurrent Neural Networks}
 %%%%%%%%%%%%%%%%%%%%%%
 
- To gauge the generalizability of our algorithm, we also applied it to an LSTM architecture for solving the next word prediction task on the PTB dataset, depicted in Table \ref{FigTable} Fig. 5.  Noteably, even for a radically different architecture, loss function, and data set, the normalized lengths produced by the DSS algorithm recapitaluate the same qualitative features seen in the above datasets---i.e., models can be easily connected at high perplexity, and the normalized length grows at lower and lower perplexity after a threshold value, indicating an onset of high non-convexity of the loss surface. 
+ To gauge the generalizability of our algorithm, we also applied it to an LSTM architecture for solving the next word prediction task on the PTB dataset, depicted in Table \ref{FigTable} Fig. 5.  Noteably, even for a radically different architecture, loss function, and data set, the normalized lengths produced by the DSS algorithm recapitulate the same qualitative features seen in the above datasets---i.e., models can be easily connected at high perplexity, and the normalized length grows at lower and lower perplexity after a threshold value, indicating an onset of increased non-convexity of the loss surface.
 
 
 
