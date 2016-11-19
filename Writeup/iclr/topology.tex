@@ -34,7 +34,7 @@ We define the level set of $F(\theta)$ as
 
 The first question we study is the structure of critical points of $\Fem(\theta)$ and $\Forr(\theta)$
 when $\Phi$ is a multilayer neural network. 
-For simplicity, we consider here a strict notion of local minima: 
+For simplicity, we consider first a strict notion of local minima: 
 $\theta \in \R^S $ is a strict local minima of $F$ if there is $\epsilon>0$ with $F(\theta') > F(\theta)$ for all $\theta' \in B(\theta,\epsilon)$ and $\theta'\neq \theta$.
 %$\theta \in \R^N $ is a local minima of $F \in C^\infty(\R^N,\R)$ if for any differentiable curve $\gamma: (-\epsilon, \epsilon) \to \R^N$ passing through $\theta$ at $t=0$, there exists $K>1$ even such that the function $g(t) = F(\gamma(t))$ satisfies $g^{(k)}(0) = 0 $ for all $k < K$ and
 %$g^{(K)}(0) > 0$.  
@@ -49,7 +49,14 @@ knowing whether $\Omega_F(\lambda)$ is connected at each energy level $\lambda$:
 If $\Omega_F(\lambda)$ is connected for all $\lambda$ then every local minima of $F(\theta)$ is a global minima. 
 \end{proposition}
 
-Strict local minima implies that $\nabla F(\theta) =0$ and $H F(\theta) \succeq 0$, but avoids degenerate cases where $F$ is constant along a manifold intersecting $\theta$. In that scenario, if $\mathcal{U}_\theta$ denotes that manifold, our reasoning immediately implies that some element at the boundary of $\mathcal{U}_\theta$ must be a saddle point. This proposition shows that a sufficient condition to prevent the existence of poor local minima is having connected level sets, but this condition is not necessary: one can have isolated local minima lying 
+Strict local minima implies that $\nabla F(\theta) =0$ and $H F(\theta) \succeq 0$, but avoids degenerate cases where $F$ is constant along a manifold intersecting $\theta$. In that scenario, if $\mathcal{U}_\theta$ denotes that manifold, our reasoning immediately 
+implies that if $\Omega_F(\lambda)$ are connected, then for all $\epsilon > 0$ there exists $\theta'$ with $\text{dist}(\theta',\mathcal{U}_\theta) \leq \epsilon$ and $F(\theta') < F(\theta)$. In other words, some element at the boundary of $\mathcal{U}_\theta$ must be a saddle point. 
+
+This arises in deep linear networks in absence of regularization. If $\theta = (W_1, \dots, W_K)$ denotes any parameter value, with $N_1, \dots N_K$ denoting the hidden layer sizes, and $F_k \in \mathbf{GL}_{N_k}^{+}(\R)$ are arbitrary elements of the general linear group of invertible $N_k \times N_k$ matrices with positive determinant, then   
+$$\mathcal{U}_\theta = \{ W_1 F_1^{-1}, F_1 W_2 F_2^{-1}, \dots, F_K W_K  ~;~ F_k \in \mathbf{GL}_{N_k}^{+}(\R) \}~. $$
+In particular, $\mathcal{U}_\theta$ has a Lie Group structure. In the half-rectified nonlinear case, the general linear group is replaced by the Lie group of homogeneous invertible matrices $F_k = \text{diag}(\alpha_1, \dots, \alpha_{N_k})$ with $\alpha_j > 0$. 
+
+This proposition shows that a sufficient condition to prevent the existence of poor local minima is having connected level sets, but this condition is not necessary: one can have isolated local minima lying 
 at the same energy level. This can be the case in systems that are defined up to 
 a discrete symmetry group, such as multilayer neural networks. However, as we shall see next, this case puts the system in a brittle position, since one needs to be able to account for all the local minima (and there can be exponentially many of them as the parameter dimensionality increases) and verify that their energy is indeed equal. 
 
@@ -90,8 +97,8 @@ and therefore there are no poor local minima in these cases.
 
 Let us highlight that this result is weaker than that obtained by \cite{kawaguchi2016deep}, since it does not 
 control the behavior of non-strict local minima and does not inform about the strict saddle condition. 
-This result highlights a certain mismatch between the picture of having no poor local minima 
-and generalization. Incorporating regularization drastically changes the topology, and the 
+This result does however highlight a certain mismatch between the picture of having no poor local minima 
+and generalization error. Incorporating regularization drastically changes the topology, and the 
 fact that we are able to show connectedness only in the two-layer case with ridge regression is profound; we conjecture that extending it to deeper models requires a different regularization, perhaps using more general atomic norms \cite{bach2013convex}. But we now move our interest to the nonlinear case, which is more relevant to our purposes. 
 
 \subsection{Half-Rectified Nonlinear Case}
