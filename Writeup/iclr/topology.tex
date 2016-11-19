@@ -33,8 +33,15 @@ We define the level set of $F(\theta)$ as
 \end{equation}
 
 The first question we study is the structure of critical points of $\Fem(\theta)$ and $\Forr(\theta)$
-when $\Phi$ is a multilayer neural network. In particular, we are interested to know whether
-$\Fem$ has local minima which are not global minima. This question is answered by 
+when $\Phi$ is a multilayer neural network. 
+For simplicity, we consider here a strict notion of local minima: 
+$\theta \in \R^N $ is a strict local minima of $F$ if there is $\epsilon>0$ with $F(\theta') > F(\theta)$ for all $\theta' \in B(\theta,\epsilon)$ and $\theta'\neq \theta$.
+%$\theta \in \R^N $ is a local minima of $F \in C^\infty(\R^N,\R)$ if for any differentiable curve $\gamma: (-\epsilon, \epsilon) \to \R^N$ passing through $\theta$ at $t=0$, there exists $K>1$ even such that the function $g(t) = F(\gamma(t))$ satisfies $g^{(k)}(0) = 0 $ for all $k < K$ and
+%$g^{(K)}(0) > 0$.  
+In particular, we are interested to know whether
+$\Fem$ has local minima which are not global minima. 
+ %\footnote{this implies $\nabla F(\theta) =0$ and $H F(\theta) \succeq 0$ but avoids degenerate cases where $F$ is constant along low
+This question is answered by 
 knowing whether $\Omega_F(\lambda)$ is connected at each energy level $\lambda$:
 
 \begin{proposition}
@@ -42,7 +49,7 @@ knowing whether $\Omega_F(\lambda)$ is connected at each energy level $\lambda$:
 If $\Omega_F(\lambda)$ is connected for all $\lambda$ then every local minima of $F(\theta)$ is a global minima. 
 \end{proposition}
 
-This proposition shows that a sufficient condition to prevent the existence of poor local minima is having connected level sets, but this condition is not necessary: one can have isolated local minima lying 
+Strict local minima implies that $\nabla F(\theta) =0$ and $H F(\theta) \succeq 0$, but avoids degenerate cases where $F$ is constant along a manifold intersecting $\theta$. In that scenario, if $\mathcal{U}_\theta$ denotes that manifold, our reasoning immediately implies that some element at the boundary of $\mathcal{U}_\theta$ must be a saddle point. This proposition shows that a sufficient condition to prevent the existence of poor local minima is having connected level sets, but this condition is not necessary: one can have isolated local minima lying 
 at the same energy level. This can be the case in systems that are defined up to 
 a discrete symmetry group, such as multilayer neural networks. However, as we shall see next, this case puts the system in a brittle position, since one needs to be able to account for all the local minima (and there can be exponentially many of them as the parameter dimensionality increases) and verify that their energy is indeed equal. 
 
@@ -80,6 +87,9 @@ Assume that $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$.
 Then $\Omega_{\Fem}(\lambda)$ (and $\Omega_{\Forr}$) is connected for all $\lambda$ and all $K$ when $\kappa=0$, and for $\kappa>0$ when $K=2$; 
 and therefore there are no poor local minima in these cases. 
 \end{proposition}
+
+Let us highlight that this result is weaker than that obtained by \cite{kawaguchi2016deep}, since it does not 
+control the behavior of non-strict local minima and does not inform about the strict saddle condition. 
 This result highlights a certain mismatch between the picture of having no poor local minima 
 and generalization. Incorporating regularization drastically changes the topology, and the 
 fact that we are able to show connectedness only in the two-layer case with ridge regression is profound; we conjecture that extending it to deeper models requires a different regularization, perhaps using more general atomic norms \cite{bach2013convex}. But we now move our interest to the nonlinear case, which is more relevant to our purposes. 
@@ -127,7 +137,7 @@ $X$ be any arbitrary distribution with density $p(x) > 0$ for all $x \in \R^n$, 
 $Y ~|~X ~\stackrel{d}{=} \Phi(X ; \theta)$~. Since $\Phi$ is invariant under a subgroup of permutations $\theta_\sigma$ of its hidden layers, it is easy to see that one can find two parameter values $\theta_A = \theta$ and $\theta_B = \theta_\sigma$ such that $\Forr(\theta_A) = \Forr(\theta_B) = 0$, but any continuous path $\gamma(t)$ from $\theta_A$ to $\theta_B$ will have a different tessellation and therefore won't satisfy $\Forr( \gamma(t) ) = 0$. 
 Moreover, one can build on this counter-example to show that not only the level sets are disconnected, but also that there exist poor local minima. Let $\theta'$ be a different set of parameters, and $Y' ~|~X \stackrel{d}{=} \Phi(X; \theta')$ be a different target distribution. Now consider the data distribution given by the mixture
 $$X ~|~p(x) ~~,~z \sim \text{Bernoulli}(\pi)~,~Y ~|~X,z \stackrel{d}{=} z \Phi(X;\theta) + (1-z) \Phi(X; \theta')~.$$
-By adjusting the mixture component $\pi$ we can clearly change the risk at $\theta$ and $\theta'$ and make them different, but we preserve the status of local minima of $\theta$ and $\theta'$. 
+By adjusting the mixture component $\pi$ we can clearly change the risk at $\theta$ and $\theta'$ and make them different, but we conjecture that this preserves the status of local minima of $\theta$ and $\theta'$. Appendix \ref{sec:disconnect} constructs a counter-example numerically.
  
 This illustrates an intrinsic difficulty in the optimization landscape if one is after \emph{universal} 
 guarantees that do not depend upon the data distribution. This difficulty is non-existent in the linear case 

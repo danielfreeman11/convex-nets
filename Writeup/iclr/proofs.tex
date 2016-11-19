@@ -8,12 +8,21 @@ $\theta_1$ and $\theta_2$ both belong to $\Omega_F(\lambda)$. Suppose
 now that $\Omega_F(\lambda)$ 
 is connected. Then we could find a smooth (i.e. continuous and differentiable) path $\gamma(t)$ 
 with $\gamma(0) = \theta_1$, $\gamma(1)= \theta_2$ and $F(\gamma(t)) \leq \lambda = F(\theta_1)$.
-In particular, as $t \to 0$, we have
-\begin{eqnarray*}
-F(\gamma(t)) &=& F(\theta_1) + t \langle \nabla F(\theta_1) , \dot{\gamma}(0) \rangle + \frac{t^2}{2} \left(\dot{\gamma}(0)^T H F(\theta_1) \dot{\gamma}(0) + \langle \nabla F(\theta_1), \ddot{\gamma}(0) \rangle \right) + o(t^2) \\
-&=& F(\theta_1) +   \frac{t^2}{2}  \dot{\gamma}(0)^T H F(\theta_1) \dot{\gamma}(0)  + o(t^2) ~,
-\end{eqnarray*}
-which shows that $F(\gamma(t)) \leq F(\theta_1)$ for all $t$ is incompatible with $H(\theta_1) \succeq 0$ and therefore $\Omega_F(\lambda)$ cannot be connected $\square$.
+But this contradicts the strict local minima status of $\theta_1$, and therefore $\Omega_F(\lambda)$ cannot be connected $\square$.
+
+%In particular, as $t \to 0$, noting $g(t) = F(\gamma(t))$, we have
+%\begin{eqnarray*}
+%g(t) &=& \sum_{k=0}^K g^{(k)}(0) \frac{t^k}{k!} + o(t^{K}) \\
+%&=& g^{(K)}(0) t^{K}{K!} + o(t^K)~,
+%\end{eqnarray*}
+%which shows that $F(\gamma(t)) \leq F(\theta_1)$ for all $t$ is incompatible with $g^{(K)}>0$ for $K$ even, and therefore $\Omega_F(\lambda)$ cannot be connected $\square$.
+
+%
+%\begin{eqnarray*}
+%F(\gamma(t)) &=& F(\theta_1) + t \langle \nabla F(\theta_1) , \dot{\gamma}(0) \rangle + \frac{t^2}{2} \left(\dot{\gamma}(0)^T H F(\theta_1) \dot{\gamma}(0) + \langle \nabla F(\theta_1), \ddot{\gamma}(0) \rangle \right) + o(t^2) \\
+%&=& F(\theta_1) +   \frac{t^2}{2}  \dot{\gamma}(0)^T H F(\theta_1) \dot{\gamma}(0)  + o(t^2) ~,
+%\end{eqnarray*}
+%which shows that $F(\gamma(t)) \leq F(\theta_1)$ for all $t$ is incompatible with $H(\theta_1) \succeq 0$ and therefore $\Omega_F(\lambda)$ cannot be connected $\square$.
 
 
 \subsection{Proof of Proposition \ref{proplinear}}
