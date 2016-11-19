@@ -51,8 +51,11 @@ If $\Omega_F(\lambda)$ is connected for all $\lambda$ then every local minima of
 
 Strict local minima implies that $\nabla F(\theta) =0$ and $H F(\theta) \succeq 0$, but avoids degenerate cases where $F$ is constant along a manifold intersecting $\theta$. In that scenario, if $\mathcal{U}_\theta$ denotes that manifold, our reasoning immediately 
 implies that if $\Omega_F(\lambda)$ are connected, then for all $\epsilon > 0$ there exists $\theta'$ with $\text{dist}(\theta',\mathcal{U}_\theta) \leq \epsilon$ and $F(\theta') < F(\theta)$. In other words, some element at the boundary of $\mathcal{U}_\theta$ must be a saddle point. 
+A stronger property that eliminates the risk of gradient descent getting stuck at $\mathcal{U}_\theta$ is 
+  that \emph{all} elements at the boundary of $\mathcal{U}_\theta$ are saddle points. This can be guaranteed if one can show that 
+  there exists a path connecting any $\theta$ to the lowest energy level such that $F$ is strictly decreasing along it. 
 
-This arises in deep linear networks in absence of regularization. If $\theta = (W_1, \dots, W_K)$ denotes any parameter value, with $N_1, \dots N_K$ denoting the hidden layer sizes, and $F_k \in \mathbf{GL}_{N_k}^{+}(\R)$ are arbitrary elements of the general linear group of invertible $N_k \times N_k$ matrices with positive determinant, then   
+Such degenerate cases arise in deep linear networks in absence of regularization. If $\theta = (W_1, \dots, W_K)$ denotes any parameter value, with $N_1, \dots N_K$ denoting the hidden layer sizes, and $F_k \in \mathbf{GL}_{N_k}^{+}(\R)$ are arbitrary elements of the general linear group of invertible $N_k \times N_k$ matrices with positive determinant, then   
 $$\mathcal{U}_\theta = \{ W_1 F_1^{-1}, F_1 W_2 F_2^{-1}, \dots, F_K W_K  ~;~ F_k \in \mathbf{GL}_{N_k}^{+}(\R) \}~. $$
 In particular, $\mathcal{U}_\theta$ has a Lie Group structure. In the half-rectified nonlinear case, the general linear group is replaced by the Lie group of homogeneous invertible matrices $F_k = \text{diag}(\alpha_1, \dots, \alpha_{N_k})$ with $\alpha_j > 0$. 
 
@@ -91,13 +94,17 @@ Let $W_1, W_2, \dots, W_K$ be weight matrices of sizes
 $n_k \times n_{k+1}$, $k < K$, and let $\Fem(\theta)$, $\Forr(\theta)$ 
 denote the risk minimizations using $\Phi$ as in (\ref{linearcase}). %and ridge regression.
 Assume that $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$.
-Then $\Omega_{\Fem}(\lambda)$ (and $\Omega_{\Forr}$) is connected for all $\lambda$ and all $K$ when $\kappa=0$, and for $\kappa>0$ when $K=2$; 
-and therefore there are no poor local minima in these cases. 
+Then $\Omega_{\Fem}(\lambda)$ (and $\Omega_{\Forr}$) is connected for all $\lambda$ and all $K$ when $\kappa=0$, and for $\kappa>0$ when $K=2$; and therefore there are no poor local minima in these cases. 
+Moreover, any $\theta$ can be connected to the lowest energy level with a strictly decreasing path. %when $\kappa=0$.
 \end{proposition}
 
-Let us highlight that this result is weaker than that obtained by \cite{kawaguchi2016deep}, since it does not 
-control the behavior of non-strict local minima and does not inform about the strict saddle condition. 
-This result does however highlight a certain mismatch between the picture of having no poor local minima 
+%Let us highlight that this result is weaker than that obtained by \cite{kawaguchi2016deep}, since it does not 
+%control the behavior of non-strict local minima and does not inform about the strict saddle condition. 
+Let us highlight that this result is slightly complementary than that of \cite{kawaguchi2016deep}, Theorem 2.3.
+Whereas we require $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$ and our analysis does not inform about the order of the saddle points, 
+we do not need full rank assumptions on $\Sigma_X$ nor the weights $W_k$. %We leave the consolidation of these results for future work
+
+This result does also highlight a certain mismatch between the picture of having no poor local minima 
 and generalization error. Incorporating regularization drastically changes the topology, and the 
 fact that we are able to show connectedness only in the two-layer case with ridge regression is profound; we conjecture that extending it to deeper models requires a different regularization, perhaps using more general atomic norms \cite{bach2013convex}. But we now move our interest to the nonlinear case, which is more relevant to our purposes. 
 

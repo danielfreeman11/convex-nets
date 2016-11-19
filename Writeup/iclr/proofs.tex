@@ -33,7 +33,6 @@ For $K=1$, the loss $F(\theta)$ is convex. Let  $\theta^A$, $\theta^B$ be two ar
 in a level set $\Omega_\lambda$. Thus $F(\theta^A) \leq \lambda$ and $F(\theta^B) \leq \lambda$. By definition
 of convexity, a linear path is sufficient in that case to connect $\theta^A$ and $\theta^B$:
 $$F( (1-t) \theta^A + t \theta^B) \leq (1-t) F(\theta^A) + t F(\theta^B) \leq \lambda~.$$
-
 Suppose the result is true for $K-1$. Let $\theta^A = (W_1^A, \dots, W^A_K)$ and 
  $\theta^B = (W_1^B, \dots, W^B_K)$ with $F(\theta^A) \leq \lambda$, $F(\theta^B) \leq \lambda$.
  Since $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$, we can find $k^*=\{1, K-1\}$ such that
@@ -87,13 +86,18 @@ One can verify that we can first consider a path $(\beta^A_1(s), \beta^A_2(s))$
 from $(W_1^{A}, W_2^{A})$ to $(W_{1}(0), W_{2}(0)$ such that 
 $$\forall~s~\beta_1(s) \beta_2(s) = \tilde{W}^A \text{ and } \| \beta_1(s) \|^2 + \| \beta_2(s) \|^2 \text{ decreases} ~,$$
 and similarly for $(W_1^{B}, W_2^{B})$ to $(W_{1}(1), W_{2}(1)$.
-The path $(\beta_{\{1,2\}}^A(s), W_{\{1,2\}}(t), \beta_{\{1,2\}}^B(s))$ path satisfies (i-iii) by definition. We also verify that 
+The path $(\beta_{\{1,2\}}^A(s), W_{\{1,2\}}(t), \beta_{\{1,2\}}^B(s))$ satisfies (i-iii) by definition. We also verify that 
 \begin{eqnarray*}
 \| W_{1}(t) \|^2 + \| W_{2}(t) \|^2 &=& 2 \| \tilde{W}(t)\|_{*}   \\
 &\leq & 2 (1-t) \|  \tilde{W}(0)\|_{*} + 2 t  \|  \tilde{W}(1)\|_{*} \\ 
 &\leq & (1-t) ( \| W \|_{1}^2(0) + \| W \|_{2}^2(0)  ) + t (\| W \|_{1}^2(1) + \| W \|_{2}^2(1))~.
 \end{eqnarray*}
-which concludes the proof $\square$. 
+Finally, we verify that the paths we have just created, when applied to $\theta^A$ arbitrary and 
+$\theta^B = \theta^*$ a global minimum, are strictly decreasing, again by induction. 
+For $K=1$, this is again an immediate consequence of convexity. 
+For $K>1$, our inductive construction guarantees that for any $0<t<1$, 
+the path $\theta(t) = (W_k(t))_{k \leq K}$ satisfies $\Forr(\theta(t)) < \Forr(\theta^A)$. 
+ This concludes the proof $\square$. 
 
 %
 %We need to produce a path in the variables $W_{K-1}(t)$, $W_K(t)$ 
