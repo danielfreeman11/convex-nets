@@ -181,28 +181,48 @@ by direct application of Cauchy-Schwartz. The proof is completed by plugging the
 
 \subsection{Proof of Theorem \ref{maintheo}}
 
-A path from $\theta^A$ to $\theta^B$ will be constructed 
-as follows:
+Consider a generic $\alpha$ and $l \leq m$. A path from $\theta^A$ to $\theta^B$ will be constructed 
+by concatenating the following paths:
 \begin{enumerate}
 \item from $\theta^A$ to $\theta_{lA}$, the 
-best linear predictor using the same first layer. 
-\item from $\theta_{lA}$ to $\theta_{sA}$, the best $(m-n)$-term approximation using perturbed 
-atoms, 
-\item from $\theta_{sA}$ to $\theta^*$ the oracle $n$ term approximation,  
-\item from $\theta^*$ to $\theta_{sB}$,
-\item from $\theta_{sB}$ to $\theta_{lB}$,
+best linear predictor using the same first layer as $\theta^A$, 
+\item from $\theta_{lA}$ to $\theta_{sA}$, the best $(m-l)$-term approximation using perturbed 
+atoms from $\theta^A$,
+\item from $\theta_{sA}$ to $\theta^*$ the oracle $l$ term approximation,  
+\item from $\theta^*$ to $\theta_{sB}$, the best $(m-l)$-term approximation using perturbed 
+atoms from $\theta^B$,
+\item from $\theta_{sB}$ to $\theta_{lB}$, the 
+best linear predictor using the same first layer as $\theta^B$, 
 \item from $\theta_{lB}$ to $\theta^{B}$.
 \end{enumerate}
-The subpaths (1) and (6) only involve changing the parameters of the second layer, 
-which define a convex loss. Therefore a linear path is sufficient.
-Subpaths (3) and (4) can also be constructed using only parameters of the second layer, 
-by observing that one can fit into a single $n \times m$ parameter matrix both the 
-$(m-n)$-term approximation and the best $n$-term approximation. A linear path is therefore 
-also sufficient. 
+The proof will study the increase in the loss along each subpath and aggregate 
+the resulting increase into a common bound. 
 
-We finally need to show how to construct the subpaths (2) and (5).
+Subpaths (1) and (6) only involve changing the parameters of the second layer 
+while leaving the first-layer weights fixed, which define a convex loss. Therefore a linear path is sufficient to guarantee that 
+the loss along that path will be upper bounded by $\lambda$ on the first end 
+and $\delta_{W_1^A}(m,0,m)$ on the other end. 
+
+Concerning subpaths (3) and (4), we notice that they can also be constructed using only parameters of the second layer, 
+by observing that one can fit into a single $n \times m$ parameter matrix both the 
+$(m-l)$-term approximation and the oracle $l$-term approximation. 
+Indeed, let us describe subpath (3) in detail ( subpath (4) is constructed analogously by replacing the role of $\theta_{sA}$ 
+with $\theta_{sB}$). Let $\tilde{W}_A$ the first-layer parameter matrix associated with the 
+$m-l$-sparse solution $\theta_{sA}$, and let $\gamma_A$ denote its second layer coefficients, which is a $m$-dimensional vector
+with at most $m-l$ non-zero coefficients. 
+Let $W_{*}$ be the first-layer matrix of the $l$-term oracle approximation, and $\gamma_{*}$ the corresponding second-layer coefficients. 
+Since there are only $m-l$ columns of $\tilde{W}_A$ that are used, corresponding to the support of $\gamma_A$, we can 
+consider a path $\bar{\theta}$ that replaces the remaining $l$ columns with those from $W_{*}$ while keeping the second-layer vector $\gamma_A$ fixed. Since the modified columns correspond to zeros in $\gamma_A$, such paths have constant loss. 
+Call $\bar{W}$ the resulting first-layer matrix, containing both the active $m-l$ active columns of $\tilde{W}_A$ and the $l$ columns of $W_{*}$ in the positions determined by the zeros of $\gamma_A$. 
+Now we can consider the linear subpath that interpolates between $\gamma_A$ and $\gamma_{*}$ while keeping the first layer fixed at $\bar{W}$. 
+Since again this is a linear subpath that only moves second-layer coefficients, it is non-increasing thanks to the convexity of the loss while fixing the first layer. We easily verify that at the end of this linear subpath we are using the oracle $l$-term approximation, which has loss $e(l)$, and therefore 
+subpath (3) incurs in a loss that is bounded by its extremal values $\delta_{W_1^A}(m-l, \alpha, m)$ and $e(l)$. 
+
+
+Finally, we need to show how to construct the subpaths (2) and (5), which are the most delicate step since they cannot be bounded using
+convexity arguments as above. 
 Let $\tilde{W}_A$ be the resulting perturbed first-layer parameter matrix 
-with $m-n$ sparse coefficients $\gamma_A$.
+with $m-l$ sparse coefficients $\gamma_A$.
 Let us consider an auxiliary regression of the form 
 $$\overline{W} = [ W^A ; \tilde{W}_A] ~\in \R^{n \times 2m}~.$$
 and regression parameters 
@@ -244,7 +264,8 @@ Thus
 \end{eqnarray*}
  which proves (\ref{bub2}). 
  
-We have just constructed a path from $\theta^A$ to $\theta^B$, in which all subpaths except (2) and (5) have energy maximized at the extrema due to convexity. For these two subpaths, (\ref{bub2}) shows that it is sufficient to add the corresponding upper bound on the linear subpath. This concludes the proof. $\square$
+We have just constructed a path from $\theta^A$ to $\theta^B$, in which all subpaths except (2) and (5) have energy maximized at the extrema due to convexity, given respectively by $\lambda$, $\delta_{W_A^1}(m, 0, m)$, $\delta_{W_A^1}(m-l, \alpha, m)$, $e(l)$, $\delta_{W_B^1}(m-l, \alpha, m)$, and 
+$\delta_{W_B^1}(m, 0, m)$.  For the two subpaths (2) and (5), (\ref{bub2}) shows that it is sufficient to add the corresponding upper bound to the linear subpath, which is of the form $C \alpha + o(\alpha^2)$ where $C$ is an explicit constant independent of $\theta$. Since $l$ and $\alpha$ are arbitrary, we are free to pick the infimum, which concludes the proof. $\square$
  
 %8 \sqrt{\E|Y^2} \} \max( \| \beta \|^2, \| \gamma_A \|^2) \alpha^2 \| \Sigma_X \| 
 

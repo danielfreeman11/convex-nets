@@ -219,10 +219,10 @@ hidden layer of size $m$ with current parameters $W \in \R^{n \times m}$, we def
 ``robust compressibility" factor as 
 \begin{equation}
 \label{compress}
-\delta_W(n, \alpha; m) = \min_{ \|\gamma \|_0 \leq n, \sup_i |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|_1  \}~,~(n \leq m)~.
+\delta_W(l, \alpha; m) = \min_{ \|\gamma \|_0 \leq l, \sup_i |\angle(\tilde{w}_i, w_i)| \leq \alpha} \E \{| Y - \gamma Z(\tilde{W}) |^2 + \kappa \| \gamma \|_1  \}~,~(l \leq m)~.
 \end{equation} 
 This quantity thus measures how easily one can compress the current hidden layer representation, 
-by keeping only a subset of $n$ its units, but allowing these units to move by a small amount controlled by $\alpha$. It is a form 
+by keeping only a subset of $l$ its units, but allowing these units to move by a small amount controlled by $\alpha$. It is a form 
 of $n$-width similar to Kolmogorov width \cite{donoho2006compressed} and is also related to robust sparse coding from \cite{tang2013compressed, ekanadham2011recovery}.
 
 
@@ -243,7 +243,7 @@ $\gamma(0) = \theta^A$, $\gamma(1) = \theta^B$ and
 \Forr( \gamma(t) )  \leq \max( \lambda, \epsilon)~,\text{ with}
 \end{equation}
 \begin{equation}
-\epsilon = \inf_{n, \alpha} \left(\max \left\{ e(n), \delta_{W_1^A}(m, 0; m ) , \delta_{W_1^A}(m-n, \alpha; m ) ,  \delta_{W_1^B}(m, 0; m ) , \delta_{W_1^B}(m-n, \alpha; m ) \right\} + C_1 \alpha  + O(\alpha^2) \right)~,
+\epsilon = \inf_{l, \alpha} \left(\max \left\{ e(l), \delta_{W_1^A}(m, 0; m ) , \delta_{W_1^A}(m-l, \alpha; m ) ,  \delta_{W_1^B}(m, 0; m ) , \delta_{W_1^B}(m-l, \alpha; m ) \right\} + C_1 \alpha  + O(\alpha^2) \right)~,
 \end{equation}
 %with 
 %$$f(\alpha, M) = C_1 \alpha  + C_2 M \alpha^2 + O(\alpha^2)~,$$
