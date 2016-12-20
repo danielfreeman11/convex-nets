@@ -16,20 +16,24 @@ For our numerical experiments, we calculated normalized geodesic lengths for a v
 \begin{center}
 %  \begin{tabular}{c@{\quad}cc}
 %    & a & b \\
-  \includegraphics[width=.34\textwidth]{../Plots/normlengthquadratics}\fixedlabel{QUADRATICSfigsA}{1a} 
-   \includegraphics[width=.34\textwidth]{../Plots/numbeadsquadratics}\fixedlabel{QUADRATICSfigsB}{1b}  \\ 
-    \includegraphics[width=.34\textwidth]{../Plots/normlengthcubics}\fixedlabel{CUBICSfigsA}{2a} 
-    \includegraphics[width=.34\textwidth]{../Plots/numbeadscubics} \fixedlabel{CUBICSfigsB}{2b} \\
-    \includegraphics[width=.34\textwidth]{../Plots/normlengthMNIST}\fixedlabel{MNISTfigsA}{3a} 
-     \includegraphics[width=.34\textwidth]{../Plots/numbeadsMNIST}\fixedlabel{MNISTfigsB}{3b} \\
-   \includegraphics[width=.34\textwidth]{../Plots/normlengthCIFAR}\fixedlabel{CIFARfigsA}{4a} 
-     \includegraphics[width=.34\textwidth]{../Plots/numbeadsCIFAR}\fixedlabel{CIFARfigsB}{4b} \\
-   \includegraphics[width=.34\textwidth]{../Plots/normlengthPTB}\fixedlabel{PTBfigsA}{5a} 
-   \includegraphics[width=.34\textwidth]{../Plots/numbeadsPTB}\fixedlabel{PTBfigsB}{5b}
+  \includegraphics[width=.34\textwidth]{../Plots/normlengthquadratics}\fixedlabel{QUADRATICSfigsA}\caption{(1a)} 
+   \includegraphics[width=.34\textwidth]{../Plots/numbeadsquadratics}\fixedlabel{QUADRATICSfigsB}\caption{(1b)}  \\ 
+    \includegraphics[width=.34\textwidth]{../Plots/normlengthcubics}\fixedlabel{CUBICSfigsA}\caption{(2a)} 
+    \includegraphics[width=.34\textwidth]{../Plots/numbeadscubics} \fixedlabel{CUBICSfigsB}\caption{(2b)} \\
+    \includegraphics[width=.34\textwidth]{../Plots/normlengthMNIST}\fixedlabel{MNISTfigsA}\caption{(3a)} 
+     \includegraphics[width=.34\textwidth]{../Plots/numbeadsMNIST}\fixedlabel{MNISTfigsB}\caption{(3b)} \\
+   \includegraphics[width=.34\textwidth]{../Plots/normlengthCIFAR}\fixedlabel{CIFARfigsA}\caption{(4a)} 
+     \includegraphics[width=.34\textwidth]{../Plots/numbeadsCIFAR}\fixedlabel{CIFARfigsB}\caption{(4b)} \\
+   \includegraphics[width=.34\textwidth]{../Plots/normlengthPTB}\fixedlabel{PTBfigsA}\caption{(5a)} 
+   \includegraphics[width=.34\textwidth]{../Plots/numbeadsPTB}\fixedlabel{PTBfigsB}\caption{(5b)}
   \captionof{figure}{(Column a) Average normalized geodesic length and (Column b) average number of beads versus loss. (1) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/QUADRATIC.py}{A quadratic regression task}. (2) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CUBIC.py}{A cubic regression task}. (3) A convnet for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/MNIST.py}{MNIST}. (4) A convnet inspired by \href{www.cs.toronto.edu/\%7Ekriz/cifar.html}{Krizhevsky} for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CIFAR10.py}{CIFAR10}. (5) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/PTBRNN.py}{A RNN} inspired by \href{arxiv.org/pdf/1409.2329.pdf}{Zaremba} for PTB next word prediction.}
   \label{FigTable}
 %\end{figure}
 \end{center}
+
+
+
+
 
 The results are broadly organized by increasing model complexity and task difficulty, from easiest to hardest.  Throughout, and remarkably, we were able to easily connect models for every dataset and architecture investigated except the one explicitly constructed counterexample discussed in Appendix \ref{symdisc}.  Qualitatively, all of the models exhibit a transition from a highly convex regime at high loss to a non-convex regime at low loss, as demonstrated by the growth of the normalized length as well as the monotonic increase in the number of required ``beads'' to form a low-loss connection.
 

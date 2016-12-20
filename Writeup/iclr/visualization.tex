@@ -22,13 +22,13 @@ Refer to Fig. \ref{fig:cartoon}.
  Finally, projections onto pairs of principal components are indicated by the black curves.
  
 \begin{figure}
-\label{connfigs}
 \centering
 \includegraphics[width=.4\textwidth]{../Plots/conn1}
 \includegraphics[width=.4\textwidth]{../Plots/conn2}
 \includegraphics[width=.4\textwidth]{../Plots/conn3}
 \includegraphics[width=.4\textwidth]{../Plots/conn4}
 \caption{Snapshots of Dynamic String Sampling in action for the quadratic regression task.  The string's coordinates are its projections onto the three most important principal axes of the fully converged string.  (Top Left) One step into the algorithm, note the high loss between all of the vertices of the path. (Top Right) An intermediate step of the algorithm.  Portions of the string have converged, but there are still regions with high interpolated loss. (Bottom Left) Near the end of the algorithm.  Almost the entire string has converged to low loss.  (Bottom Right) The algorithm has finished.  A continuous path between the models has been found with low loss.} 
+\label{connfigs}
 \end{figure}
  
  
@@ -47,10 +47,10 @@ Refer to Fig. \ref{fig:cartoon}.
  In general, a persistent high interpolated loss between two neighboring beads on the string of models could arise from either a slowly converging, connected pair of models or from a truly disconnected pair of models.  ``Proving'' a disconnection at the level of numerical experiments is intractable in general, but a collection of negative results---i.e., failures to converge---are highly suggestive of a true disconnection.
  
 \begin{figure}
-\label{discfigs}
 \centering
 \includegraphics[width=.4\textwidth]{../Plots/disc1}
 \includegraphics[width=.4\textwidth]{../Plots/disc2}
 \includegraphics[width=.4\textwidth]{../Plots/disc3}
 \caption{These three figures are projections of the components of the 12-dimensional weight matrices which comprise the models on the string produced by the DSS algorithm.  The axes are the principal components of the weight matrices, and the colors indicate test error for the model.  For more details on the figure generation, see Appendix \ref{visualization}. (Left) The string of models after 1 step.  Note the high error at all points except the middle and the endpoints.  (Middle) An intermediate stage of the algorithm.  Part of the string has converged, but a persistent high-error segment still exists.  (Right) Even after running for many steps, the error persists, and the algorithm does not converge.}
+\label{discfigs}
 \end{figure}

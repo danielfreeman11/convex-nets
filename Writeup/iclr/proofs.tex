@@ -160,12 +160,12 @@ and thus
 \end{equation}
 By denoting $C(w_m) = \{ x \in \R^n;\, \langle x, w_m \rangle \geq 0 \}$, 
 observe that $A(w_1, w_2 ) \subseteq C(w_m)$. Let us denote by $B = C(w_m) \setminus A(w_1, w_2) $ the disjoint complement. It results that 
-\begin{eqnarray}
-\label{col5}
-\langle w_1, w_2 \rangle_Z &=& \int_{A(w_1, w_2)} \langle x, w_1 \rangle  \langle x, w_2 \rangle dP(x) \nonumber \\
-&=& \int_{C(w_m)} [r^2 | \langle x, w_m \rangle |^2 - | \langle x, d \rangle |^2 ] dP(x) - r^2 \int_B  | \langle x, w_m \rangle |^2 dP(x) + \int_B  | \langle x, d \rangle |^2  dP(x) \nonumber \\ 
-&=& r^2 \| w_m \|_Z^2 - \underbrace{ r^2 \int_B  | \langle x, w_m \rangle |^2 dP(x)}_{E_1} - \underbrace{\int_{A(w_1, w_2)} | \langle x, d \rangle |^2  dP(x) }_{E_2}~. 
-\end{eqnarray} 
+\begin{alignat}{3}
+\langle w_1, w_2 \rangle_Z &= \int_{A(w_1, w_2)} &&\langle x, w_1 \rangle  \langle x, w_2 \rangle dP(x) \nonumber \\
+&= \int_{C(w_m)} &&[r^2 | \langle x, w_m \rangle |^2 - | \langle x, d \rangle |^2 ] dP(x) - \nonumber \\
+& &&r^2 \int_B  | \langle x, w_m \rangle |^2 dP(x) + \int_B  | \langle x, d \rangle |^2  dP(x) \nonumber \\ 
+&= &&r^2 \| w_m \|_Z^2 - \underbrace{ r^2 \int_B  | \langle x, w_m \rangle |^2 dP(x)}_{E_1} - \underbrace{\int_{A(w_1, w_2)} | \langle x, d \rangle |^2  dP(x) }_{E_2}~.
+\end{alignat} 
 We conclude by bounding each error term $E_1$ and $E_2$ separately:
 \begin{equation}
 \label{col3}
@@ -236,12 +236,13 @@ Let us now approximate this augmented linear path with a path in terms of first 
 We consider
 $$\eta_1(t) = (1-t) W^A + t \tilde{W}_A~,\text{ and}~\eta_2(t) = (1- t) {\beta}_1 + t \gamma_A~.$$
 We have that 
-\begin{eqnarray}
+\begin{alignat}{3}
 \label{bub1}
-\Forr(\{ \eta_1(t), \eta_2(t) \}) &=& \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa \| \eta_2(t) \|_1  \\ 
-&\leq & \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa(  ( 1-t) \| {\beta}_1\|_1 + t \| \gamma_A \|_1 ) \nonumber \\
-& = & \overline{L}(t) + \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \}  - \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} ~.  \nonumber
-\end{eqnarray}
+\Forr(\{ \eta_1(t), \eta_2(t) \}) &= &&\ \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa \| \eta_2(t) \|_1  \\ 
+&\leq  &&\ \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} + \kappa(  ( 1-t) \| {\beta}_1\|_1 + t \| \gamma_A \|_1 ) \nonumber \\
+& = &&\ \overline{L}(t) + \E \{ | Y - \eta_2(t) Z(\eta_1(t) ) |^2 \} \nonumber \\
+& - &&\ \E \{ | Y - (1-t) \beta_1 Z(W^A) - t \gamma_A Z(\tilde{W}_A) |^2 \} ~.
+\end{alignat}
 Finally, we verify that
 {\small 
 \begin{eqnarray}
@@ -321,12 +322,13 @@ $$z(w_k) \stackrel{d}{=}  z(w_{k-1}) + n~,$$
 with $\E\{|n|^2\} \leq C\alpha^2$ for some constant $C$ independent of $m$. 
 By redefining $p_1 = Y - \beta_p^T Z(W_{-k}) - \frac{1}{2} n$ and 
 $p_2 = \frac{1}{2}n$, we have 
-\begin{eqnarray*}
-\E \{ | Y - \beta_p^T Z(W_{-k}) |^2 \} - \E \{ | Y - {\beta'}^T Z(W_{-k}) - \beta_k z(w_k) |^2 \} & = & \E\{ | p_1 + p_2 |^2 \} - \E \{ |p_1 - p_2 |^2 \} \\
-&=& 4\E \{ |p_1 p_2| \} \\
-&\leq& \sqrt{ \E\left\{ \left|Y - \beta_p^T Z(W_{-k}) - \frac{1}{2} n \right|^2 \right\} } \sqrt{ \E \{ |n|^2 \} } \\
-&\leq & (C+\alpha) \alpha \simeq \epsilon_m~,
-\end{eqnarray*}
+\begin{alignat*}{3}
+&\E \{ | Y - \beta_p^T Z(W_{-k}) |^2 \} - \E \{ | Y - {\beta'}^T Z(W_{-k}) - \beta_k z(w_k) |^2 \} \\
+=\ &\E\{ | p_1 + p_2 |^2 \} - \E \{ |p_1 - p_2 |^2 \} \\
+=\ &4\E \{ |p_1 p_2| \} \\
+\leq\ &\sqrt{ \E\left\{ \left|Y - \beta_p^T Z(W_{-k}) - \frac{1}{2} n \right|^2 \right\} } \sqrt{ \E \{ |n|^2 \} } \\
+\leq\  &(C+\alpha) \alpha \simeq \epsilon_m~,
+\end{alignat*}
 where $C$ only depends on $\E\{|Y|^2\}$. We also verify that $\| \beta_p\|_1 \leq \| \beta'\|_1$.
 
 It results that removing $|Q_m|$ of such vectors incurs an increase of the loss at most 

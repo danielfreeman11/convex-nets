@@ -91,7 +91,7 @@
 \newtheorem{corollary}[theorem]{Corollary}
 
 
-\title{Topology and Geometry of Deep Rectified Network Optimization Landscapes }
+\title{Topology and Geometry of Half-Rectified Network Optimization }
 
 \author{C. Daniel Freeman \\
 Department of Physics, \\
@@ -132,12 +132,7 @@ on the data distribution and model architecture that prevent the existence
 of bad local minima. Our theoretical work quantifies and formalizes two 
 important \emph{folklore} facts: (i) the landscape of deep linear networks has a radically different topology 
 from that of deep half-rectified ones, and (ii) that the energy landscape 
-in the non-linear case is fundamentally controlled by the interplay between the smoothness of the data distribution and model over-parametrization. 
-These results are in accordance with empirical practice and recent literature. 
-%Together with 
-%recent results that rigorously establish that no gradient descent can 
-%get stuck on saddle points, we conclude that gradient descent converges
-%to a global optimum in deep rectified networks. 
+in the non-linear case is fundamentally controlled by the interplay between the smoothness of the data distribution and model over-parametrization. Our main theoretical contribution is to prove that half-rectified single layer networks are asymptotically connected, and we provide explicit bounds that reveal the aforementioned interplay.
 
 The conditioning of gradient descent is the next challenge we address. 
 We study this question through the geometry of the level sets, and we introduce
@@ -164,7 +159,9 @@ very low curvature attractors.
 \subsubsection*{Acknowledgments}
 
 We would like to thank Mark Tygert for pointing out 
-the reference to the $\epsilon$-nets and Kolmogorov capacity.  We would also like to thank Maithra Raghu and Jascha Sohl-Dickstein for enlightening discussions, as well as Yasaman Bahri for helpful feedback on an early version of the manuscript.  CDF was supported by the NSF Graduate Research Fellowship under Grant DGE-1106400.
+the reference to the $\epsilon$-nets and Kolmogorov capacity, and Martin Arjovsky for spotting 
+several bugs in early version of the results. 
+ We would also like to thank Maithra Raghu and Jascha Sohl-Dickstein for enlightening discussions, as well as Yasaman Bahri for helpful feedback on an early version of the manuscript.  CDF was supported by the NSF Graduate Research Fellowship under Grant DGE-1106400.
 
 \bibliographystyle{abbrv} 
 \bibliography{iclr2017_conference}
