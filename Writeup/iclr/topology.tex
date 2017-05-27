@@ -93,7 +93,7 @@ a somewhat simpler argument and allows for $\kappa > 0$ in the case $K=2$.
 Let $W_1, W_2, \dots, W_K$ be weight matrices of sizes 
 $n_k \times n_{k+1}$, $k < K$, and let $\Fem(\theta)$, $\Forr(\theta)$ 
 denote the risk minimizations using $\Phi$ as in (\ref{linearcase}). %and ridge regression.
-Assume that $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$.
+Assume that $n_j > \min(n_1, n_K)$ for $j=2 \dots K-1$.
 Then $\Omega_{\Fem}(\lambda)$ (and $\Omega_{\Forr}$) is connected for all $\lambda$ and all $K$ when $\kappa=0$, and for $\kappa>0$ when $K=2$; and therefore there are no poor local minima in these cases. 
 Moreover, any $\theta$ can be connected to the lowest energy level with a strictly decreasing path. %when $\kappa=0$.
 \end{proposition}
@@ -101,7 +101,7 @@ Moreover, any $\theta$ can be connected to the lowest energy level with a strict
 %Let us highlight that this result is weaker than that obtained by \cite{kawaguchi2016deep}, since it does not 
 %control the behavior of non-strict local minima and does not inform about the strict saddle condition. 
 Let us highlight that this result is slightly complementary than that of \cite{kawaguchi2016deep}, Theorem 2.3.
-Whereas we require $n_j \geq \min(n_1, n_K)$ for $j=2 \dots K-1$ and our analysis does not inform about the order of the saddle points, 
+Whereas we require $n_j > \min(n_1, n_K)$ for $j=2 \dots K-1$ and our analysis does not inform about the order of the saddle points, 
 we do not need full rank assumptions on $\Sigma_X$ nor the weights $W_k$. %We leave the consolidation of these results for future work
 
 This result does also highlight a certain mismatch between the picture of having no poor local minima 

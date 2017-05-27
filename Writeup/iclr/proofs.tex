@@ -53,14 +53,57 @@ such that:
 \item[iii] $W_{k^*}(t) W_{k^*-1}(t) = \tilde{W}_{k^*-1}(t) $ for $t \in (0,1)$. 
 %\item[iv] $\| W_{k^*-1}(t) \|^2 + \| W_{k^*}(t) \|^2 \leq (1-t) ( \| W \|_{k^*-1}^2(0) + \| W \|_{k^*}^2(0)  ) + t (\| W \|_{k^*-1}^2(1) + \| W \|_{k^*}^2(1))$.
 \end{itemize} 
-We construct it as follows. Let 
-$$W_{k^*}(t) = t W_{k^*}^B + (1-t) W_{k^*}^A + t (1-t) V~,$$
-$$W_{k^*-1}(t) = W_{k^*}(t)^\dagger \tilde{W}_{k^*-1}(t)  ~,$$
-where $W_{k^*}(t)^\dagger = ( W_{k^*}(t)^T W_{k^*}(t))^{-1} W_{k^*}(t)^T$ denotes the pseudoinverse 
-and $V$ is a $n_{k^*-1} \times n_{k^*}$ matrix drawn from a iid distribution. 
-Conditions (i) and (ii) are immediate from the definition, and condition (iii) results from the fact that 
-$$W_{k^*}(t) W_{k^*}(t)^\dagger  = {\bf I}_{N_k^*}~,$$
-since $W_k^*(t)$ has full rank for all $t \in (0,1)$. 
+
+%Let $K=2$. Since $\mathcal{L}$ expressed in terms of $\theta = W_2 W_1$ is convex, 
+%a linear path $\theta_t = (1-t) \theta^A + t \theta^B$ connects two solutions $\theta^A$ and $\theta^B$ in 
+%any given sublevel set. 
+For simplicity, we denote by $n$ and $m$ the dimensions of $\tilde{W}_{k^*}(t)$, and 
+assume without loss of generality that $n \geq m$. 
+
+Suppose first that $\text{rank}(W_{k^*-1}^A) = \text{rank}(W_{k^*-1}^B) =m$. Hence $\min( \lambda_{min}(W_{k^*-1}^A),\lambda_{min}(W_{k^*-1}^B)) = \rho > 0 $.
+Let $W_{k^*-1}^A = U_A S_A V_A^T$,  $W_{k^*-1}^B = U_B S_B V_B^T$ be the singular value decomposition of 
+$W_{k^*-1}^A$ and $W_{k^*-1}^B$ respectively, with $V_{\{A,B\}} \in \R^{m \times m}$. Observe that by appropriately 
+flipping the signs of columns of $V$ and $U$, we can always assume that $\text{det}(V_A) = \text{det}(V_B) =1$. 
+Since $GL(\R^m)$ has two connected components and $V_A$ and $V_B$ belong to the same one, one can find 
+a continuous path $t\in [0,1] \mapsto V(t) \in GL(\R^m)$ with $V(0) = V_A$, $V(1) = V_B$ and $\text{det}(V(t)) = 1$ for all $t$. 
+Since the singular values $s_{A,1} \dots, s_{A,m}$, $s_{B,1} \dots, s_{B,m}$ are non-negative, we can also construct a 
+path $t \mapsto S(t)$ such that $S(t)$ is diagonal, strictly positive with $S(t)_{i,i} \geq \rho$, and $S(0)=S_A$, $S(1)=S_B$ and $\text{rank}(S(t)) = m~\forall~t\in(0,1)$. 
+
+Finally, since $n_1 > m$ by assumption, we can always complete the rectangular matrices $U_{\{A,B\}} \in \R^{n_1 \times m}$ into
+$\bar{U}_{\{A,B\}} \in \R^{n_1 \times n_1}$, such that $\text{det}(\bar{U}_A) = \text{det}(\bar{U}_B) = 1$. It results that we can also 
+consider a path $t \mapsto \bar{U}(t)$ with $\bar{U}(0) = \bar{U}_A$, $\bar{U}(1) = \bar{U}_B$ and $\text{det}(\bar{U}(t)) = 1$ for all $t$. 
+In particular, since $\text{rank}(\bar{U}(t)) = n_1$ for all $t\in[0,1]$, the restriction of $\bar{U}(t)$ to its first $m$ columns, $U(t)$, has rank $m$ for all $t$. 
+
+By forming 
+$$t \mapsto W_{k^*-1}(t)=U(t) S(t) V(t)^T$$
+we have just constructed a path with the property that $W_{k^*-1}(0) = W_{k^*-1}^A$, $W_{k^*-1}(1) = W_{k^*-1}^B$ and 
+$$\forall t \in (0,1)~,~ W_{k^*-1}^{A} = C^A(t) W_{k^*-1}(t)~,W_{k^*-1}^B = C^B(t) W_{k^*-1}(t)~,$$
+thanks to the fact that $\text{rank}(W(t)) = m$ for all $t \in (0,1)$. 
+Moreover, we verify that 
+$$\| C_A(t) - {\bf I} \| = o(t)~,~ \| C_B(t) - {\bf I} \| = o(1-t)~.$$
+It results that
+\begin{eqnarray*}
+(1-t) \theta^A + t \theta^B &=& (1-t) W_{k^*}^A W_{k^*-1}^A+ t W_{k^*}^B W_{k^*-1}^B \\
+ &=& (1-t) W_{k^*}^A C^A(t) W_{k^*-1}(t) + t W_{k^*}^B C^B(t) W_{k^*-1}(t) \\
+  &=&  \left((1-t) W_{k^*}^A C^A(t) + t W_{k^*}^B C^B(t) \right) W_{k^*-1}(t)~,
+\end{eqnarray*}
+which, by renaming $W_{k^*}(t) =  \left((1-t) W_{k^*}^A C^A(t) + t W_{k^*}^B C^B(t) \right)$, 
+shows that the path is factorized into the two paths 
+satisfying the conditions for connectedness. 
+
+
+%
+%*******
+%We construct it as follows. Let 
+%$$W_{k^*}(t) = t W_{k^*}^B + (1-t) W_{k^*}^A + t (1-t) V~,$$
+%$$W_{k^*-1}(t) = W_{k^*}(t)^\dagger \tilde{W}_{k^*-1}(t)  ~,$$
+%where $W_{k^*}(t)^\dagger = ( W_{k^*}(t)^T W_{k^*}(t))^{-1} W_{k^*}(t)^T$ denotes the pseudoinverse 
+%and $V$ is a $n_{k^*-1} \times n_{k^*}$ matrix drawn from a iid distribution. 
+%Conditions (i) and (ii) are immediate from the definition, and condition (iii) results from the fact that 
+%$$W_{k^*}(t) W_{k^*}(t)^\dagger  = {\bf I}_{N_k^*}~,$$
+%since $W_k^*(t)$ has full rank for all $t \in (0,1)$. 
+%********
+
 
 Finally, let us prove that the result is also true when $K=2$ and $\kappa>0$.
 We construct the path using the variational properties of atomic norms \cite{bach2013convex}. 
