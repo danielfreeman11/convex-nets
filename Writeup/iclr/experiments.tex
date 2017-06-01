@@ -46,26 +46,27 @@ The results are broadly organized by increasing model complexity and task diffic
 
  We studied a 1-4-4-1 fully connected multilayer perceptron style architecture with sigmoid nonlinearities and RMSProp/ADAM optimization.  For ease-of-analysis, we restricted the training and test data to be strictly contained in the interval $x\in[0,1]$ and $f(x)\in[0,1]$.  The number of required beads, and thus the runtime of the algorithm, grew approximately as a power-law, as demonstrated in Table \ref{FigTable} Fig. 1.  We also provide a visualization of a representative connecting path between two models of equivalent power in Appendix \ref{visualization}.
  
- 
+
+\begin{figure} 
 %\begin{figure}[h]
-%  \centering
-\begin{center}
+  \centering
+%\begin{center}
 %  \begin{tabular}{c@{\quad}cc}
 %    & a & b \\
-  \includegraphics[width=.34\textwidth]{../Plots/normlengthquadratics}\fixedlabel{QUADRATICSfigsA}\caption{(1a)} 
-   \includegraphics[width=.34\textwidth]{../Plots/numbeadsquadratics}\fixedlabel{QUADRATICSfigsB}\caption{(1b)}  \\ 
-    \includegraphics[width=.34\textwidth]{../Plots/normlengthcubics}\fixedlabel{CUBICSfigsA}\caption{(2a)} 
-    \includegraphics[width=.34\textwidth]{../Plots/numbeadscubics} \fixedlabel{CUBICSfigsB}\caption{(2b)} \\
-    \includegraphics[width=.34\textwidth]{../Plots/normlengthMNIST}\fixedlabel{MNISTfigsA}\caption{(3a)} 
-     \includegraphics[width=.34\textwidth]{../Plots/numbeadsMNIST}\fixedlabel{MNISTfigsB}\caption{(3b)} \\
-   \includegraphics[width=.34\textwidth]{../Plots/normlengthCIFAR}\fixedlabel{CIFARfigsA}\caption{(4a)} 
-     \includegraphics[width=.34\textwidth]{../Plots/numbeadsCIFAR}\fixedlabel{CIFARfigsB}\caption{(4b)} \\
-   \includegraphics[width=.34\textwidth]{../Plots/normlengthPTB}\fixedlabel{PTBfigsA}\caption{(5a)} 
-   \includegraphics[width=.34\textwidth]{../Plots/numbeadsPTB}\fixedlabel{PTBfigsB}\caption{(5b)}
-  \captionof{figure}{(Column a) Average normalized geodesic length and (Column b) average number of beads versus loss. (1) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/QUADRATIC.py}{A quadratic regression task}. (2) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CUBIC.py}{A cubic regression task}. (3) A convnet for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/MNIST.py}{MNIST}. (4) A convnet inspired by \href{www.cs.toronto.edu/\%7Ekriz/cifar.html}{Krizhevsky} for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CIFAR10.py}{CIFAR10}. (5) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/PTBRNN.py}{A RNN} inspired by \href{arxiv.org/pdf/1409.2329.pdf}{Zaremba} for PTB next word prediction.}
+  \includegraphics[width=.34\textwidth]{../Plots/normlengthquadratics}%\fixedlabel{QUADRATICSfigsA}\caption{(1a)} 
+   \includegraphics[width=.34\textwidth]{../Plots/numbeadsquadratics} \\ %\fixedlabel{QUADRATICSfigsB}\caption{(1b)}  \\ 
+    \includegraphics[width=.34\textwidth]{../Plots/normlengthcubics} %\fixedlabel{CUBICSfigsA}\caption{(2a)} 
+    \includegraphics[width=.34\textwidth]{../Plots/numbeadscubics}\\% \fixedlabel{CUBICSfigsB}\caption{(2b)} \\
+    \includegraphics[width=.34\textwidth]{../Plots/normlengthMNIST}%\fixedlabel{MNISTfigsA}\caption{(3a)} 
+     \includegraphics[width=.34\textwidth]{../Plots/numbeadsMNIST}\\% \fixedlabel{MNISTfigsB}\caption{(3b)} \\
+   \includegraphics[width=.34\textwidth]{../Plots/normlengthCIFAR}% \fixedlabel{CIFARfigsA}\caption{(4a)} 
+     \includegraphics[width=.34\textwidth]{../Plots/numbeadsCIFAR} \\ %\fixedlabel{CIFARfigsB}\caption{(4b)} \\
+   \includegraphics[width=.34\textwidth]{../Plots/normlengthPTB}% \fixedlabel{PTBfigsA}\caption{(5a)} 
+   \includegraphics[width=.34\textwidth]{../Plots/numbeadsPTB} \\ %\fixedlabel{PTBfigsB}\caption{(5b)}
+  \caption{(Column a) Average normalized geodesic length and (Column b) average number of beads versus loss. (1) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/QUADRATIC.py}{A quadratic regression task}. (2) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CUBIC.py}{A cubic regression task}. (3) A convnet for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/MNIST.py}{MNIST}. (4) A convnet inspired by \href{www.cs.toronto.edu/\%7Ekriz/cifar.html}{Krizhevsky} for \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/CIFAR10.py}{CIFAR10}. (5) \href{github.com/danielfreeman11/convex-nets/tree/master/LaunchScripts/PTBRNN.py}{A RNN} inspired by \href{arxiv.org/pdf/1409.2329.pdf}{Zaremba} for PTB next word prediction.}
   \label{FigTable}
-%\end{figure}
-\end{center}
+\end{figure}
+%\end{center}
 
  
  The cubic regression task exhibits an interesting feature around $L_0=.15$ in Table \ref{FigTable} Fig. 2, where the normalized length spikes, but the number of required beads remains low.  Up until this point, the cubic model is strongly convex, so this first spike seems to indicate the onset of non-convex behavior and a concomitant radical change in the geometry of the loss surface for lower loss.
