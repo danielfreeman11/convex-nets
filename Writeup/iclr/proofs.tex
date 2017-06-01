@@ -60,7 +60,7 @@ such that:
 For simplicity, we denote by $n$ and $m$ the dimensions of $\tilde{W}_{k^*}(t)$, and 
 assume without loss of generality that $n \geq m$. 
 
-%Suppose first that $\text{rank}(W_{k^*-1}^A) = \text{rank}(W_{k^*-1}^B) =m$. Hence $\min( \lambda_{min}(W_{k^*-1}^A),\lambda_{min}(W_{k^*-1}^B)) = \rho > 0 $.
+Suppose first that $\text{rank}(W_{k^*-1}^A) = \text{rank}(W_{k^*-1}^B) =m$. Hence $\min( \lambda_{min}(W_{k^*-1}^A),\lambda_{min}(W_{k^*-1}^B)) = \rho > 0 $.
 Let $W_{k^*-1}^A = U_A S_A V_A^T$,  $W_{k^*-1}^B = U_B S_B V_B^T$ be the singular value decomposition of 
 $W_{k^*-1}^A$ and $W_{k^*-1}^B$ respectively, with $V_{\{A,B\}} \in \R^{m \times m}$. Observe that by appropriately 
 flipping the signs of columns of $V$ and $U$, we can always assume that $\text{det}(V_A) = \text{det}(V_B) =1$. 
@@ -70,61 +70,104 @@ Also, since $n_1 > m$ by assumption, we can always complete the rectangular matr
 $\bar{U}_{\{A,B\}} \in \R^{n_1 \times n_1}$, such that $\text{det}(\bar{U}_A) = \text{det}(\bar{U}_B) = 1$. It follows that we can also 
 consider a path $t \mapsto \bar{U}(t)$ with $\bar{U}(0) = \bar{U}_A$, $\bar{U}(1) = \bar{U}_B$ and $\text{det}(\bar{U}(t)) = 1$ for all $t$. 
 In particular, since $\text{rank}(\bar{U}(t)) = n_1$ for all $t\in[0,1]$, the restriction of $\bar{U}(t)$ to its first $m$ columns, $U(t)$, has rank $m$ for all $t$. 
-Finally, since the singular values $s_{A,1} \dots, s_{A,m}$, $s_{B,1} \dots, s_{B,m}$ are non-negative, we can also construct paths 
-$t \mapsto S_A(t)$, $t \mapsto S_B(t)$ such that $S(t)$ is diagonal, strictly positive with $S_{\{A,B\}}(0)=S_{\{A,B\}}$, $S_{\{A,B\}}(1)={\bf 1}$ and 
-$\text{rank}(S_{\{A,B\}}(t)) = m~\forall~t\in(0,1]$. Moreover, we construct them such that 
-\begin{equation}
-\label{gem}
-\| S_{\{A,B\}}(t) \|^{-1} = \frac{1}{\min_i {S_{\{A,B\}}}_{i,i}(t) } = o(t^{-1})~,~t\to 0~.
-\end{equation}
+Finally, since the singular values $s_{A,1} \dots, s_{A,m}$, $s_{B,1} \dots, s_{B,m}$ are lower bounded by $\rho > 0$, 
+we can construct a path $t \mapsto S(t)$ such that $S(t)$ is diagonal, $S(0) = S_A$, $S(1) = S_B$, and $S(t)_{i,i} \geq \rho >0$ for all $t \in [0,1]$.
+%Finally, since the singular values $s_{A,1} \dots, s_{A,m}$, $s_{B,1} \dots, s_{B,m}$ are non-negative, we can also construct paths 
+%$t \mapsto S_A(t)$, $t \mapsto S_B(t)$ such that $S(t)$ is diagonal, strictly positive with $S_{\{A,B\}}(0)=S_{\{A,B\}}$, $S_{\{A,B\}}(1)={\bf 1}$ and 
+%$\text{rank}(S_{\{A,B\}}(t)) = m~\forall~t\in(0,1]$. Moreover, we construct them such that 
+%\begin{equation}
+%\label{gem}
+%\| S_{\{A,B\}}(t) \|^{-1} = \frac{1}{\min_i {S_{\{A,B\}}}_{i,i}(t) } = o(t^{-1})~,~t\to 0~.
+%\end{equation}
 
 We consider the path 
 \begin{equation}
-t \mapsto~W_{k^*-1}(t) = \left\{ 
-\begin{array}{rl}
-U_A S_A(3t) V_A^T & \text{if } 0 \leq t \leq \frac{1}{3}~,\\
-U(3t-1) V(3t-1)^T & \text{if } \frac{1}{3} \leq t \leq \frac{2}{3}~,\\
-U_B S_B(3-3t) V_B^T & \text{if } \frac{2}{3} \leq t~. 
-\end{array} \right.
+t \mapsto~W_{k^*-1}(t) = U(t) S(t) V(t)^T~.
 \end{equation}
+
+
+%We consider the path 
+%\begin{equation}
+%t \mapsto~W_{k^*-1}(t) = \left\{ 
+%\begin{array}{rl}
+%U_A S_A(3t) V_A^T & \text{if } 0 \leq t \leq \frac{1}{3}~,\\
+%U(3t-1) V(3t-1)^T & \text{if } \frac{1}{3} \leq t \leq \frac{2}{3}~,\\
+%U_B S_B(3-3t) V_B^T & \text{if } \frac{2}{3} \leq t~. 
+%\end{array} \right.
+%\end{equation}
 
 %By forming 
 %$$t \mapsto W_{k^*-1}(t)=U(t) S(t) V(t)^T$$
-We have just constructed a path with the property that $W_{k^*-1}(0) = W_{k^*-1}^A$, $W_{k^*-1}(1) = W_{k^*-1}^B$ and 
+$W_{k^*-1}(t)$ has the property that $W_{k^*-1}(0) = W_{k^*-1}^A$, $W_{k^*-1}(1) = W_{k^*-1}^B$.  
+%\begin{equation}
+%\label{lem}
+%\forall t \in (0,1)~,~ W_{k^*-1}^{A} = C^A(t) W_{k^*-1}(t)~,W_{k^*-1}^B = C^B(t) W_{k^*-1}(t)~,
+%\end{equation}
+Thanks to the fact that $\text{rank}(W_{k^*-1}(t)) = m$ for all $t \in (0,1)$, there exists $W_{k^*}(t)$ such that
 \begin{equation}
 \label{lem}
-\forall t \in (0,1)~,~ W_{k^*-1}^{A} = C^A(t) W_{k^*-1}(t)~,W_{k^*-1}^B = C^B(t) W_{k^*-1}(t)~,
+\forall t \in (0,1)~,~ \tilde{W}_{k^*}(t) = W_{k^*}(t) W_{k^*-1}(t)~.
 \end{equation}
-thanks to the fact that $\text{rank}(W_{k^*-1}(t)) = m$ for all $t \in (0,1)$. 
-It follows that
-\begin{eqnarray*}
-(1-t) \theta^A + t \theta^B &=& (1-t) W_{k^*}^A W_{k^*-1}^A+ t W_{k^*}^B W_{k^*-1}^B \\
- &=& (1-t) W_{k^*}^A C^A(t) W_{k^*-1}(t) + t W_{k^*}^B C^B(t) W_{k^*-1}(t) \\
-  &=&  \left((1-t) W_{k^*}^A C^A(t) + t W_{k^*}^B C^B(t) \right) W_{k^*-1}(t)~, \\
-  &=& W_{k^*}(t)  W_{k^*-1}(t)~,
-\end{eqnarray*}
-by renaming $W_{k^*}(t) =  \left((1-t) W_{k^*}^A C^A(t) + t W_{k^*}^B C^B(t) \right)$. 
+%
+%It follows that
+%\begin{eqnarray*}
+%(1-t) \theta^A + t \theta^B &=& (1-t) W_{k^*}^A W_{k^*-1}^A+ t W_{k^*}^B W_{k^*-1}^B \\
+% &=& (1-t) W_{k^*}^A C^A(t) W_{k^*-1}(t) + t W_{k^*}^B C^B(t) W_{k^*-1}(t) \\
+%  &=&  \left((1-t) W_{k^*}^A C^A(t) + t W_{k^*}^B C^B(t) \right) W_{k^*-1}(t)~, \\
+%  &=& W_{k^*}(t)  W_{k^*-1}(t)~,
+%\end{eqnarray*}
+%by renaming $W_{k^*}(t) =  \left((1-t) W_{k^*}^A C^A(t) + t W_{k^*}^B C^B(t) \right)$. 
 
-Finally, we need to show that the paths $W_{k^*}(t)$, $W_{k^*-1}(t)$ are continuous.
+Finally, we need to show that the path $W_{k^*}(t)$ is continuous 
+and satisfies $W_{k^*}(0) = W_{k^*}^A$, $W_{k^*}(1) = W_{k^*}^B$.
 Since by construction the paths are continuous in $t \in (0,1)$, it only remains to be shown that
 \begin{equation}
 \lim_{t\to 0} W_{k^*}(t) = W_{k^*}^A~,~\lim_{t\to 1} W_{k^*}(t) = W_{k^*}^B~.
 \end{equation}
 
 From (\ref{lem}) we have 
-$$C^A(t) = W_{k^*-1}^A W_{k^*-1}(t)^{-1}~,~C^B(t) = W_{k^*-1}^B W_{k^*-1}(t)^{-1}~,\text{ so}$$
-$$W_{k^*}(t) = (1-t) W_{k^*}^A W_{k^*-1}^A W_{k^*-1}(t)^{-1} +  t W_{k^*}^B W_{k^*-1}^B W_{k^*-1}(t)^{-1}~. $$
+%$$C^A(t) = W_{k^*-1}^A W_{k^*-1}(t)^{-1}~,~C^B(t) = W_{k^*-1}^B W_{k^*-1}(t)^{-1}~,\text{ so}$$
+$$W_{k^*}(t) = \tilde{W}_{k^*}(t) W_{k^*-1}(t)^{-1} ~. $$
 Consider first the case $t \to 0$.
-Since $\|W_{k^*}^B W_{k^*-1}^B \| < \infty$ and $\|W_{k^*-1}(t)^{-1}\| = \| S_A(t) \|^{-1} = o(t^{-1})$, 
-we have 
-$$\lim_{t \to 0} \|  t W_{k^*}^B W_{k^*-1}^B W_{k^*-1}(t)^{-1} \| =0~.$$  
-Denote by $k$ the rank of $W_{k^*-1}^A$, and by ${\bf 1}_k$ the diagonal matrix
-with $k$ ones in the diagonal. Then 
-\begin{eqnarray*}
-\lim_{t\to 0} \| W_{k^*-1}^A W_{k^*-1}(t)^{-1} - V_A^{(k)} (V_A^{(k)})^T  \| &=& \lim_{t \to 0} \| V_A \left( S_A S_A(t)^{-1} - {\bf 1}_k \right) V_A^T  \| \\
-\lim_{t\to 0}  \|  S_A S_A(t)^{-1} - {\bf 1}_k  \| &=& 0~,
-\end{eqnarray*}
-which implies $\lim_{t \to 0} W_{k^*}(t) = W_{k^*}^A $.
+Since $\tilde{W}_{k^*}(t)$ is continuous in a compact interval,  
+we have $\sup_t \|\tilde{W}_{k^*}(t) \| < \infty$. Also, $\|W_{k^*-1}(t)^{-1}\| = \| S_A(t) \|^{-1} < \rho^{-1} $, 
+so we have 
+\begin{eqnarray}
+\label{kem}
+&& \lim_{t \to 0} \|  \tilde{W}_{k^*}(t)  W_{k^*-1}(t)^{-1}  - W_{k^*}^A  \| =  \nonumber \\
+&=& \lim_{t \to 0} \|  \tilde{W}_{k^*}(t)  W_{k^*-1}(t)^{-1}  -  \tilde{W}_{k^*}(t)  (W_{k^*-1}^A)^{-1} +  \tilde{W}_{k^*}(t)  (W_{k^*-1}^A)^{-1} -  W_{k^*}^A \| \nonumber \\
+&\leq &  \lim_{t \to 0}  \|  \tilde{W}_{k^*}(t) \| \|  W_{k^*-1}(t)^{-1} - (W_{k^*-1}^A)^{-1} \| + \| \tilde{W}_{k^*}(t)  - \tilde{W}_{k^*}(0) \| \| (W_{k^*-1}^A)^{-1} \| \nonumber \\
+&=& 0~,
+\end{eqnarray}
+since $W_{k^*-1}(t)^{-1}$  and $\tilde{W}_{k^*}(t)$ are both continuous at $t=0$.
+Analogously we have 
+$\lim_{t \to 1} W_{k^*}(t) = W_{k^*}^B $.
+
+%Moreover, 
+%%Denote by $k$ the rank of $W_{k^*-1}^A$, and by ${\bf 1}_k$ the diagonal matrix
+%%with $k$ ones in the diagonal. Then 
+%\begin{eqnarray}
+%\label{kem2}
+%\lim_{t\to 0} \| W_{k^*-1}^A W_{k^*-1}(t)^{-1} - {\bf 1} \| &=& \lim_{t \to 0} \| V_A \left( S_A S_A(t)^{-1} - {\bf 1}_k \right) V_A^T  \| \nonumber \\
+%&=& \lim_{t\to 0}  \|  S_A S_A(t)^{-1} - {\bf 1}_k  \| \nonumber \\
+%&=& 0~,
+%\end{eqnarray}
+%because the singular values $S_A$ are bounded away from zero.
+%Equations (\ref{kem}) and (\ref{kem2}) imply that 
+%$\lim_{t \to 0} W_{k^*}(t) = W_{k^*}^A $, and 
+
+Finally, if either $\text{rank}(W_{k^*-1}^A) < m$ or $\text{rank}(W_{k^*-1}^B) < m$, 
+we denote by $P_A$ (resp $P_B$) the orthogonal complement of $\text{span}(W_{k^*-1}^A)$ 
+(resp  $\text{span}(W_{k^*-1}^B)$), and by $Q_A$ (resp $Q_B$) the orthogonal complement of 
+$\text{Null}(W_{k^*}^A)$ 
+(resp  $\text{Null}(W_{k^*}^B)$).
+ Observe that if either $Q_A$ intersects with $P_A$ (resp  $Q_B$ intersects with $P_B$), 
+ we can shrink $W_{k^*}^A$ in the intersection with no effect in the loss. 
+ We can thus assume without loss of generality that $P_A \cap Q_A = \emptyset$. 
+ In that case, increasing the range of $W_{k*-1}^A$ until it has rank $m$ has no effect 
+ in the loss either, since the new directions will fall in the kernel of $W_{k^*}^A$. 
+Therefore, by applying the necessary corrections to $W_{k*-1}^A$ and $W_{k*}^A$
+ (resp $W_{k*-1}^B$ and $W_{k*}^B$) we can reduce ourselves to the previous case. 
 
 
 %shows that the path is factorized into the two paths 
